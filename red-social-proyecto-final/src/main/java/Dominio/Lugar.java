@@ -7,7 +7,7 @@ public class Lugar {
 
     private Long id;
     private String nombre;
-    private String direccion;
+    private Direccion direccion;
     private String descripcion;
     private String imagen;
     private Float promedioCalificacion;
