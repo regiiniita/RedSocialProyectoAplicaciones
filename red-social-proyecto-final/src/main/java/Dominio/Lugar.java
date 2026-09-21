@@ -30,7 +30,7 @@ public class Lugar {
      * @param promedioCalificacion Calificación promedio inicial.
      * @param categoria Categoría asociada.
      */
-    public Lugar(Long id, String nombre, String direccion, String descripcion, String imagen, Float promedioCalificacion, Categoria categoria) {
+    public Lugar(Long id, String nombre, Direccion direccion, String descripcion, String imagen, Float promedioCalificacion, Categoria categoria) {
         this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -56,11 +56,11 @@ public class Lugar {
         this.nombre = nombre;
     }
 
-    public String getDireccion() {
+    public Direccion getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
 
