@@ -13,7 +13,7 @@ public class Resenia {
     public static final int CALIFICACION_MAXIMA = 5;
 
     private Long id;
-    private Integer calificacion;
+    private Float calificacion;
     private String comentario;
     private LocalDateTime fechaPublicacion;
     private Usuario autor;
@@ -37,7 +37,7 @@ public class Resenia {
      * @param autor Usuario que redacta la reseña.
      * @param lugar Lugar al que se le realiza la reseña.
      */
-    public Resenia(Long id, Integer calificacion, String comentario, LocalDateTime fechaPublicacion, Usuario autor, Lugar lugar) {
+    public Resenia(Long id, Float calificacion, String comentario, LocalDateTime fechaPublicacion, Usuario autor, Lugar lugar) {
         this.id = id;
         validarYAsignarCalificacion(calificacion);
         validarObjetosAsociados(autor, lugar);
@@ -48,7 +48,7 @@ public class Resenia {
         this.estado = false;
     }
 
-    private void validarYAsignarCalificacion(Integer calificacion) {
+    private void validarYAsignarCalificacion(Float calificacion) {
         if (calificacion == null) {
             throw new ReglaNegocioException("La calificación no puede ser nula.");
         }
@@ -75,11 +75,11 @@ public class Resenia {
         this.id = id;
     }
 
-    public Integer getCalificacion() {
+    public Float getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(Integer calificacion) {
+    public void setCalificacion(Float calificacion) {
         validarYAsignarCalificacion(calificacion);
     }
 
