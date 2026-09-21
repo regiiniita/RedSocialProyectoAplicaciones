@@ -15,14 +15,11 @@ public class Usuario {
     private String email;
     private String contrasenia;
     private Rol rolUsuario;
-    private List<Usuario> seguidos;
+
 
     /**
      * Constructor por defecto.
      */
-    public Usuario() {
-        this.seguidos = new ArrayList<>();
-    }
 
     /**
      * Constructor con atributos principales del usuario.
@@ -34,7 +31,6 @@ public class Usuario {
      * @param rolUsuario Rol asignado.
      */
     public Usuario(Long id, String username, String email, String contrasenia, Rol rolUsuario) {
-        this();
         this.id = id;
         this.username = username;
         this.email = email;
@@ -82,11 +78,4 @@ public class Usuario {
         this.rolUsuario = rolUsuario;
     }
 
-    public List<Usuario> getSeguidos() {
-        return seguidos;
-    }
-
-    public void setSeguidos(List<Usuario> seguidos) {
-        this.seguidos = seguidos;
-    }
 }
