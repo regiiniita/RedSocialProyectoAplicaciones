@@ -18,6 +18,7 @@ public class Resenia {
     private LocalDateTime fechaPublicacion;
     private Usuario autor;
     private Lugar lugar;
+    private Boolean estado;
 
     /**
      * Constructor por defecto.
@@ -44,6 +45,7 @@ public class Resenia {
         this.fechaPublicacion = (fechaPublicacion != null) ? fechaPublicacion : LocalDateTime.now();
         this.autor = autor;
         this.lugar = lugar;
+        this.estado = false;
     }
 
     private void validarYAsignarCalificacion(Integer calificacion) {
@@ -110,6 +112,14 @@ public class Resenia {
 
     public Lugar getLugar() {
         return lugar;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 
     public void setLugar(Lugar lugar) {
