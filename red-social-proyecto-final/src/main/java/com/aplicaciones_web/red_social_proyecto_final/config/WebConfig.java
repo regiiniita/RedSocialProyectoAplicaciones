@@ -3,6 +3,7 @@ package com.aplicaciones_web.red_social_proyecto_final.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -15,6 +16,6 @@ public class WebConfig implements WebMvcConfigurer {
         String uploadPath = uploadDir.toFile().getAbsolutePath();
 
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:/" + uploadPath + "/");
+                .addResourceLocations("file:" + uploadPath + "/", "classpath:/static/uploads/");
     }
 }
