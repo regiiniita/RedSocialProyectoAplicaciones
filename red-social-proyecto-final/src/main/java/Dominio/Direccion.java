@@ -8,6 +8,7 @@ public class Direccion {
     private String numero;
     private String codigoPostal;
     private String colonia;
+    private String ciudad;
 
     /**
      * Constructor por defecto.
@@ -15,19 +16,12 @@ public class Direccion {
     public Direccion() {
     }
 
-    /**
-     * Constructor con todos los atributos de la dirección.
-     *
-     * @param nombreCalle Nombre de la calle.
-     * @param numero Número exterior o interior.
-     * @param codigoPostal Código postal.
-     * @param colonia Nombre de la colonia.
-     */
-    public Direccion(String nombreCalle, String numero, String codigoPostal, String colonia) {
+    public Direccion(String nombreCalle, String numero, String codigoPostal, String colonia, String ciudad) {
         this.nombreCalle = nombreCalle;
         this.numero = numero;
         this.codigoPostal = codigoPostal;
         this.colonia = colonia;
+        this.ciudad = ciudad;
     }
 
     public String getNombreCalle() {
@@ -60,5 +54,13 @@ public class Direccion {
 
     public void setColonia(String colonia) {
         this.colonia = colonia;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 }

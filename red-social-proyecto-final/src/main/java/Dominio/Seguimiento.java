@@ -41,7 +41,7 @@ public class Seguimiento {
         if (seguidor == null || seguido == null) {
             throw new ReglaNegocioException("Tanto el seguidor como el seguido deben ser usuarios válidos.");
         }
-        if (seguidor.getId() != null && seguido.getId() != null && seguidor.getId().equals(seguido.getId())) {
+        if (seguidor.esMismoUsuario(seguido)) {
             throw new ReglaNegocioException("Un usuario no puede seguirse a sí mismo.");
         }
     }

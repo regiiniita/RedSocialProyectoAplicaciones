@@ -1,35 +1,24 @@
 package Dominio;
 
-/**
- * Enumeración que define las categorías disponibles para clasificar los lugares en la plataforma.
- */
-public enum Categoria {
+public class Categoria {
 
-    RESTAURANTE("Restaurante", "Establecimiento enfocado en servicio de alimentos y bebidas preparadas."),
-    CAFETERIA("Cafetería", "Espacio especializado en café, postres y alimentos ligeros."),
-    BAR("Bar", "Establecimiento social centrado en bebidas y vida nocturna."),
-    PARQUE("Parque", "Área verde pública o recreativa al aire libre."),
-    MUSEO("Museo", "Espacio cultural, histórico o artístico abierto al público.");
+    private Long id;
+    private String nombre;
+    private String descripcion;
 
-    private final String nombre;
-    private final String descripcion;
+    public Categoria() {
+    }
 
-    /**
-     * Constructor del enum Categoria.
-     *
-     * @param nombre Nombre descriptivo de la categoría.
-     * @param descripcion Detalle de la clasificación.
-     */
-    Categoria(String nombre, String descripcion) {
+    public Categoria(Long id, String nombre, String descripcion) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 }
