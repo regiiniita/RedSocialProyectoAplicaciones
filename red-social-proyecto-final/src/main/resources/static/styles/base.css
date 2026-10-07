@@ -1,0 +1,351 @@
+/* ==========================================================================
+   Reset, tipografía y componentes compartidos por usuario y admin:
+   botones, campos, tarjetas, avatar, estrellas y utilidades.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Chau+Philomene+One&family=DataType&display=swap");
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-base);
+  line-height: var(--altura-linea);
+  color: var(--color-texto);
+  background: var(--color-blanco);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  background: none;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: var(--color-primario);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Tipografía ---------- */
+/* Chau Philomene One solo existe en peso 400: se fuerza para evitar negrita falsa */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--fuente-titulo);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: var(--titulo-1);
+  color: var(--color-titulo);
+}
+
+h2 {
+  font-size: var(--titulo-2);
+  color: var(--color-texto);
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--titulo-3);
+  color: var(--color-texto);
+}
+
+p {
+  color: var(--color-texto);
+}
+
+/* ---------- Accesibilidad ---------- */
+:focus-visible {
+  outline: 3px solid var(--color-secundario);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-3) var(--espacio-6);
+  font-family: var(--fuente-titulo);
+  font-size: var(--texto-md);
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--radio-pill);
+  box-shadow: var(--sombra-boton);
+  cursor: pointer;
+  transition: background var(--transicion), box-shadow var(--transicion);
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn:active {
+  box-shadow: none;
+}
+
+.btn--primario {
+  background: var(--color-primario);
+  color: var(--color-blanco);
+}
+
+.btn--primario:hover {
+  background: var(--color-primario-hover);
+}
+
+.btn--secundario {
+  background: var(--color-secundario);
+  color: var(--color-texto);
+}
+
+.btn--secundario:hover {
+  background: var(--color-secundario-hover);
+}
+
+.btn--peligro {
+  background: var(--color-peligro-fondo);
+  color: var(--color-peligro-texto);
+}
+
+.btn--peligro:hover {
+  background: var(--color-peligro-hover);
+}
+
+.btn--cancelar {
+  background: var(--color-blanco);
+  color: var(--color-texto);
+  border-color: var(--color-gris);
+  box-shadow: none;
+  border-radius: var(--radio-sm);
+}
+
+.btn--cancelar:hover {
+  background: var(--color-gris);
+}
+
+.btn--pequeno {
+  padding: var(--espacio-2) var(--espacio-4);
+  font-size: var(--texto-sm);
+  box-shadow: var(--sombra-suave);
+}
+
+.btn--block {
+  display: flex;
+  width: 100%;
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Campos de formulario ---------- */
+.grupo-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+}
+
+.etiqueta {
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-sm);
+  color: var(--color-texto);
+}
+
+.campo {
+  display: block;
+  width: 100%;
+  padding: var(--espacio-3) var(--espacio-4);
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-base);
+  color: var(--color-texto);
+  border: 1px solid transparent;
+  transition: border-color var(--transicion), box-shadow var(--transicion);
+}
+
+.campo::placeholder {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+textarea.campo {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+/* Campo rosado: login, registro y configurar cuenta */
+.campo--rosa {
+  background: var(--color-secundario);
+  border-radius: var(--radio-md);
+  box-shadow: var(--sombra-suave);
+}
+
+/* Campo con borde: formularios dentro de modales y panel admin */
+.campo--borde {
+  background: var(--color-blanco);
+  border-color: var(--color-borde);
+  border-radius: var(--radio-sm);
+}
+
+.campo--borde:focus {
+  border-color: var(--color-primario);
+}
+
+.campo--error {
+  border-color: var(--color-peligro-texto);
+}
+
+.texto-error {
+  font-size: var(--texto-sm);
+  color: var(--color-peligro-texto);
+}
+
+/* ---------- Tarjetas ---------- */
+.tarjeta {
+  padding: var(--espacio-5);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-tarjeta);
+}
+
+.tarjeta--blanca {
+  background: var(--color-blanco);
+}
+
+.tarjeta--gris {
+  background: var(--color-gris);
+}
+
+.tarjeta--primaria {
+  background: var(--color-primario);
+  color: var(--color-blanco);
+}
+
+.tarjeta--primaria h1,
+.tarjeta--primaria h2,
+.tarjeta--primaria h3,
+.tarjeta--primaria p {
+  color: var(--color-blanco);
+}
+
+/* ---------- Avatar ---------- */
+.avatar {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: #F1F1F5;
+  object-fit: cover;
+}
+
+.avatar--sm {
+  width: 2rem;
+  height: 2rem;
+}
+
+.avatar--lg {
+  width: 7rem;
+  height: 7rem;
+}
+
+/* ---------- Estrellas ----------
+   <span class="estrellas" role="img" aria-label="4 de 5 estrellas">
+     <span class="estrella estrella--llena"></span> x4
+     <span class="estrella estrella--vacia"></span> x1
+   </span> */
+.estrellas {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.estrella::before {
+  content: "\2605";
+  font-size: var(--texto-md);
+  line-height: 1;
+}
+
+.estrella--llena::before {
+  color: var(--color-primario);
+}
+
+.estrella--vacia::before {
+  color: var(--color-gris);
+}
+
+/* ---------- Utilidades ---------- */
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-contenedor);
+  margin-inline: auto;
+  padding-inline: var(--espacio-5);
+}
+
+.oculto {
+  display: none !important;
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

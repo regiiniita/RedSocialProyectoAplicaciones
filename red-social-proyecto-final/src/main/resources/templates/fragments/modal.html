@@ -1,0 +1,11 @@
+<div th:fragment="confirmar(id, titulo, aviso, textoBoton)"
+     class="modal-fondo" th:id="${id}">
+    <div class="modal modal--confirmar">
+        <h2 class="modal__titulo" th:text="${titulo}"></h2>
+        <p class="modal__aviso" th:text="${aviso}"></p>
+        <div class="modal__acciones">
+            <a href="#" class="btn btn--cancelar">Cancelar</a>
+            <a href="#" class="btn btn--peligro" th:text="${textoBoton}"></a>
+        </div>
+    </div>
+</div>

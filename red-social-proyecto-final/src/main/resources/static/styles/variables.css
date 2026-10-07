@@ -1,0 +1,83 @@
+/* ==========================================================================
+   colores, tipografías, radios y sombras.
+   Si falta una variable,agregar aquí porfavor
+   ========================================================================== */
+
+:root {
+  /* ---------- Colores: guía de estilo ---------- */
+  --color-primario: #933B5B;        /* títulos, menú, botones de acento */
+  --color-blanco: #FFFFFF;
+  --color-secundario: #B5728A;      /* campos rosados, botones secundarios */
+  --color-gris: #D9D9D9;            /* tarjetas, cabeceras de tabla, bordes */
+  --color-warning-fondo: #FFFFFF;   /* cuadros de warning (modales de confirmar) */
+
+  /* Eliminar / desactivar */
+  --color-peligro-fondo: #FACFCF;   /* botón eliminar / desactivar */
+  --color-peligro-texto: #FF383C;   /* texto de botón y avisos "no se puede revertir" */
+
+  /* Texto */
+  --color-titulo: var(--color-primario);   /* h1 */
+  --color-menu: var(--color-primario);
+  --color-texto: #000000;                  /* h2 en adelante y párrafos */
+
+  /* Menú hamburguesa (versión móvil) */
+  --menu-movil-fondo: var(--color-primario);
+  --menu-movil-texto: #FFFFFF;
+
+  /* ---------- Colores derivados (no están en la guía, salen del mockup) ---------- */
+  --color-primario-hover: #7C2F4A;      /* hover de botones primarios */
+  --color-primario-oscuro: #6B1432;     /* sidebar del panel admin */
+  --color-secundario-hover: #A46079;
+  --color-peligro-hover: #F6B8B8;
+  --color-borde: #C9C9C9;               /* borde de inputs en modales */
+  --color-overlay: rgba(0, 0, 0, 0.4);  /* fondo oscuro detrás de modales */
+
+  /* ---------- Tipografía ---------- */
+  --fuente-titulo: "Chau Philomene One", "Arial Narrow", sans-serif;
+  --fuente-texto: "DataType", "Segoe UI", Arial, sans-serif;
+
+  --texto-xs: 0.75rem;     /* 12px: fechas, etiquetas pequeñas */
+  --texto-sm: 0.875rem;    /* 14px */
+  --texto-base: 1rem;      /* 16px */
+  --texto-md: 1.125rem;    /* 18px */
+  --titulo-3: 1.25rem;     /* 20px */
+  --titulo-2: 1.75rem;     /* 28px */
+  --titulo-1: 2.5rem;      /* 40px */
+
+  --altura-linea: 1.5;
+
+  /* ---------- Espaciado ---------- */
+  --espacio-1: 0.25rem;
+  --espacio-2: 0.5rem;
+  --espacio-3: 0.75rem;
+  --espacio-4: 1rem;
+  --espacio-5: 1.5rem;
+  --espacio-6: 2rem;
+  --espacio-7: 3rem;
+
+  /* ---------- Radios ---------- */
+  --radio-sm: 0.5rem;     /* inputs de modal */
+  --radio-md: 1rem;       /* campos rosados, tablas */
+  --radio-lg: 1.75rem;    /* tarjetas y modales */
+  --radio-xl: 3rem;       /* paneles grandes (login, configurar cuenta) */
+  --radio-pill: 999px;    /* botones */
+
+  /* ---------- Sombras ---------- */
+  --sombra-suave: 0 4px 10px rgba(0, 0, 0, 0.12);
+  --sombra-tarjeta: 0 10px 25px rgba(0, 0, 0, 0.18);
+  --sombra-boton: 0 6px 12px rgba(0, 0, 0, 0.25);
+
+  /* ---------- Layout ---------- */
+  --ancho-contenedor: 1100px;
+  --ancho-sidebar: 240px;
+  --alto-header: 80px;
+
+  /* ---------- Capas ---------- */
+  --capa-header: 10;
+  --capa-modal: 100;
+
+  /* ---------- Movimiento ---------- */
+  --transicion: 0.2s ease;
+
+
+}
