@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Fragmento Header Admin</title>
+</head>
+<body>
+
+<header th:fragment="cabecera" class="header-admin">
+  <div class="header-admin__logo">
+    <img th:src="@{/uploads/logo.png}" class="header-admin__logo--img" alt="TheSpot">
+  </div>
+  <div class="header-admin__usuario">
+    <div class="header-admin__info">
+      <div class="header-admin__info-nombre" th:text="${adminNombre} ?: 'Invitado'">loremIpsum</div>
+      <div class="header-admin__info-rol">Panel Administrativo</div>
+    </div>
+    <img class="avatar avatar--sm" th:src="@{/img/avatar.svg}" alt="">
+  </div>
+</header>
+
+</body>
+</html>

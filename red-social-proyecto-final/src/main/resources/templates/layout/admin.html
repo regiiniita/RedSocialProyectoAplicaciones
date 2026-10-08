@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout(titulo, activo, contenido)">
+
+<head th:replace="~{fragments/head :: head(${titulo}, 'admin')}"></head>
+
+<body class="layout-admin">
+
+<header th:replace="~{fragments/header-admin :: cabecera}"></header>
+
+<div class="cuerpo-admin">
+    <div th:replace="~{fragments/sidebar :: sidebar(${activo})}"></div>
+    <main th:replace="${contenido}"></main>
+</div>
+
+</body>
+</html>
