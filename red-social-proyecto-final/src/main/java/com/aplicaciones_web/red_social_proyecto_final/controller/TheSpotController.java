@@ -11,4 +11,8 @@ public class TheSpotController {
     public String dashboard() {
         return "admin/dashboard";
     }
+    @GetMapping("/admin/lugares")
+    public String lugares() {
+        return "admin/lugares";
+    }
 }

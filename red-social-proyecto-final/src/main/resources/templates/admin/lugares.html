@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Gestión de lugares', 'admin')}"></head>
+<body class="layout-admin">
+
+<header class="header-admin">
+    <div class="header-admin__logo">
+        <img th:src="@{/uploads/logo.png}" class="header-admin__logo--img" alt="TheSpot">
+    </div>
+    <div class="header-admin__usuario">
+        <div class="header-admin__info">
+            <div class="header-admin__info-nombre" th:text="${adminNombre} ?: 'Martin Bernal'">loremIpsum</div>
+            <div class="header-admin__info-rol">Panel Administrativo</div>
+        </div>
+        <img class="avatar avatar--sm" th:src="@{/img/avatar.svg}" alt="">
+    </div>
+</header>
+
+<div class="cuerpo-admin">
+    <div th:replace="~{fragments/sidebar :: sidebar('lugares')}"></div>
+
+    <main class="contenido-admin">
+        <div class="encabezado-pagina">
+            <div class="encabezado-pagina__texto">
+                <h1 class="encabezado-pagina__titulo">Gestión de Lugares</h1>
+                <p class="encabezado-pagina__subtitulo">Administra los lugares disponibles en The Spot.</p>
+            </div>
+            <a class="btn btn--primario" href="#modal-nuevo-lugar">
+                <img class="btn__icono" th:src="@{/img/icono-mas.svg}" alt="">
+                Nuevo lugar
+            </a>
+        </div>
+
+        <section class="tabla-tarjeta">
+            <div class="tabla-herramientas">
+                <label class="buscador">
+                    <img class="buscador__icono" th:src="@{/img/icono-buscar.svg}" alt="">
+                    <input class="buscador__campo" type="search" placeholder="Buscar por nombre, ID o dirección..." aria-label="Buscar lugares">
+                </label>
+                <button class="btn btn--cancelar btn--pequeno" type="button">
+                    <img class="btn__icono btn__icono--sm" th:src="@{/img/icono-filtros.svg}" alt="">
+                    Filtros
+                </button>
+            </div>
+
+            <div class="tabla-scroll">
+                <table class="tabla">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">Promedio</th>
+                        <th scope="col">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="lugar : ${lugares}">
+                        <td th:text="|#${lugar.id}|">#0000</td>
+                        <td>
+                            <span class="tabla__principal" th:text="${lugar.nombre}">Nombre del lugar</span>
+                            <span class="tabla__secundario" th:text="|${lugar.totalResenas} reseñas|">0 reseñas</span>
+                        </td>
+                        <td th:text="${lugar.categoria.nombre}">Categoría</td>
+                        <td th:text="${lugar.direccion}">Dirección</td>
+                        <td>
+                                <span class="promedio">
+                                    <span class="estrella estrella--llena" aria-hidden="true"></span>
+                                    <span th:text="${lugar.promedio}">0.0</span>
+                                </span>
+                        </td>
+                        <td>
+                            <div class="tabla__acciones">
+                                <a class="tabla__accion" href="#modal-editar-lugar" aria-label="Editar lugar">
+                                    <img class="tabla__icono" th:src="@{/img/icono-editar.svg}" alt="">
+                                </a>
+                                <a class="tabla__accion" href="#modal-eliminar-lugar" aria-label="Eliminar lugar">
+                                    <img class="tabla__icono" th:src="@{/img/icono-eliminar.svg}" alt="">
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr th:remove="${lugares != null} ? 'all' : 'none'">
+                        <td>#1284</td>
+                        <td><span class="tabla__principal">Nomada Coffee Lab</span><span class="tabla__secundario">128 reseñas</span></td>
+                        <td>Cafetería</td>
+                        <td>Malasaña - Madrid</td>
+                        <td><span class="promedio"><span class="estrella estrella--llena" aria-hidden="true"></span><span>4.9</span></span></td>
+                        <td>
+                            <div class="tabla__acciones">
+                                <a class="tabla__accion" href="#modal-editar-lugar" aria-label="Editar lugar"><img class="tabla__icono" th:src="@{/img/icono-editar.svg}" alt=""></a>
+                                <a class="tabla__accion" href="#modal-eliminar-lugar" aria-label="Eliminar lugar"><img class="tabla__icono" th:src="@{/img/icono-eliminar.svg}" alt=""></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:remove="${lugares != null} ? 'all' : 'none'">
+                        <td>#1283</td>
+                        <td><span class="tabla__principal">Casa Oliva</span><span class="tabla__secundario">246 reseñas</span></td>
+                        <td>Restaurante</td>
+                        <td>Chamberí - Madrid</td>
+                        <td><span class="promedio"><span class="estrella estrella--llena" aria-hidden="true"></span><span>4.8</span></span></td>
+                        <td>
+                            <div class="tabla__acciones">
+                                <a class="tabla__accion" href="#modal-editar-lugar" aria-label="Editar lugar"><img class="tabla__icono" th:src="@{/img/icono-editar.svg}" alt=""></a>
+                                <a class="tabla__accion" href="#modal-eliminar-lugar" aria-label="Eliminar lugar"><img class="tabla__icono" th:src="@{/img/icono-eliminar.svg}" alt=""></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:remove="${lugares != null} ? 'all' : 'none'">
+                        <td>#1282</td>
+                        <td><span class="tabla__principal">Lumen</span><span class="tabla__secundario">94 reseñas</span></td>
+                        <td>Bar</td>
+                        <td>Las Letras - Madrid</td>
+                        <td><span class="promedio"><span class="estrella estrella--llena" aria-hidden="true"></span><span>4.7</span></span></td>
+                        <td>
+                            <div class="tabla__acciones">
+                                <a class="tabla__accion" href="#modal-editar-lugar" aria-label="Editar lugar"><img class="tabla__icono" th:src="@{/img/icono-editar.svg}" alt=""></a>
+                                <a class="tabla__accion" href="#modal-eliminar-lugar" aria-label="Eliminar lugar"><img class="tabla__icono" th:src="@{/img/icono-eliminar.svg}" alt=""></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:remove="${lugares != null} ? 'all' : 'none'">
+                        <td>#1281</td>
+                        <td><span class="tabla__principal">Bruma</span><span class="tabla__secundario">173 reseñas</span></td>
+                        <td>Restaurante</td>
+                        <td>Chueca - Madrid</td>
+                        <td><span class="promedio"><span class="estrella estrella--llena" aria-hidden="true"></span><span>4.6</span></span></td>
+                        <td>
+                            <div class="tabla__acciones">
+                                <a class="tabla__accion" href="#modal-editar-lugar" aria-label="Editar lugar"><img class="tabla__icono" th:src="@{/img/icono-editar.svg}" alt=""></a>
+                                <a class="tabla__accion" href="#modal-eliminar-lugar" aria-label="Eliminar lugar"><img class="tabla__icono" th:src="@{/img/icono-eliminar.svg}" alt=""></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:remove="${lugares != null} ? 'all' : 'none'">
+                        <td>#1280</td>
+                        <td><span class="tabla__principal">Café Central</span><span class="tabla__secundario">81 reseñas</span></td>
+                        <td>Cafetería</td>
+                        <td>Lavapiés - Madrid</td>
+                        <td><span class="promedio"><span class="estrella estrella--llena" aria-hidden="true"></span><span>4.8</span></span></td>
+                        <td>
+                            <div class="tabla__acciones">
+                                <a class="tabla__accion" href="#modal-editar-lugar" aria-label="Editar lugar"><img class="tabla__icono" th:src="@{/img/icono-editar.svg}" alt=""></a>
+                                <a class="tabla__accion" href="#modal-eliminar-lugar" aria-label="Eliminar lugar"><img class="tabla__icono" th:src="@{/img/icono-eliminar.svg}" alt=""></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:remove="${lugares != null} ? 'all' : 'none'">
+                        <td>#1279</td>
+                        <td><span class="tabla__principal">Mesa Norte</span><span class="tabla__secundario">119 reseñas</span></td>
+                        <td>Restaurante</td>
+                        <td>Salesas - Madrid</td>
+                        <td><span class="promedio"><span class="estrella estrella--llena" aria-hidden="true"></span><span>4.5</span></span></td>
+                        <td>
+                            <div class="tabla__acciones">
+                                <a class="tabla__accion" href="#modal-editar-lugar" aria-label="Editar lugar"><img class="tabla__icono" th:src="@{/img/icono-editar.svg}" alt=""></a>
+                                <a class="tabla__accion" href="#modal-eliminar-lugar" aria-label="Eliminar lugar"><img class="tabla__icono" th:src="@{/img/icono-eliminar.svg}" alt=""></a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <nav class="paginacion" aria-label="Paginación">
+                <a class="paginacion__enlace" href="#" aria-label="Página anterior">&lsaquo;</a>
+                <a class="paginacion__enlace" href="#" aria-label="Página siguiente">&rsaquo;</a>
+            </nav>
+        </section>
+    </main>
+</div>
+</body>
+</html>

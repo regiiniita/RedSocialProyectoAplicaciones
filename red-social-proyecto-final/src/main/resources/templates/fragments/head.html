@@ -1,8 +1,10 @@
-<head th:fragment="head(titulo)">
+<head th:fragment="head(titulo, hojaPropia)">
     <meta charset="UTF-8">
-    <title th:text="${titulo}">The Spot</title>
-    <link rel="stylesheet" th:href="@{/css/variables.css}">
-    <link rel="stylesheet" th:href="@{/css/base.css}">
-    <link rel="stylesheet" th:href="@{/css/modal.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="|The Spot - ${titulo}|">The Spot</title>
+    <link rel="stylesheet" th:href="@{/styles/variables.css}">
+    <link rel="stylesheet" th:href="@{/styles/base.css}">
+    <link rel="stylesheet" th:href="@{/styles/modal.css}">
+    <link rel="stylesheet" th:if="${hojaPropia != null}"
+          th:href="@{/styles/{hoja}.css(hoja=${hojaPropia})}">
 </head>
-
