@@ -153,6 +153,138 @@
             <a class="paginacion__enlace" href="#" aria-label="Página siguiente">&rsaquo;</a>
         </nav>
     </section>
+    <!--Nuevo Lugar -->
+    <div id="modal-nuevo-lugar" class="modal-overlay">
+        <div class="modal">
+            <div class="modal__header">
+                <div>
+                    <h2 class="modal__titulo">NUEVO LUGAR</h2>
+                    <p class="modal__subtitulo">Completa la información para añadir un lugar al catálogo.</p>
+                </div>
+                <a href="#" class="modal__cerrar" aria-label="Cerrar modal">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </a>
+            </div>
+
+            <form action="/admin/lugares/guardar" method="POST" enctype="multipart/form-data" class="modal__body">
+
+                <div class="grupo-form">
+                    <label class="etiqueta" for="nombreLugar">Nombre del lugar</label>
+                    <input type="text" id="nombreLugar" name="nombreLugar" class="campo campo--borde" placeholder="Ej. Atelier Norte" required>
+                </div>
+
+                <div class="modal__grid-2">
+                    <div class="grupo-form">
+                        <label class="etiqueta" for="categoriaLugar">Categoría</label>
+                        <select id="categoriaLugar" name="categoriaLugar" class="campo campo--borde" required>
+                            <option value="">Selecciona una categoría</option>
+                            <option value="1">Restaurante</option>
+                            <option value="2">Cafetería</option>
+                            <option value="3">Bar</option>
+                        </select>
+                    </div>
+                    <div class="grupo-form">
+                        <label class="etiqueta" for="direccionCompleta">Dirección Completa</label>
+                        <input type="text" id="direccionCompleta" name="direccionCompleta" class="campo campo--borde" placeholder="Calle, número. colonia, C.P" required>
+                    </div>
+                </div>
+
+                <div class="grupo-form modal__campo-relativo">
+                    <label class="etiqueta" for="descripcionLugar">Descripción</label>
+                    <textarea id="descripcionLugar" name="descripcionLugar" class="campo campo--borde" placeholder="Describe brevemente el lugar..." maxlength="500"></textarea>
+                    <span class="modal__contador-caracteres" id="contadorDescripcion">0/500</span>
+                </div>
+
+                <div class="grupo-form">
+                    <label class="etiqueta">Imagen representativa</label>
+                    <div class="zona-drop">
+                        <input type="file" id="imagenLugar" name="imagenLugar" class="solo-lectores" accept="image/png, image/jpeg" required>
+                        <label for="imagenLugar" class="zona-drop__label">
+                            <i class="bi bi-camera zona-drop__icono" aria-hidden="true"></i>
+                            <span class="zona-drop__texto-principal">Arrastra una imagen aquí</span>
+                            <span class="zona-drop__texto-secundario">o haz clic para seleccionar - PNG, JPG hasta 10 MB</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal__footer">
+                    <a href="#" class="modal__btn-texto">Cancelar</a>
+                    <button type="submit" class="btn btn--primario">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal Editar Lugar -->
+    <div id="modal-editar-lugar" class="modal-overlay">
+        <div class="modal">
+            <div class="modal__header">
+                <div>
+                    <h2 class="modal__titulo">EDITAR</h2>
+                    <p class="modal__subtitulo">Modifica los datos actuales del lugar.</p>
+                </div>
+                <a href="#" class="modal__cerrar" aria-label="Cerrar modal">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </a>
+            </div>
+
+            <form action="/admin/lugares/actualizar" method="POST" class="modal__body">
+                <input type="hidden" name="idLugar" value="1280">
+
+                <div class="grupo-form">
+                    <label class="etiqueta" for="nombreLugarEdit">Nombre del lugar</label>
+                    <input type="text" id="nombreLugarEdit" name="nombreLugar" class="campo campo--borde" value="Cafe Central" required>
+                </div>
+
+                <div class="modal__grid-2">
+                    <div class="grupo-form">
+                        <label class="etiqueta" for="categoriaLugarEdit">Categoría</label>
+                        <select id="categoriaLugarEdit" name="categoriaLugar" class="campo campo--borde" required>
+                            <option value="1">Restaurante</option>
+                            <option value="2" selected>Cafetería</option>
+                            <option value="3">Bar</option>
+                        </select>
+                    </div>
+                    <div class="grupo-form">
+                        <label class="etiqueta" for="direccionCompletaEdit">Dirección Completa</label>
+                        <input type="text" id="direccionCompletaEdit" name="direccionCompleta" class="campo campo--borde" value="Calle Mayor, 18, Centro, 28013 Madrid" required>
+                    </div>
+                </div>
+
+                <div class="grupo-form modal__campo-relativo">
+                    <label class="etiqueta" for="descripcionLugarEdit">Descripción</label>
+                    <textarea id="descripcionLugarEdit" name="descripcionLugar" class="campo campo--borde" maxlength="500">Cafeteria urbana de especialidad con reposteria artesanal y un ambiente tranquilo.</textarea>
+                    <span class="modal__contador-caracteres">82/500</span>
+                </div>
+
+                <div class="modal__footer">
+                    <a href="#" class="modal__btn-texto">Cancelar</a>
+                    <button type="submit" class="btn btn--primario">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal Eliminar Lugar -->
+    <div id="modal-eliminar-lugar" class="modal-overlay">
+        <div class="modal modal--alerta">
+            <form action="/admin/lugares/eliminar" method="POST">
+                <input type="hidden" name="idLugar" value="1280">
+
+                <div class="modal-alerta__contenido">
+                    <i class="bi bi-exclamation-circle-fill modal-alerta__icono" aria-hidden="true"></i>
+
+                    <h2 class="modal-alerta__titulo">¿Eliminar "Café Central"?</h2>
+
+                    <p class="modal-alerta__texto">Se eliminarán también todas las reseñas asociadas a este lugar.</p>
+                    <p class="modal-alerta__advertencia">Esta acción no se puede revertir.</p>
+                </div>
+
+                <div class="modal-alerta__acciones">
+                    <a href="#" class="btn btn--cancelar">Cancelar</a>
+                    <button type="submit" class="btn btn--peligro">Eliminar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </main>
 
 </body>

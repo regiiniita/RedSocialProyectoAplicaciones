@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin :: layout('Categorías', 'categorias', ~{::main})}">
+<body>
+
+<main class="contenido-admin">
+    <div class="encabezado-pagina">
+        <div class="encabezado-pagina__texto">
+            <h1 class="encabezado-pagina__titulo">Categorías</h1>
+            <p class="encabezado-pagina__subtitulo">Organiza y mantiene la taxonomía del catálogo.</p>
+        </div>
+        <a class="btn btn--primario" href="#modal-nueva-categoria">
+            <i class="bi bi-plus-circle btn__icono" aria-hidden="true"></i>
+            Nueva categoría
+        </a>
+    </div>
+
+    <section class="tabla-tarjeta">
+        <div class="tabla-herramientas">
+            <label class="buscador">
+                <i class="bi bi-search buscador__icono" aria-hidden="true"></i>
+                <input class="buscador__campo" type="search" placeholder="Buscar por nombre..." aria-label="Buscar categorías">
+            </label>
+            <button class="btn btn--cancelar btn--pequeno" type="button">
+                <i class="bi bi-sliders btn__icono btn__icono--sm" aria-hidden="true"></i>
+                Filtros
+            </button>
+        </div>
+
+        <div class="tabla-scroll">
+            <table class="tabla">
+                <thead>
+                <tr>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">DESCRIPCIÓN</th>
+                    <th scope="col">LUGARES ASIGNADOS</th>
+                    <th scope="col">ACCIÓN</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="categoria : ${categorias}">
+                    <td th:text="${categoria.nombre}">Nombre</td>
+                    <td th:text="${categoria.descripcion}">Descripción</td>
+                    <td th:text="|${categoria.totalLugares} lugares|">0 lugares</td>
+                    <td>
+                        <div class="tabla__acciones">
+                            <a class="tabla__accion" href="#modal-editar-categoria" aria-label="Editar categoría">
+                                <i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr th:remove="${categorias != null} ? 'all' : 'none'">
+                    <td>Restaurantes</td>
+                    <td>Espacios gastronómicos para comer y cenar.</td>
+                    <td>428 lugares</td>
+                    <td>
+                        <div class="tabla__acciones">
+                            <a class="tabla__accion" href="#modal-editar-categoria" aria-label="Editar categoría"><i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:remove="${categorias != null} ? 'all' : 'none'">
+                    <td>Cafes</td>
+                    <td>Cafeterías, coffee shops y espacios de especialidad.</td>
+                    <td>316 lugares</td>
+                    <td>
+                        <div class="tabla__acciones">
+                            <a class="tabla__accion" href="#modal-editar-categoria" aria-label="Editar categoría"><i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:remove="${categorias != null} ? 'all' : 'none'">
+                    <td>Parques</td>
+                    <td>Áreas verdes y espacios recreativos al aire libre.</td>
+                    <td>184 lugares</td>
+                    <td>
+                        <div class="tabla__acciones">
+                            <a class="tabla__accion" href="#modal-editar-categoria" aria-label="Editar categoría"><i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:remove="${categorias != null} ? 'all' : 'none'">
+                    <td>Museos</td>
+                    <td>Museos, galerías y centros culturales.</td>
+                    <td>147 lugares</td>
+                    <td>
+                        <div class="tabla__acciones">
+                            <a class="tabla__accion" href="#modal-editar-categoria" aria-label="Editar categoría"><i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:remove="${categorias != null} ? 'all' : 'none'">
+                    <td>Bares</td>
+                    <td>Bares, coctelerías y espacios de ocio nocturno.</td>
+                    <td>209 lugares</td>
+                    <td>
+                        <div class="tabla__acciones">
+                            <a class="tabla__accion" href="#modal-editar-categoria" aria-label="Editar categoría"><i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <nav class="paginacion" aria-label="Paginación">
+            <a class="paginacion__enlace" href="#" aria-label="Página anterior">&lsaquo;</a>
+            <a class="paginacion__enlace" href="#" aria-label="Página siguiente">&rsaquo;</a>
+        </nav>
+    </section>
+    <!-- Modal Añadir Nueva Categoría -->
+    <div id="modal-nueva-categoria" class="modal-overlay">
+        <div class="modal">
+            <div class="modal__header">
+                <div>
+                    <h2 class="modal__titulo">AÑADIR NUEVA CATEGORÍA</h2>
+                    <p class="modal__subtitulo">Define una nueva categoria para clasificar los lugares.</p>
+                </div>
+                <a href="#" class="modal__cerrar" aria-label="Cerrar modal">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </a>
+            </div>
+
+            <form action="/admin/categorias/guardar" method="POST" class="modal__body">
+
+                <div class="grupo-form">
+                    <label class="etiqueta" for="nombreCategoria">Nombre de la categoria</label>
+                    <input type="text" id="nombreCategoria" name="nombreCategoria" class="campo campo--borde" placeholder="Ej. Gimnasios, Librerias" required>
+                </div>
+
+                <div class="grupo-form modal__campo-relativo">
+                    <label class="etiqueta" for="descripcionCategoria">Descripcion de la categoria</label>
+                    <textarea id="descripcionCategoria" name="descripcionCategoria" class="campo campo--borde" placeholder="Explica brevemente que establecimientos entran en esta categoria..." maxlength="250" required></textarea>
+                    <span class="modal__contador-caracteres">0/250</span>
+                </div>
+
+                <div class="modal__footer">
+                    <a href="#" class="modal__btn-texto">Cancelar</a>
+                    <button type="submit" class="btn btn--primario">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal Editar Categoría -->
+    <div id="modal-editar-categoria" class="modal-overlay">
+        <div class="modal">
+            <div class="modal__header">
+                <div>
+                    <h2 class="modal__titulo">EDITAR CATEGORIA</h2>
+                    <p class="modal__subtitulo">Modifica los datos actuales de la categoria.</p>
+                </div>
+                <a href="#" class="modal__cerrar" aria-label="Cerrar modal">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </a>
+            </div>
+
+            <form action="/admin/categorias/actualizar" method="POST" class="modal__body">
+                <input type="hidden" name="idCategoria" value="1">
+
+                <div class="grupo-form">
+                    <label class="etiqueta" for="nombreCategoriaEdit">Nombre de la categoria</label>
+                    <input type="text" id="nombreCategoriaEdit" name="nombreCategoria" class="campo campo--borde" value="Restaurante" required>
+                </div>
+
+                <div class="grupo-form modal__campo-relativo">
+                    <label class="etiqueta" for="descripcionCategoriaEdit">Descripcion de la categoria</label>
+                    <textarea id="descripcionCategoriaEdit" name="descripcionCategoria" class="campo campo--borde" maxlength="250" required>Espacios gastronomicos para comer y cenar.</textarea>
+                    <span class="modal__contador-caracteres">42/250</span>
+                </div>
+
+                <div class="modal__footer">
+                    <a href="#" class="modal__btn-texto">Cancelar</a>
+                    <button type="submit" class="btn btn--primario">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

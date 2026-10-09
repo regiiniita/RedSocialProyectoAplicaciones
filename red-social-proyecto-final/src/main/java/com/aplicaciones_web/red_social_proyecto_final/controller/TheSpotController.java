@@ -15,4 +15,16 @@ public class TheSpotController {
     public String lugares() {
         return "admin/lugares";
     }
+    @GetMapping("/admin/categorias")
+    public String categorias() {
+        return "admin/categorias";
+    }
+    @GetMapping("/admin/resenas")
+    public String resenas() {
+        return "admin/resenas";
+    }
+    @GetMapping("/admin/usuarios")
+    public String usuarios() {
+        return "admin/usuarios";
+    }
 }

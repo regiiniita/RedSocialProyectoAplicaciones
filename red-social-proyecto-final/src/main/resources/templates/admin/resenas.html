@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin :: layout('Moderación de reseñas', 'resenas', ~{::main})}">
+<body>
+
+<main class="contenido-admin">
+  <div class="encabezado-pagina">
+    <div class="encabezado-pagina__texto">
+      <h1 class="encabezado-pagina__titulo">Moderación de Reseñas</h1>
+      <p class="encabezado-pagina__subtitulo">Revisa y modera el contenido publicado por la comunidad.</p>
+    </div>
+    <!-- Aquí omitimos el botón de "Nuevo" porque la lógica de negocio dicta que el admin solo modera -->
+  </div>
+
+  <section class="tabla-tarjeta">
+    <div class="tabla-herramientas">
+      <label class="buscador">
+        <i class="bi bi-search buscador__icono" aria-hidden="true"></i>
+        <input class="buscador__campo" type="search" placeholder="Buscar por usuario o lugar..." aria-label="Buscar reseñas">
+      </label>
+      <button class="btn btn--cancelar btn--pequeno" type="button">
+        <i class="bi bi-sliders btn__icono btn__icono--sm" aria-hidden="true"></i>
+        Filtros
+      </button>
+    </div>
+
+    <div class="tabla-scroll">
+      <table class="tabla">
+        <thead>
+        <tr>
+          <th scope="col">FECHA</th>
+          <th scope="col">USUARIO</th>
+          <th scope="col">LUGAR RESEÑADO</th>
+          <th scope="col">CALIFICACIÓN</th>
+          <th scope="col">ESTADO</th>
+          <th scope="col">ACCIÓN</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <!-- Iteración dinámica con Thymeleaf -->
+        <tr th:each="resena : ${resenas}">
+          <td th:text="${#temporals.format(resena.fecha, 'dd MMM yyyy')}">Fecha</td>
+          <td th:text="|@${resena.usuario.username}|">@usuario</td>
+          <td th:text="${resena.lugar.nombre}">Lugar</td>
+          <td>
+            <!-- La lógica real iteraría las estrellas según resena.calificacion -->
+            <span class="estrellas" role="img" th:aria-label="|${resena.calificacion} de 5 estrellas|">
+                            <i class="bi bi-star-fill estrella estrella--llena" aria-hidden="true"></i>
+                            <span th:text="${resena.calificacion}">0</span>
+                        </span>
+          </td>
+          <td th:text="${resena.estado}">Estado</td>
+          <td>
+            <div class="tabla__acciones">
+              <!-- El href apuntará al modal de moderación -->
+              <a class="tabla__accion" href="#modal-moderar-resena" aria-label="Moderar reseña">
+                <i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Datos de prueba estáticos fieles al diseño -->
+        <tr th:remove="${resenas != null} ? 'all' : 'none'">
+          <td>18 Jun 2025</td>
+          <td>@regiiniita</td>
+          <td>Nomada Coffee Lab</td>
+          <td>
+                        <span class="estrellas">
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--vacia"></i>
+                        </span>
+          </td>
+          <td>Publicado</td>
+          <td>
+            <div class="tabla__acciones">
+              <a class="tabla__accion" href="#modal-moderar-resena" aria-label="Moderar reseña"><i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i></a>
+            </div>
+          </td>
+        </tr>
+        <tr th:remove="${resenas != null} ? 'all' : 'none'">
+          <td>17 Jun 2025</td>
+          <td>@mariana1</td>
+          <td>Casa Olivia</td>
+          <td>
+                        <span class="estrellas">
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--vacia"></i>
+                        </span>
+          </td>
+          <td>Publicado</td>
+          <td>
+            <div class="tabla__acciones">
+              <a class="tabla__accion" href="#modal-moderar-resena" aria-label="Moderar reseña"><i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i></a>
+            </div>
+          </td>
+        </tr>
+        <tr th:remove="${resenas != null} ? 'all' : 'none'">
+          <td>16 Jun 2025</td>
+          <td>@rams3s</td>
+          <td>Lumen</td>
+          <td>
+                        <span class="estrellas">
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--vacia"></i>
+                        </span>
+          </td>
+          <td>Oculto</td>
+          <td>
+            <div class="tabla__acciones">
+              <a class="tabla__accion" href="#modal-moderar-resena" aria-label="Moderar reseña"><i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i></a>
+            </div>
+          </td>
+        </tr>
+        <tr th:remove="${resenas != null} ? 'all' : 'none'">
+          <td>15 Jun 2025</td>
+          <td>@jesus101</td>
+          <td>Bruma</td>
+          <td>
+                        <span class="estrellas">
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--llena"></i>
+                            <i class="bi bi-star-fill estrella estrella--vacia"></i>
+                        </span>
+          </td>
+          <td>Publicado</td>
+          <td>
+            <div class="tabla__acciones">
+              <a class="tabla__accion" href="#modal-moderar-resena" aria-label="Moderar reseña"><i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i></a>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación -->
+    <nav class="paginacion" aria-label="Paginación">
+      <a class="paginacion__enlace" href="#" aria-label="Página anterior">&lsaquo;</a>
+      <a class="paginacion__enlace" href="#" aria-label="Página siguiente">&rsaquo;</a>
+    </nav>
+  </section>
+  <div id="modal-moderar-resena" class="modal-overlay">
+    <div class="modal modal--resena">
+
+      <a href="#" class="modal__cerrar modal__cerrar--absoluto" aria-label="Cerrar modal">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </a>
+
+      <div class="moderar-layout">
+        <div class="moderar-izq">
+          <div class="moderar-header">
+            <div class="usuario-item__perfil">
+              <img class="avatar avatar--sm" th:src="@{/img/avatar.svg}" alt="Avatar">
+              <div class="usuario-item__detalles">
+                <span class="usuario-item__nombre">Mariana</span>
+                <span class="usuario-item__handle">Seguido</span>
+              </div>
+            </div>
+
+            <a href="#modal-confirmar-ocultar" class="btn btn--primario btn--pequeno">Ocultar</a>
+          </div>
+
+          <div class="moderar-foto-wrapper">
+            <img th:src="@{/uploads/grand_teton.jpg}" alt="Fotografía de la reseña" class="moderar-foto">
+            <div class="moderar-fecha">01/10/2026</div>
+          </div>
+        </div>
+
+        <div class="moderar-der">
+          <div class="moderar-info-lugar">
+            <h3 class="moderar-lugar">Parque Nacional de Grand Teton</h3>
+            <p class="moderar-categoria"><strong>Categoria:</strong> Parque</p>
+          </div>
+
+          <p class="moderar-texto">
+            "Grand Teton es uno de esos lugares que te recuerda lo increíble que puede ser la naturaleza cuando se mantiene intacta. Desde el primer momento, las montañas te dejan sin palabras. Pero si algo hizo esta experiencia inolvidable fue la emoción de salir cada mañana con la esperanza de encontrar vida salvaje."
+          </p>
+
+          <div class="moderar-calificacion">
+                    <span class="estrellas" role="img" aria-label="4.0 de 5 estrellas">
+                        <i class="bi bi-star-fill estrella estrella--llena" aria-hidden="true"></i>
+                        <i class="bi bi-star-fill estrella estrella--llena" aria-hidden="true"></i>
+                        <i class="bi bi-star-fill estrella estrella--llena" aria-hidden="true"></i>
+                        <i class="bi bi-star-fill estrella estrella--llena" aria-hidden="true"></i>
+                        <i class="bi bi-star-fill estrella estrella--vacia" aria-hidden="true"></i>
+                    </span>
+            <span class="moderar-puntaje">4.0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Confirmar Ocultar Reseña -->
+  <div id="modal-confirmar-ocultar" class="modal-overlay">
+    <div class="modal modal--alerta">
+      <form action="/admin/resenas/ocultar" method="POST">
+        <input type="hidden" name="idResena" value="105">
+
+        <div class="modal-alerta__contenido">
+          <i class="bi bi-exclamation-circle-fill modal-alerta__icono" aria-hidden="true"></i>
+
+          <h2 class="modal-alerta__titulo">¿Ocultar esta reseña?</h2>
+
+          <p class="modal-alerta__texto">Esta acción es permanente y no se podrá deshacer.</p>
+        </div>
+
+        <div class="modal-alerta__acciones">
+          <a href="#modal-moderar-resena" class="btn btn--cancelar">Cancelar</a>
+          <button type="submit" class="btn btn--peligro">Ocultar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin :: layout('Gestión de usuarios', 'usuarios', ~{::main})}">
+<body>
+
+<main class="contenido-admin">
+  <div class="encabezado-pagina">
+    <div class="encabezado-pagina__texto">
+      <h1 class="encabezado-pagina__titulo">Gestión de Usuarios</h1>
+      <p class="encabezado-pagina__subtitulo">Consulta la actividad y administra el acceso de las cuentas.</p>
+    </div>
+  </div>
+
+  <section class="tabla-tarjeta">
+    <div class="tabla-herramientas">
+      <label class="buscador">
+        <i class="bi bi-search buscador__icono" aria-hidden="true"></i>
+        <!-- Ajustamos el placeholder al contexto de usuarios -->
+        <input class="buscador__campo" type="search" placeholder="Buscar por usuario o email..." aria-label="Buscar usuarios">
+      </label>
+      <button class="btn btn--cancelar btn--pequeno" type="button">
+        <i class="bi bi-sliders btn__icono btn__icono--sm" aria-hidden="true"></i>
+        Filtros
+      </button>
+    </div>
+
+    <div class="tabla-scroll">
+      <table class="tabla">
+        <thead>
+        <tr>
+          <th scope="col">USUARIO</th>
+          <th scope="col">EMAIL</th>
+          <th scope="col">TOTAL RESEÑAS</th>
+          <th scope="col">ESTADO</th>
+          <th scope="col">ACCIÓN</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <!-- Iteración dinámica con Thymeleaf -->
+        <tr th:each="usuario : ${usuarios}">
+          <td th:text="|@${usuario.username}|">@usuario</td>
+          <td th:text="${usuario.email}">email@ejemplo.com</td>
+          <td th:text="${usuario.totalResenas}">0</td>
+          <td th:text="${usuario.estado}">Activo</td>
+          <td>
+            <div class="tabla__acciones">
+              <a class="btn btn--primario btn--pequeno" href="#modal-desactivar-usuario" aria-label="Desactivar usuario">
+                Desactivar
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Datos estáticos fieles al diseño -->
+        <tr th:remove="${usuarios != null} ? 'all' : 'none'">
+          <td>@regiiniita</td>
+          <td>reginameneses@gmail.com</td>
+          <td>48</td>
+          <td>Activo</td>
+          <td>
+            <a class="btn btn--primario btn--pequeno" href="#modal-desactivar-usuario">Desactivar</a>
+          </td>
+        </tr>
+        <tr th:remove="${usuarios != null} ? 'all' : 'none'">
+          <td>@mariana1</td>
+          <td>marianaord@gmail.com</td>
+          <td>41</td>
+          <td>Activo</td>
+          <td>
+            <a class="btn btn--primario btn--pequeno" href="#modal-desactivar-usuario">Desactivar</a>
+          </td>
+        </tr>
+        <tr th:remove="${usuarios != null} ? 'all' : 'none'">
+          <td>@rams3s</td>
+          <td>ramses30@gmail.com</td>
+          <td>29</td>
+          <td>Activo</td>
+          <td>
+            <a class="btn btn--primario btn--pequeno" href="#modal-desactivar-usuario">Desactivar</a>
+          </td>
+        </tr>
+        <tr th:remove="${usuarios != null} ? 'all' : 'none'">
+          <td>@jesus101</td>
+          <td>jesusm101@gmail.com</td>
+          <td>22</td>
+          <td>Activo</td>
+          <td>
+            <a class="btn btn--primario btn--pequeno" href="#modal-desactivar-usuario">Desactivar</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <nav class="paginacion" aria-label="Paginación">
+      <a class="paginacion__enlace" href="#" aria-label="Página anterior">&lsaquo;</a>
+      <a class="paginacion__enlace" href="#" aria-label="Página siguiente">&rsaquo;</a>
+    </nav>
+  </section>
+  <!-- Modal Desactivar Usuario -->
+  <div id="modal-desactivar-usuario" class="modal-overlay">
+    <div class="modal modal--alerta">
+      <form action="/admin/usuarios/desactivar" method="POST">
+        <input type="hidden" name="idUsuario" value="15">
+
+        <div class="modal-alerta__contenido">
+          <i class="bi bi-exclamation-circle-fill modal-alerta__icono" aria-hidden="true"></i>
+
+          <h2 class="modal-alerta__titulo">¿Deseas desactivar a este usuario?</h2>
+
+          <p class="modal-alerta__advertencia">Esta acción no se puede revertir.</p>
+        </div>
+
+        <div class="modal-alerta__acciones">
+          <a href="#" class="btn btn--cancelar">Cancelar</a>
+          <button type="submit" class="btn btn--peligro">Desactivar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

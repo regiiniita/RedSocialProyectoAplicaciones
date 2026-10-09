@@ -70,6 +70,7 @@
   /* ---------- Layout ---------- */
   --ancho-contenedor: 1100px;
   --ancho-sidebar: 240px;
+  --alto-header-movil: 4rem;
   --alto-header: 80px;
 
   /* ---------- Capas ---------- */
