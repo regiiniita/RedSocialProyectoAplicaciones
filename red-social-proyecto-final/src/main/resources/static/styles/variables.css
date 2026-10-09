@@ -20,11 +20,11 @@
   --color-menu: var(--color-primario);
   --color-texto: #000000;                  /* h2 en adelante y párrafos */
 
-  /* Menú hamburguesa (versión móvil) */
+  /* Menú hamburguesa  */
   --menu-movil-fondo: var(--color-primario);
   --menu-movil-texto: #FFFFFF;
 
-  /* ---------- Colores derivados (no están en la guía, salen del mockup) ---------- */
+  /* ---------- Colores derivados---------- */
   --color-primario-hover: #7C2F4A;      /* hover de botones primarios */
   --color-primario-oscuro: #6B1432;     /* sidebar del panel admin */
   --color-secundario-hover: #A46079;
