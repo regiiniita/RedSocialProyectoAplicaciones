@@ -1,0 +1,203 @@
+/* ==========================================================================
+   Estilos de Ventana Emergente (Modal de Compartir Reseña)
+   ========================================================================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: var(--capa-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transicion), visibility var(--transicion);
+  padding: var(--espacio-4);
+}
+
+.modal-overlay--activo {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Tarjeta Principal del Modal */
+.modal-card {
+  background-color: var(--color-blanco);
+  border-radius: var(--radio-lg);
+  width: 100%;
+  max-width: 580px;
+  padding: var(--espacio-6);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  position: relative;
+  transform: translateY(-20px);
+  transition: transform var(--transicion);
+}
+
+.modal-overlay--activo .modal-card {
+  transform: translateY(0);
+}
+
+/* Encabezado del Modal */
+.modal-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-gris);
+  padding-bottom: var(--espacio-3);
+}
+
+.modal-card__titulo {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-2);
+  color: var(--color-texto);
+  line-height: 1;
+}
+
+.modal-card__subtitulo {
+  font-size: var(--texto-xs);
+  color: #666666;
+  margin-top: 4px;
+}
+
+.modal-card__btn-cerrar {
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  color: var(--color-texto);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+/* Formulario interno */
+.modal-card__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+}
+
+.etiqueta-modal {
+  font-size: var(--texto-xs);
+  color: var(--color-texto);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.campo-busqueda-modal {
+  position: relative;
+}
+
+.campo-busqueda-modal .busqueda-icono {
+  position: absolute;
+  left: var(--espacio-3);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+}
+
+.campo-busqueda-modal input {
+  padding-left: 2.5rem;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--color-borde);
+}
+
+/* Sección de Selección de Estrellas */
+.seccion-estrellas-modal {
+  text-align: center;
+  margin: var(--espacio-2) 0;
+}
+
+.estrellas-pregunta {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-3);
+  color: var(--color-texto);
+  margin-bottom: var(--espacio-1);
+}
+
+.estrellas-selector {
+  display: flex;
+  justify-content: center;
+  gap: var(--espacio-2);
+}
+
+.estrella-interactiva {
+  font-size: 1.75rem;
+  color: var(--color-primario);
+  cursor: pointer;
+  user-select: none;
+  transition: transform var(--transicion);
+}
+
+.estrella-interactiva:hover {
+  transform: scale(1.2);
+}
+
+.textarea-modal {
+  min-height: 110px;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--color-borde);
+  padding: var(--espacio-3);
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-sm);
+}
+
+/* Footer y Botones */
+.modal-card__acciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--espacio-4);
+  margin-top: var(--espacio-2);
+}
+
+.btn-modal-cancelar {
+  background: none;
+  border: none;
+  font-family: var(--fuente-titulo);
+  font-size: var(--texto-md);
+  color: #7A7A7A;
+  cursor: pointer;
+}
+
+.btn-modal-cancelar:hover {
+  color: var(--color-texto);
+}
+
+.btn-modal-publicar {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  border-radius: var(--radio-pill);
+  padding: var(--espacio-2) var(--espacio-6);
+  font-family: var(--fuente-titulo);
+  font-size: var(--texto-md);
+  box-shadow: var(--sombra-suave);
+}
+
+/* Responsivo para Celulares */
+@media (max-width: 600px) {
+  .modal-card {
+    padding: var(--espacio-4);
+    border-radius: var(--radio-md);
+  }
+
+  .modal-card__titulo {
+    font-size: var(--titulo-3);
+  }
+
+  .estrellas-pregunta {
+    font-size: var(--texto-md);
+  }
+
+  .estrella-interactiva {
+    font-size: 1.5rem;
+  }
+}

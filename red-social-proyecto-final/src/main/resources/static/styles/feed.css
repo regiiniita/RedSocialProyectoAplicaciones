@@ -1,0 +1,419 @@
+/* ==========================================================================
+   Estilos Responsivos de la Pantalla "Tu comunidad"
+   ========================================================================== */
+
+body.layout-feed {
+  background-color: #EFEFEF;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/* Header Superior */
+.header-feed {
+  background-color: var(--color-blanco);
+  border-bottom: 1px solid var(--color-gris);
+  position: sticky;
+  top: 0;
+  z-index: var(--capa-header);
+}
+
+.header-feed__contenido {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--alto-header);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--espacio-6);
+}
+
+.header-feed__logo-img {
+  height: 48px;
+  width: auto;
+}
+
+.header-feed__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-6);
+}
+
+.header-feed__link {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-3);
+  color: var(--color-primario);
+  text-decoration: none;
+}
+
+.header-feed__link--activo {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Botón Hamburguesa y Menú Desplegable Borgoña en Móvil */
+.btn-menu-movil {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--espacio-2);
+}
+
+.menu-movil-desplegable {
+  display: none;
+  background-color: var(--color-primario);
+  padding: var(--espacio-4) var(--espacio-6);
+  flex-direction: column;
+  gap: var(--espacio-3);
+}
+
+.menu-movil-desplegable--activo {
+  display: flex;
+}
+
+.menu-movil__link {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-3);
+  color: var(--color-blanco);
+  text-decoration: none;
+}
+
+.menu-movil__link--activo {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Contenedor Principal */
+.cuerpo-feed {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+  padding: var(--espacio-6);
+  gap: var(--espacio-6);
+}
+
+/* Sidebar Perfil (Escritorio) */
+.sidebar-perfil {
+  width: 260px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tarjeta-perfil-resumen {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-5) var(--espacio-4) var(--espacio-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: var(--sombra-suave);
+  position: relative;
+  margin-top: 40px;
+}
+
+.tarjeta-perfil-resumen__avatar-wrapper {
+  margin-top: -65px;
+  margin-bottom: var(--espacio-2);
+  background: var(--color-blanco);
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.tarjeta-perfil-resumen__nombre {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-2);
+  color: var(--color-blanco);
+}
+
+.tarjeta-perfil-resumen__handle {
+  font-size: var(--texto-xs);
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--espacio-4);
+}
+
+.tarjeta-perfil-resumen__stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: var(--espacio-3);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-item__valor {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-3);
+}
+
+.stat-item__etiqueta {
+  font-size: var(--texto-xs);
+  opacity: 0.9;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-perfil__footer {
+  font-size: var(--texto-xs);
+  color: #8C8C8C;
+  text-align: center;
+  margin-top: var(--espacio-6);
+  line-height: 1.6;
+}
+
+/* Feed */
+.contenido-feed {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-5);
+}
+
+.contenido-feed__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.contenido-feed__titulo {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-1);
+  color: #8C8C8C;
+}
+
+.saludo-movil {
+  display: none;
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-md);
+  color: var(--color-texto);
+  margin-top: var(--espacio-1);
+  border-bottom: 2px solid #A0A0A0;
+  padding-bottom: 4px;
+}
+
+.btn-crear-resena {
+  background-color: var(--color-primario);
+  border-radius: var(--radio-pill);
+  padding: var(--espacio-2) var(--espacio-5);
+  font-family: var(--fuente-titulo);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  box-shadow: var(--sombra-suave);
+}
+
+.btn-crear-resena__icono {
+  border: 1px solid var(--color-blanco);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--texto-sm);
+}
+
+/* Tarjetas de Reseña */
+.lista-resenas-feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-5);
+}
+
+.tarjeta-resena-feed {
+  background-color: #D9D9D9;
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-5);
+  box-shadow: var(--sombra-suave);
+}
+
+.tarjeta-resena-feed__autor {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-bottom: var(--espacio-3);
+}
+
+.autor-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.autor-info__nombre {
+  font-family: var(--fuente-titulo);
+  font-size: var(--texto-md);
+}
+
+.autor-info__estado {
+  font-size: var(--texto-xs);
+  color: #555555;
+  font-weight: bold;
+}
+
+.tarjeta-resena-feed__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+}
+
+.resena-info-superior {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-1);
+}
+
+.lugar-titulo a {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-3);
+  color: var(--color-primario);
+  text-decoration: underline;
+}
+
+.lugar-meta {
+  font-size: var(--texto-xs);
+  color: var(--color-texto);
+  display: flex;
+  gap: var(--espacio-4);
+}
+
+.resena-texto {
+  font-size: var(--texto-sm);
+  line-height: 1.4;
+  color: #333333;
+}
+
+.tarjeta-resena-feed__img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: var(--radio-md);
+}
+
+.resena-info-inferior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--espacio-2);
+}
+
+.resena-calificacion {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+.calificacion-numero {
+  font-family: var(--fuente-titulo);
+  font-size: var(--texto-sm);
+  color: var(--color-texto);
+}
+
+.tarjeta-resena-feed__fecha {
+  font-size: var(--texto-xs);
+  color: #666666;
+}
+
+/* ==========================================================================
+   Media Query: Escritorio (>= 1025px)
+   Layout de Tarjeta Horizontal (Imagen a la izquierda)
+   ========================================================================== */
+@media (min-width: 1025px) {
+  .tarjeta-resena-feed__grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-areas:
+      "media superior"
+      "media inferior";
+    gap: var(--espacio-4);
+  }
+
+  .tarjeta-resena-feed__media {
+    grid-area: media;
+  }
+
+  .tarjeta-resena-feed__img {
+    height: 180px;
+  }
+
+  .resena-info-superior {
+    grid-area: superior;
+  }
+
+  .resena-info-inferior {
+    grid-area: inferior;
+    margin-top: auto;
+  }
+}
+
+/* ==========================================================================
+   Media Query: Tableta (601px - 1024px)
+   ========================================================================== */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .sidebar-perfil {
+    display: none; /* Oculta sidebar en tabletas */
+  }
+
+  .cuerpo-feed {
+    padding: var(--espacio-5);
+  }
+
+  .tarjeta-resena-feed__grid {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--espacio-4);
+  }
+
+  .tarjeta-resena-feed__img {
+    height: 160px;
+  }
+}
+
+/* ==========================================================================
+   Media Query: Teléfono (<= 600px)
+   ========================================================================== */
+@media (max-width: 600px) {
+  .header-feed__nav {
+    display: none; /* Oculta menú horizontal */
+  }
+
+  .btn-menu-movil {
+    display: block; /* Muestra el botón hamburguesa */
+  }
+
+  .sidebar-perfil {
+    display: none; /* Oculta sidebar */
+  }
+
+  .cuerpo-feed {
+    padding: var(--espacio-4);
+  }
+
+  .saludo-movil {
+    display: block; /* Muestra "Buenos días, Regina" */
+  }
+
+  .contenido-feed__header {
+    margin-bottom: var(--espacio-3);
+  }
+
+  .btn-crear-resena {
+    align-self: flex-end;
+  }
+}

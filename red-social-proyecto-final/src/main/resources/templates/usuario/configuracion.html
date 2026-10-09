@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Spot - Configura tu cuenta</title>
+
+    <link rel="stylesheet" th:href="@{/styles/variables.css}">
+    <link rel="stylesheet" th:href="@{/styles/base.css}">
+    <link rel="stylesheet" th:href="@{/styles/configuracion.css}">
+</head>
+<body class="layout-configuracion">
+
+<!-- Header Superior -->
+<header class="header-configuracion">
+    <div class="header-configuracion__contenido">
+        <a th:href="@{/inicio}" class="header-configuracion__logo">
+            <img th:src="@{/uploads/logo.png}" alt="TheSpot" class="header-configuracion__logo-img">
+        </a>
+
+        <!-- Navegación Escritorio / Tablet -->
+        <nav class="header-configuracion__nav">
+            <a th:href="@{/inicio}" class="header-configuracion__link">Inicio</a>
+            <a th:href="@{/catalogo}" class="header-configuracion__link">Catálogo</a>
+            <a th:href="@{/perfil}" class="header-configuracion__link header-configuracion__link--activo">Mi Perfil</a>
+
+            <a th:href="@{/perfil}" class="header-configuracion__avatar-btn">
+                <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                </svg>
+            </a>
+        </nav>
+
+        <!-- Hamburguesa Móvil -->
+        <button type="button" class="btn-menu-movil" id="btnMenuMovilConfig" aria-label="Abrir menú">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#000000" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Menú Desplegable Móvil -->
+    <nav class="menu-movil-desplegable" id="menuMovilDesplegableConfig">
+        <a th:href="@{/inicio}" class="menu-movil__link">Inicio</a>
+        <a th:href="@{/catalogo}" class="menu-movil__link">Catálogo</a>
+        <a th:href="@{/perfil}" class="menu-movil__link menu-movil__link--activo">Mi Perfil</a>
+    </nav>
+</header>
+
+<!-- Contenedor Principal de Configuración -->
+<main class="contenedor-configuracion">
+
+    <div class="tarjeta-configuracion">
+
+        <!-- Botón Volver (Flecha visible en teléfono y tablet) -->
+        <a th:href="@{/perfil}" class="btn-volver-perfil" aria-label="Volver a Mi Perfil">←</a>
+
+        <h1 class="configuracion-titulo">Configura tu cuenta</h1>
+
+        <form th:action="@{/perfil/configuracion}" method="post" class="configuracion-form">
+
+            <!-- Nombres -->
+            <div class="grupo-form">
+                <input type="text" name="nombres" class="campo-config" placeholder="Nombres" required>
+            </div>
+
+            <!-- Apellidos -->
+            <div class="grupo-form">
+                <input type="text" name="apellidos" class="campo-config" placeholder="Apellidos" required>
+            </div>
+
+            <!-- Fecha Nacimiento -->
+            <div class="grupo-form grupo-form--icono">
+                <span class="input-icono">📅</span>
+                <input type="text" name="fechaNacimiento" onfocus="(this.type='date')" onblur="(this.type='text')" class="campo-config campo-config--icono" placeholder="Fecha Nacimiento" required>
+            </div>
+
+            <!-- Género -->
+            <div class="box-genero">
+                <label class="genero-titulo">Género:</label>
+                <div class="genero-opciones">
+                    <label class="genero-radio">
+                        <input type="radio" name="genero" value="Femenino" required>
+                        <span class="radio-custom"></span>
+                        <span>Femenino</span>
+                    </label>
+                    <label class="genero-radio">
+                        <input type="radio" name="genero" value="Masculino">
+                        <span class="radio-custom"></span>
+                        <span>Masculino</span>
+                    </label>
+                    <label class="genero-radio">
+                        <input type="radio" name="genero" value="Otro">
+                        <span class="radio-custom"></span>
+                        <span>Otro</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Botón Guardar Cambios -->
+            <div class="acciones-form">
+                <button type="submit" class="btn-guardar-cambios">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const btnMenu = document.getElementById("btnMenuMovilConfig");
+        const menuDesplegable = document.getElementById("menuMovilDesplegableConfig");
+        if (btnMenu && menuDesplegable) {
+            btnMenu.addEventListener("click", function() {
+                menuDesplegable.classList.toggle("menu-movil-desplegable--activo");
+            });
+        }
+    });
+</script>
+</body>
+</html>

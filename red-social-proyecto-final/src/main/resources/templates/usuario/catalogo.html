@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Spot - Catálogo</title>
+
+  <link rel="stylesheet" th:href="@{/styles/variables.css}">
+  <link rel="stylesheet" th:href="@{/styles/base.css}">
+  <link rel="stylesheet" th:href="@{/styles/catalogo.css}">
+</head>
+<body class="layout-catalogo">
+
+<!-- Header Superior -->
+<header class="header-catalogo">
+  <div class="header-catalogo__contenido">
+    <a th:href="@{/inicio}" class="header-catalogo__logo">
+      <img th:src="@{/uploads/logo.png}" alt="TheSpot" class="header-catalogo__logo-img">
+    </a>
+
+    <!-- Navegación Escritorio / Tableta -->
+    <nav class="header-catalogo__nav">
+      <a th:href="@{/inicio}" class="header-catalogo__link">Inicio</a>
+      <a th:href="@{/catalogo}" class="header-catalogo__link header-catalogo__link--activo">Catálogo</a>
+      <a th:href="@{/perfil}" class="header-catalogo__link">Mi Perfil</a>
+
+      <a th:href="@{/perfil}" class="header-catalogo__avatar-btn">
+        <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+        </svg>
+      </a>
+    </nav>
+
+    <!-- Botón Hamburguesa para Teléfono -->
+    <button type="button" class="btn-menu-movil" id="btnMenuMovilCatalogo" aria-label="Abrir menú">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#000000" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Menú Desplegable Borgoña Móvil -->
+  <nav class="menu-movil-desplegable" id="menuMovilDesplegableCatalogo">
+    <a th:href="@{/inicio}" class="menu-movil__link">Inicio</a>
+    <a th:href="@{/catalogo}" class="menu-movil__link menu-movil__link--activo">Catálogo</a>
+    <a th:href="@{/perfil}" class="menu-movil__link">Mi Perfil</a>
+  </nav>
+</header>
+
+<!-- Contenido Principal -->
+<main class="contenedor-catalogo">
+
+  <!-- Buscador Central -->
+  <section class="seccion-busqueda">
+    <h1 class="busqueda-titulo">Encuentra tu próximo lugar favorito</h1>
+    <form th:action="@{/lugares}" method="get" class="busqueda-form">
+      <div class="busqueda-input-wrapper">
+        <svg class="busqueda-icono" viewBox="0 0 24 24" fill="none" stroke="#A0A0A0" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" name="query" class="busqueda-campo"
+               placeholder="Busca restaurantes, cafeterías, museos, etc."
+               th:value="${param.query}">
+      </div>
+    </form>
+  </section>
+
+  <!-- Filtros y Categorías -->
+  <section class="seccion-filtros">
+    <div class="categorias-pills">
+      <a th:href="@{/lugares}" class="pill-categoria pill-categoria--activo">Todo</a>
+      <a th:href="@{/lugares(categoria='restaurante')}" class="pill-categoria">Restaurante</a>
+      <a th:href="@{/lugares(categoria='cafeteria')}" class="pill-categoria">Cafetería</a>
+      <a th:href="@{/lugares(categoria='bar')}" class="pill-categoria">Bar</a>
+      <a th:href="@{/lugares(categoria='parque')}" class="pill-categoria">Parque</a>
+      <a th:href="@{/lugares(categoria='museo')}" class="pill-categoria">Museo</a>
+    </div>
+
+    <button type="button" class="btn-filtros-extra">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="6" x2="20" y2="6"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="18" x2="20" y2="18"></line>
+      </svg>
+      <span>Filtros</span>
+      <span class="filtros-badge">2</span>
+    </button>
+  </section>
+
+  <hr class="separador-catalogo">
+
+  <!-- Listado de Lugares -->
+  <section class="seccion-lugares">
+    <div class="lugares-header">
+      <h2 class="lugares-subtitulo">Lugares Destacados</h2>
+      <div class="lugares-ordenar">
+        <span>Ordenados por </span>
+        <select name="orden" class="select-ordenar">
+          <option value="mejor_valorado">Mejor valorado</option>
+          <option value="mas_resenados">Más reseñados</option>
+          <option value="recientes">Más recientes</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-catalogo">
+
+      <!-- RENDERIZADO DINÁMICO (Base de Datos) -->
+      <article class="tarjeta-catalogo" th:each="lugar : ${lugares}">
+        <div class="tarjeta-catalogo__media">
+          <img th:src="${lugar.imagen != null ? lugar.imagen : '/uploads/default-lugar.jpg'}" alt="Lugar" class="tarjeta-catalogo__img">
+        </div>
+        <div class="tarjeta-catalogo__body">
+          <span class="tarjeta-catalogo__categoria" th:text="${lugar.categoria.nombre}">Cafetería</span>
+          <h3 class="tarjeta-catalogo__titulo">
+            <a th:href="@{/lugares/{id}(id=${lugar.id})}" th:text="${lugar.nombre}">AOME</a>
+          </h3>
+          <div class="tarjeta-catalogo__ubicacion">
+            📍 <span th:text="${lugar.direccion.ciudad}">Cd. Obregón, Sonora</span>
+          </div>
+          <div class="tarjeta-catalogo__footer">
+            <div class="calificacion-box">
+              <span class="estrella-icono">★</span>
+              <strong th:text="${#numbers.formatDecimal(lugar.promedioCalificacion, 1, 1)}">4.2</strong>
+            </div>
+            <span class="resenas-conteo" th:text="${#lists.size(lugar.resenias) + ' reseñas'}">130 reseñas</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- DATOS MOCK DE PRUEBA -->
+      <th:block th:if="${lugares == null}">
+
+        <!-- Tarjeta 1: AOME -->
+        <article class="tarjeta-catalogo">
+          <div class="tarjeta-catalogo__media">
+            <img th:src="@{/uploads/aome.jpg}" alt="AOME" class="tarjeta-catalogo__img">
+          </div>
+          <div class="tarjeta-catalogo__body">
+            <span class="tarjeta-catalogo__categoria">Cafetería</span>
+            <h3 class="tarjeta-catalogo__titulo"><a href="#">AOME</a></h3>
+            <div class="tarjeta-catalogo__ubicacion">📍 Cd. Obregón, Sonora</div>
+            <div class="tarjeta-catalogo__footer">
+              <div class="calificacion-box">
+                <span class="estrella-icono">★</span>
+                <strong>4.2</strong>
+              </div>
+              <span class="resenas-conteo">130 reseñas</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 2: Museo Sonora -->
+        <article class="tarjeta-catalogo">
+          <div class="tarjeta-catalogo__media">
+            <img th:src="@{/uploads/museo-sonora.jpg}" alt="Museo Sonora" class="tarjeta-catalogo__img">
+          </div>
+          <div class="tarjeta-catalogo__body">
+            <span class="tarjeta-catalogo__categoria">Museo</span>
+            <h3 class="tarjeta-catalogo__titulo"><a href="#">Museo Sonora</a></h3>
+            <div class="tarjeta-catalogo__ubicacion">📍 Cd. Obregón, Sonora</div>
+            <div class="tarjeta-catalogo__footer">
+              <div class="calificacion-box">
+                <span class="estrella-icono">★</span>
+                <strong>4.8</strong>
+              </div>
+              <span class="resenas-conteo">50 reseñas</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 3: Los Pioneros -->
+        <article class="tarjeta-catalogo">
+          <div class="tarjeta-catalogo__media">
+            <img th:src="@{/uploads/los-pioneros.jpg}" alt="Los Pioneros" class="tarjeta-catalogo__img">
+          </div>
+          <div class="tarjeta-catalogo__body">
+            <span class="tarjeta-catalogo__categoria">Parque</span>
+            <h3 class="tarjeta-catalogo__titulo"><a href="#">Los Pioneros</a></h3>
+            <div class="tarjeta-catalogo__ubicacion">📍 Cd. Obregón, Sonora</div>
+            <div class="tarjeta-catalogo__footer">
+              <div class="calificacion-box">
+                <span class="estrella-icono">★</span>
+                <strong>4.5</strong>
+              </div>
+              <span class="resenas-conteo">260 reseñas</span>
+            </div>
+          </div>
+        </article>
+
+      </th:block>
+    </div>
+  </section>
+
+</main>
+
+<!-- Script Menú Móvil -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const btnMenu = document.getElementById("btnMenuMovilCatalogo");
+      const menuDesplegable = document.getElementById("menuMovilDesplegableCatalogo");
+
+      if (btnMenu && menuDesplegable) {
+          btnMenu.addEventListener("click", function() {
+              menuDesplegable.classList.toggle("menu-movil-desplegable--activo");
+          });
+      }
+  });
+</script>
+</body>
+</html>

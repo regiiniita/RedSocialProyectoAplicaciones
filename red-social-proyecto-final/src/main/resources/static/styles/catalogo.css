@@ -1,0 +1,385 @@
+/* ==========================================================================
+   Estilos Responsivos de la Pantalla de Catálogo
+   ========================================================================== */
+
+body.layout-catalogo {
+  background-color: var(--color-blanco);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/* Header */
+.header-catalogo {
+  background-color: var(--color-blanco);
+  border-bottom: 1px solid var(--color-gris);
+  position: sticky;
+  top: 0;
+  z-index: var(--capa-header);
+}
+
+.header-catalogo__contenido {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--alto-header);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--espacio-6);
+}
+
+.header-catalogo__logo-img {
+  height: 48px;
+  width: auto;
+}
+
+.header-catalogo__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-6);
+}
+
+.header-catalogo__link {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-3);
+  color: var(--color-primario);
+  text-decoration: none;
+}
+
+.header-catalogo__link--activo {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Hamburguesa y Menú Desplegable Borgoña Móvil */
+.btn-menu-movil {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--espacio-2);
+}
+
+.menu-movil-desplegable {
+  display: none;
+  background-color: var(--color-primario);
+  padding: var(--espacio-4) var(--espacio-6);
+  flex-direction: column;
+  gap: var(--espacio-3);
+}
+
+.menu-movil-desplegable--activo {
+  display: flex;
+}
+
+.menu-movil__link {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-3);
+  color: var(--color-blanco);
+  text-decoration: none;
+}
+
+.menu-movil__link--activo {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Contenedor Principal */
+.contenedor-catalogo {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: var(--espacio-6);
+}
+
+/* Buscador Central */
+.seccion-busqueda {
+  text-align: center;
+  margin-bottom: var(--espacio-5);
+}
+
+.busqueda-titulo {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-1);
+  color: var(--color-primario);
+  margin-bottom: var(--espacio-4);
+}
+
+.busqueda-form {
+  display: flex;
+  justify-content: center;
+}
+
+.busqueda-input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+}
+
+.busqueda-icono {
+  position: absolute;
+  left: var(--espacio-4);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+.busqueda-campo {
+  width: 100%;
+  background-color: #F3F1F2;
+  border: none;
+  border-radius: var(--radio-pill);
+  padding: var(--espacio-3) var(--espacio-5) var(--espacio-3) 3rem;
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-base);
+  color: var(--color-texto);
+}
+
+.busqueda-campo::placeholder {
+  color: #A0A0A0;
+}
+
+.busqueda-campo:focus {
+  outline: 2px solid var(--color-primario);
+}
+
+/* Filtros y Categorías */
+.seccion-filtros {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--espacio-4);
+  gap: var(--espacio-4);
+}
+
+.categorias-pills {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.categorias-pills::-webkit-scrollbar {
+  display: none; /* Oculta scrollbar estética en móviles */
+}
+
+.pill-categoria {
+  background-color: #F0EDED;
+  color: var(--color-texto);
+  font-family: var(--fuente-titulo);
+  font-size: var(--texto-md);
+  padding: var(--espacio-2) var(--espacio-5);
+  border-radius: var(--radio-pill);
+  text-decoration: none;
+  transition: background-color var(--transicion);
+  flex-shrink: 0;
+}
+
+.pill-categoria:hover {
+  background-color: #E2DFDF;
+  text-decoration: none;
+}
+
+.pill-categoria--activo {
+  background-color: #1E1E1E;
+  color: var(--color-blanco);
+}
+
+.pill-categoria--activo:hover {
+  background-color: #000000;
+}
+
+.btn-filtros-extra {
+  background-color: #E8E5E6;
+  border: none;
+  border-radius: var(--radio-pill);
+  padding: var(--espacio-2) var(--espacio-4);
+  font-family: var(--fuente-titulo);
+  font-size: var(--texto-sm);
+  color: var(--color-texto);
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.filtros-badge {
+  background-color: #A0A0A0;
+  color: var(--color-blanco);
+  font-size: var(--texto-xs);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.separador-catalogo {
+  border: none;
+  border-top: 1px solid var(--color-gris);
+  margin-bottom: var(--espacio-5);
+}
+
+/* Header del listado */
+.lugares-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--espacio-5);
+}
+
+.lugares-subtitulo {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-2);
+  color: var(--color-primario);
+}
+
+.lugares-ordenar {
+  font-size: var(--texto-xs);
+  color: #7A7A7A;
+}
+
+.select-ordenar {
+  border: none;
+  background: transparent;
+  font-weight: bold;
+  font-size: var(--texto-xs);
+  color: var(--color-texto);
+  cursor: pointer;
+}
+
+/* Grilla de Tarjetas */
+.grid-catalogo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--espacio-5);
+}
+
+.tarjeta-catalogo {
+  background-color: #D9D9D9;
+  border-radius: var(--radio-lg);
+  overflow: hidden;
+  box-shadow: var(--sombra-suave);
+  display: flex;
+  flex-direction: column;
+}
+
+.tarjeta-catalogo__media {
+  height: 200px;
+  width: 100%;
+  padding: var(--espacio-3);
+}
+
+.tarjeta-catalogo__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radio-md);
+}
+
+.tarjeta-catalogo__body {
+  padding: 0 var(--espacio-4) var(--espacio-4);
+  display: flex;
+  flex-direction: column;
+}
+
+.tarjeta-catalogo__categoria {
+  font-size: var(--texto-xs);
+  color: var(--color-primario);
+  margin-bottom: 2px;
+}
+
+.tarjeta-catalogo__titulo a {
+  font-family: var(--fuente-titulo);
+  font-size: var(--titulo-3);
+  color: var(--color-texto);
+  text-decoration: none;
+}
+
+.tarjeta-catalogo__ubicacion {
+  font-size: var(--texto-xs);
+  color: #666666;
+  margin-top: 2px;
+  margin-bottom: var(--espacio-3);
+}
+
+.tarjeta-catalogo__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+
+.calificacion-box {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--texto-xs);
+}
+
+.estrella-icono {
+  color: var(--color-primario);
+}
+
+.resenas-conteo {
+  font-size: var(--texto-xs);
+  color: var(--color-primario);
+}
+
+/* ==========================================================================
+   Media Query: Tabletas (601px - 1024px)
+   ========================================================================== */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .contenedor-catalogo {
+    padding: var(--espacio-5);
+  }
+
+  .grid-catalogo {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en Tablet */
+  }
+}
+
+/* ==========================================================================
+   Media Query: Teléfono / Móvil (<= 600px)
+   ========================================================================== */
+@media (max-width: 600px) {
+  .header-catalogo__nav {
+    display: none; /* Oculta menú horizontal */
+  }
+
+  .btn-menu-movil {
+    display: block; /* Activa botón hamburguesa */
+  }
+
+  .contenedor-catalogo {
+    padding: var(--espacio-4);
+  }
+
+  .busqueda-titulo {
+    font-size: var(--titulo-2);
+  }
+
+  .btn-filtros-extra {
+    display: none; /* Se oculta botón extra para dar paso al scroll de píldoras */
+  }
+
+  .lugares-header {
+    flex-wrap: wrap;
+    gap: var(--espacio-2);
+    align-items: baseline;
+  }
+
+  .lugares-subtitulo {
+    font-size: var(--titulo-3);
+  }
+
+  .grid-catalogo {
+    grid-template-columns: 1fr; /* 1 columna en Teléfono */
+  }
+}

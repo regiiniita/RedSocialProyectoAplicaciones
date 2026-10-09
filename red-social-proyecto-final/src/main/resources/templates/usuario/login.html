@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Spot - Iniciar Sesión</title>
+
+    <link rel="stylesheet" th:href="@{/styles/variables.css}">
+    <link rel="stylesheet" th:href="@{/styles/base.css}">
+    <link rel="stylesheet" th:href="@{/styles/auth.css}">
+</head>
+<body class="auth-page">
+
+<!-- Logo Superior Izquierdo -->
+<a th:href="@{/}" class="auth-logo">
+    <img th:src="@{/uploads/logo.png}" alt="TheSpot" class="auth-logo__img">
+</a>
+
+<!-- Contenedor Principal Split Screen -->
+<main class="auth-container">
+
+    <!-- Formulario Izquierdo: Iniciar Sesión -->
+    <section class="auth-card auth-card--login">
+        <h1 class="auth-title">Iniciar Sesión</h1>
+
+        <form th:action="@{/login}" method="post" class="auth-form">
+
+            <div th:if="${param.error}" class="texto-error" style="text-align: center;">
+                Usuario o contraseña incorrectos.
+            </div>
+
+            <div class="grupo-form">
+                <input type="text" id="username" name="username" class="campo campo--rosa auth-input" placeholder="Usuario" required autofocus>
+            </div>
+
+            <div class="grupo-form">
+                <input type="password" id="password" name="password" class="campo campo--rosa auth-input" placeholder="Contraseña" required>
+            </div>
+
+            <button type="submit" class="btn auth-btn-submit">
+                Iniciar Sesión
+            </button>
+
+            <!-- Enlace alternativo para versión móvil -->
+            <div class="auth-mobile-switch">
+                <span>¿No cuentas con una cuenta aún?</span>
+                <a th:href="@{/registro}" class="auth-mobile-link">Regístrate aquí</a>
+            </div>
+        </form>
+    </section>
+
+    <!-- Panel Derecho Curvo: Registro (Escritorio) -->
+    <section class="auth-card auth-card--welcome">
+        <div class="welcome-content">
+            <h2 class="welcome-title">¡Bienvenidos!</h2>
+            <p class="welcome-text">
+                Registre su información personal para disfrutar las funciones de nuestro sitio
+            </p>
+            <a th:href="@{/registro}" class="btn auth-btn-register">
+                Registrate Aquí
+            </a>
+        </div>
+    </section>
+
+</main>
+
+</body>
+</html>

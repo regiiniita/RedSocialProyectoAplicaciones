@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Spot - Registro</title>
+
+  <link rel="stylesheet" th:href="@{/styles/variables.css}">
+  <link rel="stylesheet" th:href="@{/styles/base.css}">
+  <link rel="stylesheet" th:href="@{/styles/auth.css}">
+</head>
+<body class="auth-page">
+
+<!-- Logo Superior -->
+<a th:href="@{/}" class="auth-logo auth-logo--derecha">
+  <img th:src="@{/uploads/logo.png}" alt="TheSpot" class="auth-logo__img">
+</a>
+
+<!-- Contenedor Principal -->
+<main class="auth-container auth-container--registro">
+
+  <!-- Panel Izquierdo Curvo (Escritorio) -->
+  <section class="auth-card auth-card--welcome-left">
+    <div class="welcome-content">
+      <h2 class="welcome-title">¿Ya cuentas con una cuenta?</h2>
+      <a th:href="@{/login}" class="btn auth-btn-register">
+        Inicia Sesión
+      </a>
+    </div>
+  </section>
+
+  <!-- Formulario Derecho: Registro -->
+  <section class="auth-card auth-card--registro">
+    <div class="auth-title-wrapper">
+      <a th:href="@{/login}" class="btn-regresar-movil" aria-label="Volver">←</a>
+      <h1 class="auth-title">Registro</h1>
+    </div>
+
+    <form th:action="@{/registro}" method="post" class="auth-form">
+
+      <div class="grupo-form">
+        <input type="text" id="username" name="username" class="campo campo--rosa auth-input" placeholder="Usuario" required autofocus>
+      </div>
+
+      <div class="grupo-form">
+        <input type="email" id="email" name="email" class="campo campo--rosa auth-input" placeholder="Correo Electrónico" required>
+      </div>
+
+      <div class="grupo-form">
+        <input type="password" id="password" name="password" class="campo campo--rosa auth-input" placeholder="Contraseña" required>
+      </div>
+
+      <button type="submit" class="btn auth-btn-submit">
+        Crear Cuenta
+      </button>
+
+      <!-- Enlace alternativo para versión móvil -->
+      <div class="auth-mobile-switch">
+        <span>¿Ya cuentas con una cuenta?</span>
+        <a th:href="@{/login}" class="auth-mobile-link">Inicia sesión</a>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+</body>
+</html>
