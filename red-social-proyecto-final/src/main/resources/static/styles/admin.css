@@ -1,15 +1,10 @@
-/* ==========================================================================
-   Estructura y componentes del Panel Administrativo (Dashboard)
-   ========================================================================== */
 
-/* Layout Principal */
 .layout-admin {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Checkbox oculto que abre el menú en móvil */
 .menu-toggle {
   position: absolute;
   width: 1px;
@@ -17,7 +12,6 @@
   opacity: 0;
 }
 
-/* Header Superior */
 .header-admin {
   height: var(--alto-header);
   background-color: var(--color-blanco);
@@ -65,13 +59,11 @@
   display: none;
 }
 
-/* Contenedor central (Sidebar + Contenido) */
 .cuerpo-admin {
   display: flex;
   flex: 1;
 }
 
-/* Sidebar */
 .sidebar {
   width: var(--ancho-sidebar);
   background-color: var(--color-primario-oscuro);
@@ -128,7 +120,6 @@
   padding-top: var(--espacio-4);
 }
 
-/* Área de Contenido Principal */
 .contenido-admin {
   flex: 1;
   background-color: #F8F9FA;
@@ -149,7 +140,6 @@
   margin-bottom: var(--espacio-5);
 }
 
-/* Grilla de Métricas Principales */
 .metricas-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -207,7 +197,6 @@
   color: #7A7A7A;
 }
 
-/* Barras de Lugares más reseñados */
 .lista-progreso {
   display: flex;
   flex-direction: column;
@@ -247,7 +236,6 @@
   color: #666666;
 }
 
-/* Lista de Usuarios Activos */
 .lista-usuarios {
   display: flex;
   flex-direction: column;
@@ -439,9 +427,7 @@
   font-size: var(--texto-md);
   color: var(--color-texto);
 }
-/* ==========================================================================
-   Estilos del Modal (Estructura y Comportamiento)
-   ========================================================================== */
+
 
 /* Overlay oscuro que cubre la pantalla */
 .modal-overlay {
@@ -461,13 +447,11 @@
   padding: var(--espacio-4);
 }
 
-/* El modal se muestra cuando su ID coincide con el hash de la URL (#modal-nuevo-lugar) */
 .modal-overlay:target {
   opacity: 1;
   visibility: visible;
 }
 
-/* Contenedor principal del modal */
 .modal {
   background-color: var(--color-blanco);
   width: 100%;
@@ -486,7 +470,6 @@
   transform: translateY(0);
 }
 
-/* Cabecera del modal */
 .modal__header {
   display: flex;
   justify-content: space-between;

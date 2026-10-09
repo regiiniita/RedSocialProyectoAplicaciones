@@ -65,8 +65,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* ---------- Tipografía ---------- */
-/* Chau Philomene One solo existe en peso 400: se fuerza para evitar negrita falsa */
+
 h1,
 h2,
 h3,
@@ -198,7 +197,6 @@ p {
   cursor: not-allowed;
 }
 
-/* ---------- Campos de formulario ---------- */
 .grupo-form {
   display: flex;
   flex-direction: column;
@@ -231,14 +229,12 @@ textarea.campo {
   resize: vertical;
 }
 
-/* Campo rosado: login, registro y configurar cuenta */
 .campo--rosa {
   background: var(--color-secundario);
   border-radius: var(--radio-md);
   box-shadow: var(--sombra-suave);
 }
 
-/* Campo con borde: formularios dentro de modales y panel admin */
 .campo--borde {
   background: var(--color-blanco);
   border-color: var(--color-borde);
@@ -305,11 +301,7 @@ textarea.campo {
   height: 7rem;
 }
 
-/* ---------- Estrellas ----------
-   <span class="estrellas" role="img" aria-label="4 de 5 estrellas">
-     <span class="estrella estrella--llena"></span> x4
-     <span class="estrella estrella--vacia"></span> x1
-   </span> */
+
 .estrellas {
   display: inline-flex;
   gap: 2px;
