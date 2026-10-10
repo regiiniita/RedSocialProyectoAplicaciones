@@ -1,271 +1,204 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<th:block th:replace="~{usuario/contenido :: layout(~{::title}, ~{::main}, 'perfil')}">
     <title>The Spot - Perfil de Mariana</title>
 
-    <link rel="stylesheet" th:href="@{/styles/variables.css}">
-    <link rel="stylesheet" th:href="@{/styles/base.css}">
-    <link rel="stylesheet" th:href="@{/styles/perfil.css}">
-</head>
-<body class="layout-perfil">
+    <!-- Contenido del Perfil Público -->
+    <main class="contenedor-perfil">
 
-<!-- Header Superior -->
-<header class="header-perfil">
-    <div class="header-perfil__contenido">
-        <a th:href="@{/inicio}" class="header-perfil__logo">
-            <img th:src="@{/uploads/logo.png}" alt="TheSpot" class="header-perfil__logo-img">
-        </a>
-
-        <!-- Navegación Escritorio / Tablet -->
-        <nav class="header-perfil__nav">
-            <a th:href="@{/inicio}" class="header-perfil__link">Inicio</a>
-            <a th:href="@{/catalogo}" class="header-perfil__link">Catálogo</a>
-            <a th:href="@{/perfil}" class="header-perfil__link">Mi Perfil</a>
-
-            <a th:href="@{/perfil}" class="header-perfil__avatar-btn">
-                <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+        <!-- Header Tarjeta de Usuario Externo -->
+        <section class="tarjeta-perfil-header">
+            <div class="perfil-avatar-wrapper">
+                <svg class="avatar avatar--profile" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.2">
                     <circle cx="12" cy="8" r="4"></circle>
                     <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
                 </svg>
-            </a>
+            </div>
+
+            <div class="perfil-datos">
+                <div class="perfil-nombre-row">
+                    <h1 class="perfil-nombre-completo">Mariana Orduño Velazquez</h1>
+
+                    <!-- Botón de Acción Estado de Seguimiento -->
+                    <button type="button" class="btn-accion-seguimiento btn-dejar-seguir" id="btnSeguimientoEstado" data-estado="siguiendo" data-handle="@mariiana1">
+                        Dejar de seguir
+                    </button>
+                </div>
+                <span class="perfil-username">@mariiana1</span>
+
+                <div class="perfil-estadisticas">
+                    <div class="stat-box">
+                        <strong>13</strong>
+                        <span>Reseñas</span>
+                    </div>
+                    <div class="stat-box">
+                        <strong id="statSeguidores">38</strong>
+                        <span>Seguidores</span>
+                    </div>
+                    <div class="stat-box">
+                        <strong>19</strong>
+                        <span>Seguidos</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navegación por Pestañas -->
+        <nav class="tabs-perfil">
+            <button type="button" class="tab-btn tab-btn--activo" data-target="tabResenasPublicas">Reseñas</button>
+            <button type="button" class="tab-btn" data-target="tabSeguidoresPublicos">Seguidores</button>
+            <button type="button" class="tab-btn" data-target="tabSeguidosPublicos">Seguidos</button>
         </nav>
 
-        <!-- Hamburguesa Móvil -->
-        <button type="button" class="btn-menu-movil" id="btnMenuMovilPerfilPublico" aria-label="Abrir menú">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#000000" stroke-width="2">
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        </button>
-    </div>
+        <hr class="separador-tabs">
 
-    <!-- Menú Desplegable Móvil -->
-    <nav class="menu-movil-desplegable" id="menuMovilDesplegablePerfilPublico">
-        <a th:href="@{/inicio}" class="menu-movil__link">Inicio</a>
-        <a th:href="@{/catalogo}" class="menu-movil__link">Catálogo</a>
-        <a th:href="@{/perfil}" class="menu-movil__link">Mi Perfil</a>
-    </nav>
-</header>
+        <!-- Pestaña 1: Reseñas Públicas -->
+        <section id="tabResenasPublicas" class="tab-contenido tab-contenido--activo">
+            <article class="tarjeta-resena-perfil">
+                <header class="tarjeta-resena-perfil__autor">
+                    <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                    </svg>
+                    <strong>Mariana</strong>
+                </header>
 
-<!-- Contenido del Perfil Público -->
-<main class="contenedor-perfil">
-
-    <!-- Header Tarjeta de Usuario Externo -->
-    <section class="tarjeta-perfil-header">
-        <div class="perfil-avatar-wrapper">
-            <svg class="avatar avatar--profile" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.2">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-            </svg>
-        </div>
-
-        <div class="perfil-datos">
-            <div class="perfil-nombre-row">
-                <h1 class="perfil-nombre-completo">Mariana Orduño Velazquez</h1>
-
-                <!-- Botón de Acción Estado de Seguimiento -->
-                <button type="button" class="btn-accion-seguimiento btn-dejar-seguir" id="btnSeguimientoEstado" data-estado="siguiendo" data-handle="@mariiana1">
-                    Dejar de seguir
-                </button>
-            </div>
-            <span class="perfil-username">@mariiana1</span>
-
-            <div class="perfil-estadisticas">
-                <div class="stat-box">
-                    <strong>13</strong>
-                    <span>Reseñas</span>
-                </div>
-                <div class="stat-box">
-                    <strong id="statSeguidores">38</strong>
-                    <span>Seguidores</span>
-                </div>
-                <div class="stat-box">
-                    <strong>19</strong>
-                    <span>Seguidos</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Navegación por Pestañas -->
-    <nav class="tabs-perfil">
-        <button type="button" class="tab-btn tab-btn--activo" data-target="tabResenasPublicas">Reseñas</button>
-        <button type="button" class="tab-btn" data-target="tabSeguidoresPublicos">Seguidores</button>
-        <button type="button" class="tab-btn" data-target="tabSeguidosPublicos">Seguidos</button>
-    </nav>
-
-    <hr class="separador-tabs">
-
-    <!-- Pestaña 1: Reseñas Públicas -->
-    <section id="tabResenasPublicas" class="tab-contenido tab-contenido--activo">
-        <article class="tarjeta-resena-perfil">
-            <header class="tarjeta-resena-perfil__autor">
-                <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-                    <circle cx="12" cy="8" r="4"></circle>
-                    <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-                </svg>
-                <strong>Mariana</strong>
-            </header>
-
-            <div class="tarjeta-resena-perfil__grid">
-                <div class="resena-info-superior">
-                    <h2 class="lugar-titulo"><a href="#">Parque Nacional de Grand Teton</a></h2>
-                    <div class="lugar-meta">
-                        <span>Categoría: <strong>Parque</strong></span>
-                        <span class="lugar-meta__ubicacion">📍 <strong>Wyoming, EU</strong></span>
-                    </div>
-                    <p class="resena-texto">
-                        “Grand Teton es uno de esos lugares que te recuerda lo increíble que puede ser la naturaleza cuando se mantiene intacta.”
-                    </p>
-                </div>
-
-                <div class="tarjeta-resena-perfil__media">
-                    <img th:src="@{/uploads/grand-teton.jpg}" alt="Grand Teton" class="tarjeta-resena-perfil__img">
-                </div>
-            </div>
-        </article>
-    </section>
-
-    <!-- Pestañas secundarias MOCK -->
-    <section id="tabSeguidoresPublicos" class="tab-contenido">
-        <div class="tarjeta-lista-usuarios">
-            <h3 class="lista-usuarios-titulo">Seguidores de Mariana</h3>
-            <ul class="lista-usuarios">
-                <li class="usuario-item">
-                    <div class="usuario-info-box">
-                        <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-                            <circle cx="12" cy="8" r="4"></circle>
-                            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-                        </svg>
-                        <div>
-                            <strong class="usuario-nombre">Ramses</strong>
-                            <span class="usuario-handle">@rams3s</span>
+                <div class="tarjeta-resena-perfil__grid">
+                    <div class="resena-info-superior">
+                        <h2 class="lugar-titulo"><a href="#">Parque Nacional de Grand Teton</a></h2>
+                        <div class="lugar-meta">
+                            <span>Categoría: <strong>Parque</strong></span>
+                            <span class="lugar-meta__ubicacion">📍 <strong>Wyoming, EU</strong></span>
                         </div>
+                        <p class="resena-texto">
+                            “Grand Teton es uno de esos lugares que te recuerda lo increíble que puede ser la naturaleza cuando se mantiene intacta.”
+                        </p>
                     </div>
-                    <a th:href="@{/perfil/rams3s}" class="btn-usuario-accion btn-ver-perfil">Ver perfil</a>
-                </li>
-            </ul>
-        </div>
-    </section>
 
-    <section id="tabSeguidosPublicos" class="tab-contenido">
-        <div class="tarjeta-lista-usuarios">
-            <h3 class="lista-usuarios-titulo">Seguidos por Mariana</h3>
-            <ul class="lista-usuarios">
-                <li class="usuario-item">
-                    <div class="usuario-info-box">
-                        <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-                            <circle cx="12" cy="8" r="4"></circle>
-                            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-                        </svg>
-                        <div>
-                            <strong class="usuario-nombre">Jesús</strong>
-                            <span class="usuario-handle">@jesus101</span>
+                    <div class="tarjeta-resena-perfil__media">
+                        <img th:src="@{/uploads/grand-teton.jpg}" alt="Grand Teton" class="tarjeta-resena-perfil__img">
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Pestañas secundarias MOCK -->
+        <section id="tabSeguidoresPublicos" class="tab-contenido">
+            <div class="tarjeta-lista-usuarios">
+                <h3 class="lista-usuarios-titulo">Seguidores de Mariana</h3>
+                <ul class="lista-usuarios">
+                    <li class="usuario-item">
+                        <div class="usuario-info-box">
+                            <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                            </svg>
+                            <div>
+                                <strong class="usuario-nombre">Ramses</strong>
+                                <span class="usuario-handle">@rams3s</span>
+                            </div>
                         </div>
-                    </div>
-                    <a th:href="@{/perfil/jesus101}" class="btn-usuario-accion btn-ver-perfil">Ver perfil</a>
-                </li>
-            </ul>
+                        <a th:href="@{/perfil/rams3s}" class="btn-usuario-accion btn-ver-perfil">Ver perfil</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="tabSeguidosPublicos" class="tab-contenido">
+            <div class="tarjeta-lista-usuarios">
+                <h3 class="lista-usuarios-titulo">Seguidos por Mariana</h3>
+                <ul class="lista-usuarios">
+                    <li class="usuario-item">
+                        <div class="usuario-info-box">
+                            <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                            </svg>
+                            <div>
+                                <strong class="usuario-nombre">Jesús</strong>
+                                <span class="usuario-handle">@jesus101</span>
+                            </div>
+                        </div>
+                        <a th:href="@{/perfil/jesus101}" class="btn-usuario-accion btn-ver-perfil">Ver perfil</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Modal: Confirmar Dejar de Seguir -->
+        <div class="modal-unfollow-overlay" id="modalDejarSeguirPublico">
+            <div class="modal-unfollow-card">
+                <button type="button" class="btn-volver-unfollow" id="btnCerrarUnfollowPublico">←</button>
+
+                <div class="unfollow-avatar-wrapper">
+                    <svg class="avatar avatar--unfollow" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.2">
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                    </svg>
+                </div>
+
+                <h2 class="unfollow-pregunta">¿Deseas dejar de seguir a <span id="unfollowTargetHandlePublico">@mariiana1</span>?</h2>
+                <p class="unfollow-subtexto">Sus posts ya no apareceran en tu feed</p>
+
+                <button type="button" class="btn-confirmar-unfollow" id="btnConfirmarUnfollowPublico">Dejar de seguir</button>
+            </div>
         </div>
-    </section>
 
-</main>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const tabBtns = document.querySelectorAll(".tab-btn");
+                const tabContenidos = document.querySelectorAll(".tab-contenido");
 
-<!-- Modal: Confirmar Dejar de Seguir -->
-<div class="modal-unfollow-overlay" id="modalDejarSeguirPublico">
-    <div class="modal-unfollow-card">
-        <button type="button" class="btn-volver-unfollow" id="btnCerrarUnfollowPublico">←</button>
+                tabBtns.forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const targetId = btn.getAttribute("data-target");
+                        tabBtns.forEach(b => b.classList.remove("tab-btn--activo"));
+                        tabContenidos.forEach(c => c.classList.remove("tab-contenido--activo"));
 
-        <div class="unfollow-avatar-wrapper">
-            <svg class="avatar avatar--unfollow" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.2">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-            </svg>
-        </div>
+                        btn.classList.add("tab-btn--activo");
+                        document.getElementById(targetId).classList.add("tab-contenido--activo");
+                    });
+                });
 
-        <h2 class="unfollow-pregunta">¿Deseas dejar de seguir a <span id="unfollowTargetHandlePublico">@mariiana1</span>?</h2>
-        <p class="unfollow-subtexto">Sus posts ya no apareceran en tu feed</p>
+                const btnSeguimiento = document.getElementById("btnSeguimientoEstado");
+                const modalUnfollow = document.getElementById("modalDejarSeguirPublico");
+                const btnCerrarUnfollow = document.getElementById("btnCerrarUnfollowPublico");
+                const btnConfirmarUnfollow = document.getElementById("btnConfirmarUnfollowPublico");
+                const statSeguidores = document.getElementById("statSeguidores");
 
-        <button type="button" class="btn-confirmar-unfollow" id="btnConfirmarUnfollowPublico">Dejar de seguir</button>
-    </div>
-</div>
+                btnSeguimiento.addEventListener("click", () => {
+                    const estadoActual = btnSeguimiento.getAttribute("data-estado");
 
-<!-- JavaScript Interactivo para Perfil Público -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Manejo de Pestañas
-        const tabBtns = document.querySelectorAll(".tab-btn");
-        const tabContenidos = document.querySelectorAll(".tab-contenido");
+                    if (estadoActual === "siguiendo") {
+                        modalUnfollow.classList.add("modal-unfollow-overlay--activo");
+                    } else {
+                        btnSeguimiento.setAttribute("data-estado", "siguiendo");
+                        btnSeguimiento.textContent = "Dejar de seguir";
+                        btnSeguimiento.className = "btn-accion-seguimiento btn-dejar-seguir";
 
-        tabBtns.forEach(btn => {
-            btn.addEventListener("click", () => {
-                const targetId = btn.getAttribute("data-target");
+                        let val = parseInt(statSeguidores.textContent);
+                        statSeguidores.textContent = val + 1;
+                    }
+                });
 
-                tabBtns.forEach(b => b.classList.remove("tab-btn--activo"));
-                tabContenidos.forEach(c => c.classList.remove("tab-contenido--activo"));
+                function cerrarModal() {
+                    modalUnfollow.classList.remove("modal-unfollow-overlay--activo");
+                }
 
-                btn.classList.add("tab-btn--activo");
-                document.getElementById(targetId).classList.add("tab-contenido--activo");
+                btnCerrarUnfollow.addEventListener("click", cerrarModal);
+                modalUnfollow.addEventListener("click", (e) => {
+                    if (e.target === modalUnfollow) cerrarModal();
+                });
+
+                btnConfirmarUnfollow.addEventListener("click", () => {
+                    btnSeguimiento.setAttribute("data-estado", "no_siguiendo");
+                    btnSeguimiento.textContent = "Seguir";
+                    btnSeguimiento.className = "btn-accion-seguimiento btn-seguir";
+
+                    let val = parseInt(statSeguidores.textContent);
+                    if (val > 0) statSeguidores.textContent = val - 1;
+
+                    cerrarModal();
+                });
             });
-        });
-
-        // Lógica de Estado de Seguimiento & Modal
-        const btnSeguimiento = document.getElementById("btnSeguimientoEstado");
-        const modalUnfollow = document.getElementById("modalDejarSeguirPublico");
-        const btnCerrarUnfollow = document.getElementById("btnCerrarUnfollowPublico");
-        const btnConfirmarUnfollow = document.getElementById("btnConfirmarUnfollowPublico");
-        const statSeguidores = document.getElementById("statSeguidores");
-
-        btnSeguimiento.addEventListener("click", () => {
-            const estadoActual = btnSeguimiento.getAttribute("data-estado");
-
-            if (estadoActual === "siguiendo") {
-                // Abrir modal de confirmación
-                modalUnfollow.classList.add("modal-unfollow-overlay--activo");
-            } else {
-                // Si no lo sigue, lo empieza a seguir directamente
-                btnSeguimiento.setAttribute("data-estado", "siguiendo");
-                btnSeguimiento.textContent = "Dejar de seguir";
-                btnSeguimiento.className = "btn-accion-seguimiento btn-dejar-seguir";
-
-                let val = parseInt(statSeguidores.textContent);
-                statSeguidores.textContent = val + 1;
-            }
-        });
-
-        function cerrarModal() {
-            modalUnfollow.classList.remove("modal-unfollow-overlay--activo");
-        }
-
-        btnCerrarUnfollow.addEventListener("click", cerrarModal);
-        modalUnfollow.addEventListener("click", (e) => {
-            if (e.target === modalUnfollow) cerrarModal();
-        });
-
-        // Confirmar dejar de seguir desde el modal
-        btnConfirmarUnfollow.addEventListener("click", () => {
-            btnSeguimiento.setAttribute("data-estado", "no_siguiendo");
-            btnSeguimiento.textContent = "Seguir";
-            btnSeguimiento.className = "btn-accion-seguimiento btn-seguir";
-
-            let val = parseInt(statSeguidores.textContent);
-            if (val > 0) statSeguidores.textContent = val - 1;
-
-            cerrarModal();
-        });
-
-        // Menú Hamburguesa Móvil
-        const btnMenu = document.getElementById("btnMenuMovilPerfilPublico");
-        const menuDesplegable = document.getElementById("menuMovilDesplegablePerfilPublico");
-        if (btnMenu && menuDesplegable) {
-            btnMenu.addEventListener("click", () => {
-                menuDesplegable.classList.toggle("menu-movil-desplegable--activo");
-            });
-        }
-    });
-</script>
-</body>
-</html>
+        </script>
+    </main>
+</th:block>

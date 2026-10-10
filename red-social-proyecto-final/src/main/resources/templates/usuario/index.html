@@ -1,261 +1,200 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<th:block th:replace="~{usuario/contenido :: layout(~{::title}, ~{::main}, 'inicio')}">
   <title>The Spot - Tu Comunidad</title>
 
-  <link rel="stylesheet" th:href="@{/styles/variables.css}">
-  <link rel="stylesheet" th:href="@{/styles/base.css}">
-  <link rel="stylesheet" th:href="@{/styles/feed.css}">
-  <link rel="stylesheet" th:href="@{/styles/modal-usuario.css}">
-</head>
-<body class="layout-feed">
+  <!-- Contenido Principal -->
+  <main>
+    <div class="cuerpo-feed">
 
-<!-- Header Superior -->
-<header class="header-feed">
-  <div class="header-feed__contenido">
-    <a th:href="@{/inicio}" class="header-feed__logo">
-      <img th:src="@{/uploads/logo.png}" alt="TheSpot" class="header-feed__logo-img">
-    </a>
-
-    <!-- Navegación Escritorio / Tableta -->
-    <nav class="header-feed__nav">
-      <a th:href="@{/inicio}" class="header-feed__link header-feed__link--activo">Inicio</a>
-      <a th:href="@{/catalogo}" class="header-feed__link">Catálogo</a>
-      <a th:href="@{/perfil}" class="header-feed__link">Mi Perfil</a>
-
-      <a th:href="@{/perfil}" class="header-feed__avatar-btn">
-        <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-          <circle cx="12" cy="8" r="4"></circle>
-          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-        </svg>
-      </a>
-    </nav>
-
-    <!-- Botón Hamburguesa Móvil -->
-    <button type="button" class="btn-menu-movil" id="btnMenuMovil" aria-label="Abrir menú">
-      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#000000" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-  </div>
-
-  <!-- Menú Desplegable Borgoña Móvil -->
-  <nav class="menu-movil-desplegable" id="menuMovilDesplegable">
-    <a th:href="@{/inicio}" class="menu-movil__link menu-movil__link--activo">Inicio</a>
-    <a th:href="@{/catalogo}" class="menu-movil__link">Catálogo</a>
-    <a th:href="@{/perfil}" class="menu-movil__link">Mi Perfil</a>
-  </nav>
-</header>
-
-<!-- Contenido Principal -->
-<div class="cuerpo-feed">
-
-  <!-- Sidebar Izquierdo -->
-  <aside class="sidebar-perfil">
-    <div class="tarjeta-perfil-resumen">
-      <div class="tarjeta-perfil-resumen__avatar-wrapper">
-        <svg class="avatar avatar--lg" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-          <circle cx="12" cy="8" r="4"></circle>
-          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-        </svg>
-      </div>
-
-      <h3 class="tarjeta-perfil-resumen__nombre"
-          th:text="${usuarioLogueado != null ? usuarioLogueado.nombre : 'Regina'}">Regina</h3>
-      <span class="tarjeta-perfil-resumen__handle"
-            th:text="${usuarioLogueado != null ? '@' + usuarioLogueado.username : '@regiiniita'}">@regiiniita</span>
-
-      <div class="tarjeta-perfil-resumen__stats">
-        <div class="stat-item">
-          <strong class="stat-item__valor"
-                  th:text="${conteoSeguidores != null ? conteoSeguidores : '40'}">40</strong>
-          <span class="stat-item__etiqueta">Seguidores</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <strong class="stat-item__valor"
-                  th:text="${conteoSeguidos != null ? conteoSeguidos : '25'}">25</strong>
-          <span class="stat-item__etiqueta">Seguidos</span>
-        </div>
-      </div>
-    </div>
-
-    <footer class="sidebar-perfil__footer">
-      <p>Acerca de • Privacidad • Normas</p>
-      <p>© 2026 The Spot</p>
-    </footer>
-  </aside>
-
-  <!-- Feed Principal -->
-  <main class="contenido-feed">
-    <div class="contenido-feed__header">
-      <div class="feed-titulos">
-        <h1 class="contenido-feed__titulo">Tu comunidad</h1>
-        <p class="saludo-movil" th:text="${usuarioLogueado != null ? 'Buenos días, ' + usuarioLogueado.nombre : 'Buenos días, Regina'}">Buenos días, Regina</p>
-      </div>
-
-      <button type="button" class="btn btn--primario btn-crear-resena" id="btnAbrirModal">
-        <span class="btn-crear-resena__icono">+</span>
-        <span>Crear reseña</span>
-      </button>
-    </div>
-
-    <section class="lista-resenas-feed">
-      <!-- DATOS MOCK / DINÁMICOS DE RESEÑAS -->
-      <article class="tarjeta-resena-feed">
-        <header class="tarjeta-resena-feed__autor">
-          <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-            <circle cx="12" cy="8" r="4"></circle>
-            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-          </svg>
-          <div class="autor-info">
-            <strong class="autor-info__nombre">Mariana</strong>
-            <span class="autor-info__estado">Seguido</span>
+      <!-- Sidebar Izquierdo -->
+      <aside class="sidebar-perfil">
+        <div class="tarjeta-perfil-resumen">
+          <div class="tarjeta-perfil-resumen__avatar-wrapper">
+            <svg class="avatar avatar--lg" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+            </svg>
           </div>
+
+          <h3 class="tarjeta-perfil-resumen__nombre"
+              th:text="${usuarioLogueado != null ? usuarioLogueado.nombre : 'Regina'}">Regina</h3>
+          <span class="tarjeta-perfil-resumen__handle"
+                th:text="${usuarioLogueado != null ? '@' + usuarioLogueado.username : '@regiiniita'}">@regiiniita</span>
+
+          <div class="tarjeta-perfil-resumen__stats">
+            <div class="stat-item">
+              <strong class="stat-item__valor"
+                      th:text="${conteoSeguidores != null ? conteoSeguidores : '40'}">40</strong>
+              <span class="stat-item__etiqueta">Seguidores</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <strong class="stat-item__valor"
+                      th:text="${conteoSeguidos != null ? conteoSeguidos : '25'}">25</strong>
+              <span class="stat-item__etiqueta">Seguidos</span>
+            </div>
+          </div>
+        </div>
+
+        <footer class="sidebar-perfil__footer">
+          <p>Acerca de • Privacidad • Normas</p>
+          <p>© 2026 The Spot</p>
+        </footer>
+      </aside>
+
+      <!-- Feed Principal -->
+      <section class="contenido-feed">
+        <div class="contenido-feed__header">
+          <div class="feed-titulos">
+            <h1 class="contenido-feed__titulo">Tu comunidad</h1>
+            <p class="saludo-movil" th:text="${usuarioLogueado != null ? 'Buenos días, ' + usuarioLogueado.nombre : 'Buenos días, Regina'}">Buenos días, Regina</p>
+          </div>
+
+          <button type="button" class="btn btn--primario btn-crear-resena" id="btnAbrirModal">
+            <span class="btn-crear-resena__icono">+</span>
+            <span>Crear reseña</span>
+          </button>
+        </div>
+
+        <section class="lista-resenas-feed">
+          <!-- DATOS MOCK / DINÁMICOS DE RESEÑAS -->
+          <article class="tarjeta-resena-feed">
+            <header class="tarjeta-resena-feed__autor">
+              <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+              </svg>
+              <div class="autor-info">
+                <strong class="autor-info__nombre">Mariana</strong>
+                <span class="autor-info__estado">Seguido</span>
+              </div>
+            </header>
+
+            <div class="tarjeta-resena-feed__grid">
+              <div class="resena-info-superior">
+                <h2 class="lugar-titulo"><a href="#">Parque Nacional de Grand Teton</a></h2>
+                <div class="lugar-meta">
+                  <span>Categoría: <strong>Parque</strong></span>
+                  <span class="lugar-meta__ubicacion">📍 <strong>Wyoming, EU</strong></span>
+                </div>
+                <p class="resena-texto">
+                  “Grand Teton es uno de esos lugares que te recuerda lo increíble que puede ser la naturaleza cuando se mantiene intacta.”
+                </p>
+              </div>
+
+              <div class="tarjeta-resena-feed__media">
+                <img th:src="@{/uploads/grand-teton.jpg}" alt="Grand Teton" class="tarjeta-resena-feed__img">
+              </div>
+
+              <div class="resena-info-inferior">
+                <div class="resena-calificacion">
+                  <div class="estrellas">
+                    <span class="estrella estrella--llena"></span>
+                    <span class="estrella estrella--llena"></span>
+                    <span class="estrella estrella--llena"></span>
+                    <span class="estrella estrella--llena"></span>
+                    <span class="estrella estrella--vacia"></span>
+                  </div>
+                  <span class="calificacion-numero">4.0</span>
+                </div>
+                <div class="tarjeta-resena-feed__fecha">01/10/2026</div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </section>
+    </div>
+
+    <!-- MODAL: COMPARTIR RESEÑA -->
+    <div class="modal-overlay" id="modalCrearResena">
+      <div class="modal-card">
+        <header class="modal-card__header">
+          <div class="modal-card__titulos">
+            <h2 class="modal-card__titulo">COMPARTIR RESEÑA</h2>
+            <p class="modal-card__subtitulo">Tu opinión ayuda a otras personas a descubrir grandes lugares.</p>
+          </div>
+          <button type="button" class="modal-card__btn-cerrar" id="btnCerrarModal" aria-label="Cerrar">&times;</button>
         </header>
 
-        <div class="tarjeta-resena-feed__grid">
-          <div class="resena-info-superior">
-            <h2 class="lugar-titulo"><a href="#">Parque Nacional de Grand Teton</a></h2>
-            <div class="lugar-meta">
-              <span>Categoría: <strong>Parque</strong></span>
-              <span class="lugar-meta__ubicacion">📍 <strong>Wyoming, EU</strong></span>
+        <form th:action="@{/resenas/nueva}" method="post" class="modal-card__form">
+
+          <!-- Selección de lugar -->
+          <div class="grupo-form">
+            <label class="etiqueta-modal">Seleccionar lugar</label>
+            <div class="campo-busqueda-modal">
+              <svg class="busqueda-icono" viewBox="0 0 24 24" fill="none" stroke="#A0A0A0" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" name="lugar" class="campo campo--borde" placeholder="Buscar..." required>
             </div>
-            <p class="resena-texto">
-              “Grand Teton es uno de esos lugares que te recuerda lo increíble que puede ser la naturaleza cuando se mantiene intacta.”
-            </p>
           </div>
 
-          <div class="tarjeta-resena-feed__media">
-            <img th:src="@{/uploads/grand-teton.jpg}" alt="Grand Teton" class="tarjeta-resena-feed__img">
-          </div>
-
-          <div class="resena-info-inferior">
-            <div class="resena-calificacion">
-              <div class="estrellas">
-                <span class="estrella estrella--llena"></span>
-                <span class="estrella estrella--llena"></span>
-                <span class="estrella estrella--llena"></span>
-                <span class="estrella estrella--llena"></span>
-                <span class="estrella estrella--vacia"></span>
-              </div>
-              <span class="calificacion-numero">4.0</span>
+          <!-- Selección de estrellas -->
+          <div class="seccion-estrellas-modal">
+            <h3 class="estrellas-pregunta">¿Cómo fue tu experiencia?</h3>
+            <div class="estrellas-selector" id="estrellasSelector">
+              <span class="estrella-interactiva" data-val="1">☆</span>
+              <span class="estrella-interactiva" data-val="2">☆</span>
+              <span class="estrella-interactiva" data-val="3">☆</span>
+              <span class="estrella-interactiva" data-val="4">☆</span>
+              <span class="estrella-interactiva" data-val="5">☆</span>
             </div>
-            <div class="tarjeta-resena-feed__fecha">01/10/2026</div>
+            <input type="hidden" name="calificacion" id="inputCalificacion" value="0" required>
           </div>
-        </div>
-      </article>
-    </section>
-  </main>
-</div>
 
-<!-- MODAL: COMPARTIR RESEÑA -->
-<div class="modal-overlay" id="modalCrearResena">
-  <div class="modal-card">
-    <header class="modal-card__header">
-      <div class="modal-card__titulos">
-        <h2 class="modal-card__titulo">COMPARTIR RESEÑA</h2>
-        <p class="modal-card__subtitulo">Tu opinión ayuda a otras personas a descubrir grandes lugares.</p>
+          <!-- Comentario -->
+          <div class="grupo-form">
+            <label class="etiqueta-modal">Comentario / Reseña</label>
+            <textarea name="comentario" class="campo campo--borde textarea-modal" placeholder="Cuenta tu experiencia en este lugar..." required></textarea>
+          </div>
+
+          <!-- Acciones -->
+          <footer class="modal-card__acciones">
+            <button type="button" class="btn-modal-cancelar" id="btnCancelarModal">Cancelar</button>
+            <button type="submit" class="btn btn--primario btn-modal-publicar">Publicar</button>
+          </footer>
+        </form>
       </div>
-      <button type="button" class="modal-card__btn-cerrar" id="btnCerrarModal" aria-label="Cerrar">&times;</button>
-    </header>
+    </div>
 
-    <form th:action="@{/resenas/nueva}" method="post" class="modal-card__form">
+    <!-- Script de control del Modal -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          const btnAbrir = document.getElementById("btnAbrirModal");
+          const btnCerrar = document.getElementById("btnCerrarModal");
+          const btnCancelar = document.getElementById("btnCancelarModal");
+          const modal = document.getElementById("modalCrearResena");
 
-      <!-- Selección de lugar -->
-      <div class="grupo-form">
-        <label class="etiqueta-modal">Seleccionar lugar</label>
-        <div class="campo-busqueda-modal">
-          <svg class="busqueda-icono" viewBox="0 0 24 24" fill="none" stroke="#A0A0A0" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input type="text" name="lugar" class="campo campo--borde" placeholder="Buscar..." required>
-        </div>
-      </div>
+          function abrirModal() { modal.classList.add("modal-overlay--activo"); }
+          function cerrarModal() { modal.classList.remove("modal-overlay--activo"); }
 
-      <!-- Selección de estrellas -->
-      <div class="seccion-estrellas-modal">
-        <h3 class="estrellas-pregunta">¿Cómo fue tu experiencia?</h3>
-        <div class="estrellas-selector" id="estrellasSelector">
-          <span class="estrella-interactiva" data-val="1">☆</span>
-          <span class="estrella-interactiva" data-val="2">☆</span>
-          <span class="estrella-interactiva" data-val="3">☆</span>
-          <span class="estrella-interactiva" data-val="4">☆</span>
-          <span class="estrella-interactiva" data-val="5">☆</span>
-        </div>
-        <input type="hidden" name="calificacion" id="inputCalificacion" value="0" required>
-      </div>
+          if (btnAbrir) btnAbrir.addEventListener("click", abrirModal);
+          if (btnCerrar) btnCerrar.addEventListener("click", cerrarModal);
+          if (btnCancelar) btnCancelar.addEventListener("click", cerrarModal);
 
-      <!-- Comentario -->
-      <div class="grupo-form">
-        <label class="etiqueta-modal">Comentario / Reseña</label>
-        <textarea name="comentario" class="campo campo--borde textarea-modal" placeholder="Cuenta tu experiencia en este lugar..." required></textarea>
-      </div>
+          modal.addEventListener("click", function(e) {
+              if (e.target === modal) cerrarModal();
+          });
 
-      <!-- Acciones -->
-      <footer class="modal-card__acciones">
-        <button type="button" class="btn-modal-cancelar" id="btnCancelarModal">Cancelar</button>
-        <button type="submit" class="btn btn--primario btn-modal-publicar">Publicar</button>
-      </footer>
-    </form>
-  </div>
-</div>
+          const estrellas = document.querySelectorAll(".estrella-interactiva");
+          const inputCalificacion = document.getElementById("inputCalificacion");
 
-<!-- Script de control del Modal -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-      const btnAbrir = document.getElementById("btnAbrirModal");
-      const btnCerrar = document.getElementById("btnCerrarModal");
-      const btnCancelar = document.getElementById("btnCancelarModal");
-      const modal = document.getElementById("modalCrearResena");
-
-      // Abrir y cerrar modal
-      function abrirModal() { modal.classList.add("modal-overlay--activo"); }
-      function cerrarModal() { modal.classList.remove("modal-overlay--activo"); }
-
-      if (btnAbrir) btnAbrir.addEventListener("click", abrirModal);
-      if (btnCerrar) btnCerrar.addEventListener("click", cerrarModal);
-      if (btnCancelar) btnCancelar.addEventListener("click", cerrarModal);
-
-      // Cerrar al dar clic fuera de la tarjeta
-      modal.addEventListener("click", function(e) {
-          if (e.target === modal) cerrarModal();
-      });
-
-      // Selección interactiva de estrellas
-      const estrellas = document.querySelectorAll(".estrella-interactiva");
-      const inputCalificacion = document.getElementById("inputCalificacion");
-
-      estrellas.forEach((estrella, idx) => {
-          estrella.addEventListener("click", () => {
-              const val = idx + 1;
-              inputCalificacion.value = val;
-              estrellas.forEach((e, i) => {
-                  if (i < val) {
-                      e.textContent = "★";
-                      e.classList.add("estrella--activa");
-                  } else {
-                      e.textContent = "☆";
-                      e.classList.remove("estrella--activa");
-                  }
+          estrellas.forEach((estrella, idx) => {
+              estrella.addEventListener("click", () => {
+                  const val = idx + 1;
+                  inputCalificacion.value = val;
+                  estrellas.forEach((e, i) => {
+                      if (i < val) {
+                          e.textContent = "★";
+                          e.classList.add("estrella--activa");
+                      } else {
+                          e.textContent = "☆";
+                          e.classList.remove("estrella--activa");
+                      }
+                  });
               });
           });
       });
-
-      // Menú hamburguesa móvil
-      const btnMenu = document.getElementById("btnMenuMovil");
-      const menuDesplegable = document.getElementById("menuMovilDesplegable");
-      if (btnMenu && menuDesplegable) {
-          btnMenu.addEventListener("click", function() {
-              menuDesplegable.classList.toggle("menu-movil-desplegable--activo");
-          });
-      }
-  });
-</script>
-</body>
-</html>
+    </script>
+  </main>
+</th:block>

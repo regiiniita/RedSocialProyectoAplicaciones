@@ -1,316 +1,252 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<th:block th:replace="~{usuario/contenido :: layout(~{::title}, ~{::main}, 'perfil')}">
     <title>The Spot - Mi Perfil</title>
 
-    <link rel="stylesheet" th:href="@{/styles/variables.css}">
-    <link rel="stylesheet" th:href="@{/styles/base.css}">
-    <link rel="stylesheet" th:href="@{/styles/perfil.css}">
-</head>
-<body class="layout-perfil">
+    <!-- Contenido del Perfil -->
+    <main class="contenedor-perfil">
 
-<!-- Header Superior -->
-<header class="header-perfil">
-    <div class="header-perfil__contenido">
-        <a th:href="@{/inicio}" class="header-perfil__logo">
-            <img th:src="@{/uploads/logo.png}" alt="TheSpot" class="header-perfil__logo-img">
-        </a>
-
-        <!-- Navegación Escritorio / Tablet -->
-        <nav class="header-perfil__nav">
-            <a th:href="@{/inicio}" class="header-perfil__link">Inicio</a>
-            <a th:href="@{/catalogo}" class="header-perfil__link">Catálogo</a>
-            <a th:href="@{/perfil}" class="header-perfil__link header-perfil__link--activo">Mi Perfil</a>
-
-            <a th:href="@{/perfil}" class="header-perfil__avatar-btn">
-                <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+        <!-- Header Tarjeta de Usuario -->
+        <section class="tarjeta-perfil-header">
+            <div class="perfil-avatar-wrapper">
+                <svg class="avatar avatar--profile" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.2">
                     <circle cx="12" cy="8" r="4"></circle>
                     <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
                 </svg>
-            </a>
+                <button type="button" class="btn-agregar-avatar" title="Cambiar foto">+</button>
+            </div>
+
+            <div class="perfil-datos">
+                <div class="perfil-nombre-row">
+                    <h1 class="perfil-nombre-completo">Regina Jiménez Meneses</h1>
+                    <a th:href="@{/perfil/configuracion}" class="btn-configuracion" title="Ajustes">⚙</a>
+                </div>
+                <span class="perfil-username">@regiiniita</span>
+
+                <div class="perfil-estadisticas">
+                    <div class="stat-box">
+                        <strong>20</strong>
+                        <span>Reseñas</span>
+                    </div>
+                    <div class="stat-box">
+                        <strong>40</strong>
+                        <span>Seguidores</span>
+                    </div>
+                    <div class="stat-box">
+                        <strong>25</strong>
+                        <span>Seguidos</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navegación por Pestañas -->
+        <nav class="tabs-perfil">
+            <button type="button" class="tab-btn tab-btn--activo" data-target="tabResenas">Reseñas</button>
+            <button type="button" class="tab-btn" data-target="tabSeguidores">Seguidores</button>
+            <button type="button" class="tab-btn" data-target="tabSeguidos">Seguidos</button>
         </nav>
 
-        <!-- Hamburguesa Móvil -->
-        <button type="button" class="btn-menu-movil" id="btnMenuMovilPerfil" aria-label="Abrir menú">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#000000" stroke-width="2">
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        </button>
-    </div>
+        <hr class="separador-tabs">
 
-    <!-- Menú Desplegable Móvil -->
-    <nav class="menu-movil-desplegable" id="menuMovilDesplegablePerfil">
-        <a th:href="@{/inicio}" class="menu-movil__link">Inicio</a>
-        <a th:href="@{/catalogo}" class="menu-movil__link">Catálogo</a>
-        <a th:href="@{/perfil}" class="menu-movil__link menu-movil__link--activo">Mi Perfil</a>
-    </nav>
-</header>
+        <!-- Pestaña 1: Reseñas -->
+        <section id="tabResenas" class="tab-contenido tab-contenido--activo">
+            <article class="tarjeta-resena-perfil">
+                <header class="tarjeta-resena-perfil__autor">
+                    <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                    </svg>
+                    <strong>Regina</strong>
+                </header>
 
-<!-- Contenido del Perfil -->
-<main class="contenedor-perfil">
-
-    <!-- Header Tarjeta de Usuario -->
-    <section class="tarjeta-perfil-header">
-        <div class="perfil-avatar-wrapper">
-            <svg class="avatar avatar--profile" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.2">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-            </svg>
-            <button type="button" class="btn-agregar-avatar" title="Cambiar foto">+</button>
-        </div>
-
-        <div class="perfil-datos">
-            <div class="perfil-nombre-row">
-                <h1 class="perfil-nombre-completo">Regina Jiménez Meneses</h1>
-                <a th:href="@{/perfil/configuracion}" class="btn-configuracion" title="Ajustes">⚙</a>
-            </div>
-            <span class="perfil-username">@regiiniita</span>
-
-            <div class="perfil-estadisticas">
-                <div class="stat-box">
-                    <strong>20</strong>
-                    <span>Reseñas</span>
-                </div>
-                <div class="stat-box">
-                    <strong>40</strong>
-                    <span>Seguidores</span>
-                </div>
-                <div class="stat-box">
-                    <strong>25</strong>
-                    <span>Seguidos</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Navegación por Pestañas -->
-    <nav class="tabs-perfil">
-        <button type="button" class="tab-btn tab-btn--activo" data-target="tabResenas">Reseñas</button>
-        <button type="button" class="tab-btn" data-target="tabSeguidores">Seguidores</button>
-        <button type="button" class="tab-btn" data-target="tabSeguidos">Seguidos</button>
-    </nav>
-
-    <hr class="separador-tabs">
-
-    <!-- Pestaña 1: Reseñas -->
-    <section id="tabResenas" class="tab-contenido tab-contenido--activo">
-        <article class="tarjeta-resena-perfil">
-            <header class="tarjeta-resena-perfil__autor">
-                <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-                    <circle cx="12" cy="8" r="4"></circle>
-                    <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-                </svg>
-                <strong>Regina</strong>
-            </header>
-
-            <div class="tarjeta-resena-perfil__grid">
-                <div class="resena-info-superior">
-                    <h2 class="lugar-titulo"><a href="#">Starbucks Reserve Roastery</a></h2>
-                    <div class="lugar-meta">
-                        <span>Categoría: <strong>Cafetería</strong></span>
-                        <span class="lugar-meta__ubicacion">📍 <strong>New York, EU</strong></span>
+                <div class="tarjeta-resena-perfil__grid">
+                    <div class="resena-info-superior">
+                        <h2 class="lugar-titulo"><a href="#">Starbucks Reserve Roastery</a></h2>
+                        <div class="lugar-meta">
+                            <span>Categoría: <strong>Cafetería</strong></span>
+                            <span class="lugar-meta__ubicacion">📍 <strong>New York, EU</strong></span>
+                        </div>
+                        <p class="resena-texto">
+                            “Un lugar impresionante, más una experiencia que una simple cafetería. El espacio es enorme, muy bien diseñado y podés ver todo el proceso del café...”
+                        </p>
                     </div>
-                    <p class="resena-texto">
-                        “Un lugar impresionante, más una experiencia que una simple cafetería. El espacio es enorme, muy bien diseñado y podés ver todo el proceso del café...”
-                    </p>
-                </div>
 
-                <div class="tarjeta-resena-perfil__media">
-                    <img th:src="@{/uploads/starbucks-reserve.jpg}" alt="Starbucks Reserve" class="tarjeta-resena-perfil__img">
+                    <div class="tarjeta-resena-perfil__media">
+                        <img th:src="@{/uploads/starbucks-reserve.jpg}" alt="Starbucks Reserve" class="tarjeta-resena-perfil__img">
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Pestaña 2: Seguidores -->
+        <section id="tabSeguidores" class="tab-contenido">
+            <div class="tarjeta-lista-usuarios">
+                <h3 class="lista-usuarios-titulo">Seguidores</h3>
+
+                <ul class="lista-usuarios">
+                    <li class="usuario-item">
+                        <div class="usuario-info-box">
+                            <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                            </svg>
+                            <div>
+                                <strong class="usuario-nombre">Mariana</strong>
+                                <span class="usuario-handle">@mariiana1</span>
+                            </div>
+                        </div>
+                        <a th:href="@{/perfil/mariiana1}" class="btn-usuario-accion btn-ver-perfil">Ver perfil</a>
+                    </li>
+
+                    <li class="usuario-item">
+                        <div class="usuario-info-box">
+                            <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                            </svg>
+                            <div>
+                                <strong class="usuario-nombre">Ramses</strong>
+                                <span class="usuario-handle">@rams3s</span>
+                            </div>
+                        </div>
+                        <a th:href="@{/perfil/rams3s}" class="btn-usuario-accion btn-ver-perfil">Ver perfil</a>
+                    </li>
+
+                    <li class="usuario-item">
+                        <div class="usuario-info-box">
+                            <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                            </svg>
+                            <div>
+                                <strong class="usuario-nombre">Jesús</strong>
+                                <span class="usuario-handle">@jesus101</span>
+                            </div>
+                        </div>
+                        <a th:href="@{/perfil/jesus101}" class="btn-usuario-accion btn-ver-perfil">Ver perfil</a>
+                    </li>
+                </ul>
+
+                <div class="lista-paginacion">
+                    <button type="button" class="pag-btn">&lt;</button>
+                    <button type="button" class="pag-btn">&gt;</button>
                 </div>
             </div>
-        </article>
-    </section>
+        </section>
 
-    <!-- Pestaña 2: Seguidores -->
-    <section id="tabSeguidores" class="tab-contenido">
-        <div class="tarjeta-lista-usuarios">
-            <h3 class="lista-usuarios-titulo">Seguidores</h3>
+        <!-- Pestaña 3: Seguidos -->
+        <section id="tabSeguidos" class="tab-contenido">
+            <div class="tarjeta-lista-usuarios">
+                <h3 class="lista-usuarios-titulo">Seguidos</h3>
 
-            <ul class="lista-usuarios">
-                <li class="usuario-item">
-                    <div class="usuario-info-box">
-                        <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-                            <circle cx="12" cy="8" r="4"></circle>
-                            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-                        </svg>
-                        <div>
-                            <strong class="usuario-nombre">Mariana</strong>
-                            <span class="usuario-handle">@mariiana1</span>
+                <ul class="lista-usuarios">
+                    <li class="usuario-item">
+                        <div class="usuario-info-box">
+                            <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                            </svg>
+                            <div>
+                                <strong class="usuario-nombre">Mariana</strong>
+                                <span class="usuario-handle">@mariiana1</span>
+                            </div>
                         </div>
-                    </div>
-                    <a th:href="@{/perfil/mariiana1}" class="btn-usuario-accion btn-ver-perfil">Ver perfil</a>
-                </li>
+                        <button type="button" class="btn-usuario-accion btn-dejar-seguir" data-handle="@mariiana1">Dejar de seguir</button>
+                    </li>
 
-                <li class="usuario-item">
-                    <div class="usuario-info-box">
-                        <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-                            <circle cx="12" cy="8" r="4"></circle>
-                            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-                        </svg>
-                        <div>
-                            <strong class="usuario-nombre">Ramses</strong>
-                            <span class="usuario-handle">@rams3s</span>
+                    <li class="usuario-item">
+                        <div class="usuario-info-box">
+                            <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                            </svg>
+                            <div>
+                                <strong class="usuario-nombre">Ramses</strong>
+                                <span class="usuario-handle">@rams3s</span>
+                            </div>
                         </div>
-                    </div>
-                    <a th:href="@{/perfil/rams3s}" class="btn-usuario-accion btn-ver-perfil">Ver perfil</a>
-                </li>
+                        <button type="button" class="btn-usuario-accion btn-dejar-seguir" data-handle="@rams3s">Dejar de seguir</button>
+                    </li>
 
-                <li class="usuario-item">
-                    <div class="usuario-info-box">
-                        <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-                            <circle cx="12" cy="8" r="4"></circle>
-                            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-                        </svg>
-                        <div>
-                            <strong class="usuario-nombre">Jesús</strong>
-                            <span class="usuario-handle">@jesus101</span>
+                    <li class="usuario-item">
+                        <div class="usuario-info-box">
+                            <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                            </svg>
+                            <div>
+                                <strong class="usuario-nombre">Jesús</strong>
+                                <span class="usuario-handle">@jesus101</span>
+                            </div>
                         </div>
-                    </div>
-                    <a th:href="@{/perfil/jesus101}" class="btn-usuario-accion btn-ver-perfil">Ver perfil</a>
-                </li>
-            </ul>
+                        <button type="button" class="btn-usuario-accion btn-dejar-seguir" data-handle="@jesus101">Dejar de seguir</button>
+                    </li>
+                </ul>
 
-            <div class="lista-paginacion">
-                <button type="button" class="pag-btn">&lt;</button>
-                <button type="button" class="pag-btn">&gt;</button>
+                <div class="lista-paginacion">
+                    <button type="button" class="pag-btn">&lt;</button>
+                    <button type="button" class="pag-btn">&gt;</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal: Confirmar Dejar de Seguir -->
+        <div class="modal-unfollow-overlay" id="modalDejarSeguir">
+            <div class="modal-unfollow-card">
+                <button type="button" class="btn-volver-unfollow" id="btnCerrarUnfollow">←</button>
+
+                <div class="unfollow-avatar-wrapper">
+                    <svg class="avatar avatar--unfollow" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.2">
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                    </svg>
+                </div>
+
+                <h2 class="unfollow-pregunta">¿Deseas dejar de seguir a <span id="unfollowTargetHandle">@mariiana1</span>?</h2>
+                <p class="unfollow-subtexto">Sus posts ya no apareceran en tu feed</p>
+
+                <button type="button" class="btn-confirmar-unfollow" id="btnConfirmarUnfollow">Dejar de seguir</button>
             </div>
         </div>
-    </section>
 
-    <!-- Pestaña 3: Seguidos -->
-    <section id="tabSeguidos" class="tab-contenido">
-        <div class="tarjeta-lista-usuarios">
-            <h3 class="lista-usuarios-titulo">Seguidos</h3>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const tabBtns = document.querySelectorAll(".tab-btn");
+                const tabContenidos = document.querySelectorAll(".tab-contenido");
 
-            <ul class="lista-usuarios">
-                <li class="usuario-item">
-                    <div class="usuario-info-box">
-                        <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-                            <circle cx="12" cy="8" r="4"></circle>
-                            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-                        </svg>
-                        <div>
-                            <strong class="usuario-nombre">Mariana</strong>
-                            <span class="usuario-handle">@mariiana1</span>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-usuario-accion btn-dejar-seguir" data-handle="@mariiana1">Dejar de seguir</button>
-                </li>
+                tabBtns.forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const targetId = btn.getAttribute("data-target");
+                        tabBtns.forEach(b => b.classList.remove("tab-btn--activo"));
+                        tabContenidos.forEach(c => c.classList.remove("tab-contenido--activo"));
 
-                <li class="usuario-item">
-                    <div class="usuario-info-box">
-                        <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-                            <circle cx="12" cy="8" r="4"></circle>
-                            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-                        </svg>
-                        <div>
-                            <strong class="usuario-nombre">Ramses</strong>
-                            <span class="usuario-handle">@rams3s</span>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-usuario-accion btn-dejar-seguir" data-handle="@rams3s">Dejar de seguir</button>
-                </li>
+                        btn.classList.add("tab-btn--activo");
+                        document.getElementById(targetId).classList.add("tab-contenido--activo");
+                    });
+                });
 
-                <li class="usuario-item">
-                    <div class="usuario-info-box">
-                        <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
-                            <circle cx="12" cy="8" r="4"></circle>
-                            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-                        </svg>
-                        <div>
-                            <strong class="usuario-nombre">Jesús</strong>
-                            <span class="usuario-handle">@jesus101</span>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-usuario-accion btn-dejar-seguir" data-handle="@jesus101">Dejar de seguir</button>
-                </li>
-            </ul>
+                const modalUnfollow = document.getElementById("modalDejarSeguir");
+                const btnCerrarUnfollow = document.getElementById("btnCerrarUnfollow");
+                const targetHandleSpan = document.getElementById("unfollowTargetHandle");
+                const btnsDejarSeguir = document.querySelectorAll(".btn-dejar-seguir");
 
-            <div class="lista-paginacion">
-                <button type="button" class="pag-btn">&lt;</button>
-                <button type="button" class="pag-btn">&gt;</button>
-            </div>
-        </div>
-    </section>
+                btnsDejarSeguir.forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const handle = btn.getAttribute("data-handle");
+                        targetHandleSpan.textContent = handle;
+                        modalUnfollow.classList.add("modal-unfollow-overlay--activo");
+                    });
+                });
 
-</main>
+                function cerrarModalUnfollow() {
+                    modalUnfollow.classList.remove("modal-unfollow-overlay--activo");
+                }
 
-<!-- Modal: Confirmar Dejar de Seguir -->
-<div class="modal-unfollow-overlay" id="modalDejarSeguir">
-    <div class="modal-unfollow-card">
-        <button type="button" class="btn-volver-unfollow" id="btnCerrarUnfollow">←</button>
+                if (btnCerrarUnfollow) btnCerrarUnfollow.addEventListener("click", cerrarModalUnfollow);
 
-        <div class="unfollow-avatar-wrapper">
-            <svg class="avatar avatar--unfollow" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.2">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-            </svg>
-        </div>
-
-        <h2 class="unfollow-pregunta">¿Deseas dejar de seguir a <span id="unfollowTargetHandle">@mariiana1</span>?</h2>
-        <p class="unfollow-subtexto">Sus posts ya no apareceran en tu feed</p>
-
-        <button type="button" class="btn-confirmar-unfollow" id="btnConfirmarUnfollow">Dejar de seguir</button>
-    </div>
-</div>
-
-<!-- Script de interacción de Pestañas y Modal -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Manejo de Pestañas
-        const tabBtns = document.querySelectorAll(".tab-btn");
-        const tabContenidos = document.querySelectorAll(".tab-contenido");
-
-        tabBtns.forEach(btn => {
-            btn.addEventListener("click", () => {
-                const targetId = btn.getAttribute("data-target");
-
-                tabBtns.forEach(b => b.classList.remove("tab-btn--activo"));
-                tabContenidos.forEach(c => c.classList.remove("tab-contenido--activo"));
-
-                btn.classList.add("tab-btn--activo");
-                document.getElementById(targetId).classList.add("tab-contenido--activo");
+                modalUnfollow.addEventListener("click", (e) => {
+                    if (e.target === modalUnfollow) cerrarModalUnfollow();
+                });
             });
-        });
-
-        // Manejo de Modal "Dejar de Seguir"
-        const modalUnfollow = document.getElementById("modalDejarSeguir");
-        const btnCerrarUnfollow = document.getElementById("btnCerrarUnfollow");
-        const targetHandleSpan = document.getElementById("unfollowTargetHandle");
-        const btnsDejarSeguir = document.querySelectorAll(".btn-dejar-seguir");
-
-        btnsDejarSeguir.forEach(btn => {
-            btn.addEventListener("click", () => {
-                const handle = btn.getAttribute("data-handle");
-                targetHandleSpan.textContent = handle;
-                modalUnfollow.classList.add("modal-unfollow-overlay--activo");
-            });
-        });
-
-        function cerrarModalUnfollow() {
-            modalUnfollow.classList.remove("modal-unfollow-overlay--activo");
-        }
-
-        if (btnCerrarUnfollow) btnCerrarUnfollow.addEventListener("click", cerrarModalUnfollow);
-
-        modalUnfollow.addEventListener("click", (e) => {
-            if (e.target === modalUnfollow) cerrarModalUnfollow();
-        });
-
-        // Hamburguesa móvil
-        const btnMenu = document.getElementById("btnMenuMovilPerfil");
-        const menuDesplegable = document.getElementById("menuMovilDesplegablePerfil");
-        if (btnMenu && menuDesplegable) {
-            btnMenu.addEventListener("click", () => {
-                menuDesplegable.classList.toggle("menu-movil-desplegable--activo");
-            });
-        }
-    });
-</script>
-</body>
-</html>
+        </script>
+    </main>
+</th:block>

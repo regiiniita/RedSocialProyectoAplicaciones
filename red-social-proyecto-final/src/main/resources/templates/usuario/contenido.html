@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content, activeTab)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:replace="${title}">The Spot</title>
+
+    <link rel="stylesheet" th:href="@{/styles/variables.css}">
+    <link rel="stylesheet" th:href="@{/styles/base.css}">
+    <link rel="stylesheet" th:href="@{/styles/feed.css}">
+    <link rel="stylesheet" th:href="@{/styles/catalogo.css}">
+    <link rel="stylesheet" th:href="@{/styles/perfil.css}">
+    <link rel="stylesheet" th:href="@{/styles/configuracion.css}">
+    <link rel="stylesheet" th:href="@{/styles/modal-usuario.css}">
+</head>
+<body>
+
+<!-- Header Superior Reutilizable -->
+<header class="header-feed header-catalogo header-perfil header-configuracion">
+    <div class="header-feed__contenido header-catalogo__contenido header-perfil__contenido header-configuracion__contenido">
+        <a th:href="@{/inicio}" class="header-feed__logo">
+            <img th:src="@{/uploads/logo.png}" alt="TheSpot" class="header-feed__logo-img">
+        </a>
+
+        <!-- Navegacion Escritorio / Tableta -->
+        <nav class="header-feed__nav header-catalogo__nav header-perfil__nav header-configuracion__nav">
+            <a th:href="@{/inicio}" class="header-feed__link" th:classappend="${activeTab == 'inicio'} ? 'header-feed__link--activo' : ''">Inicio</a>
+            <a th:href="@{/catalogo}" class="header-feed__link" th:classappend="${activeTab == 'catalogo'} ? 'header-feed__link--activo' : ''">Catálogo</a>
+            <a th:href="@{/perfil}" class="header-feed__link" th:classappend="${activeTab == 'perfil'} ? 'header-feed__link--activo' : ''">Mi Perfil</a>
+
+            <a th:href="@{/perfil}" class="header-feed__avatar-btn">
+                <svg class="avatar avatar--sm" viewBox="0 0 24 24" fill="none" stroke="#7A7A7A" stroke-width="1.5">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                </svg>
+            </a>
+        </nav>
+
+        <!-- Boton Hamburguesa Movil -->
+        <button type="button" class="btn-menu-movil" id="btnMenuMovilGlobal" aria-label="Abrir menú">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#000000" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Menu Desplegable Borgoña Movil -->
+    <nav class="menu-movil-desplegable" id="menuMovilDesplegableGlobal">
+        <a th:href="@{/inicio}" class="menu-movil__link" th:classappend="${activeTab == 'inicio'} ? 'menu-movil__link--activo' : ''">Inicio</a>
+        <a th:href="@{/catalogo}" class="menu-movil__link" th:classappend="${activeTab == 'catalogo'} ? 'menu-movil__link--activo' : ''">Catálogo</a>
+        <a th:href="@{/perfil}" class="menu-movil__link" th:classappend="${activeTab == 'perfil'} ? 'menu-movil__link--activo' : ''">Mi Perfil</a>
+    </nav>
+</header>
+
+<!-- Inyeccion del contenido dinamico de cada vista -->
+<th:block th:replace="${content}"></th:block>
+
+<!-- Script global para menú hamburguesa -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const btnMenu = document.getElementById("btnMenuMovilGlobal");
+      const menuDesplegable = document.getElementById("menuMovilDesplegableGlobal");
+
+      if (btnMenu && menuDesplegable) {
+        btnMenu.addEventListener("click", function() {
+          menuDesplegable.classList.toggle("menu-movil-desplegable--activo");
+        });
+      }
+    });
+</script>
+</body>
+</html>
