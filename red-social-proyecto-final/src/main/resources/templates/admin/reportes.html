@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{layout/admin :: layout('Reportes', 'reportes', ~{::main})}">
+    <body>
+        <main class="contenido-admin reportes">
+            <div class="encabezado-pagina">
+                <div th:replace="~{fragments/admin/componentes :: titulo('Reportes', 'Revisa las reseñas que la comunidad ha reportado.', 'titulo-reportes')}"></div>
+            </div>
+
+            <section class="tabla-tarjeta reportes__tarjeta" aria-labelledby="titulo-reportes">
+                <div class="reportes__herramientas">
+                    <div class="reportes__estados" role="group" aria-label="Filtrar por estado">
+                        <button class="reportes__estado" type="button" data-estado="Pendiente" aria-pressed="false" th:text="|Pendientes (${pendientes})|"></button>
+                        <button class="reportes__estado" type="button" data-estado="Revisado" aria-pressed="false">Revisados</button>
+                        <button class="reportes__estado" type="button" data-estado="" aria-pressed="true">Todos</button>
+                    </div>
+                    <div class="tabla-herramientas">
+                        <label class="buscador">
+                            <i class="bi bi-search buscador__icono" aria-hidden="true"></i>
+                            <input class="buscador__campo" id="buscar-reporte" type="search"
+                            placeholder="Buscar por usuario o lugar..." aria-label="Buscar reportes por usuario o lugar">
+                        </label>
+                        <button class="btn btn--cancelar btn--pequeno" id="filtros-reportes" type="button"
+                            aria-expanded="false" aria-controls="filtros-reportes-panel">
+                            <i class="bi bi-sliders btn__icono btn__icono--sm" aria-hidden="true"></i> Filtros
+                        </button>
+                    </div>
+                </div>
+                <div class="reportes__filtros" id="filtros-reportes-panel" hidden>
+                    <label class="etiqueta" for="motivo-reporte">Motivo del reporte</label>
+                    <select class="campo campo--borde" id="motivo-reporte">
+                        <option value="">Todos los motivos</option>
+                        <option th:each="motivo : ${motivos}" th:text="${motivo}" th:value="${motivo}"></option>
+                    </select>
+                </div>
+
+                <div class="tabla-scroll" role="region" aria-label="Listado de reportes" tabindex="0">
+                    <table class="tabla reportes__tabla">
+                        <caption class="solo-lectores">Reseñas reportadas por la comunidad</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Reportado por</th>
+                                <th scope="col">Autor de la reseña</th>
+                                <th scope="col">Lugar</th>
+                                <th scope="col">Motivo</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <!-- Thymeleaf genera una fila por cada registro recibido desde Java. -->
+                        <tbody>
+                            <tr th:each="reporte : ${reportes}">
+                                <td th:text="${#temporals.format(reporte.fecha, 'dd MMM yyyy')}"></td>
+                                <td th:text="${reporte.reportante}"></td>
+                                <td th:text="|@${reporte.resena.usuario.username}|"></td>
+                                <td class="reportes__lugar" th:text="${reporte.resena.lugar.nombre}"></td>
+                                <td><span class="reportes__motivo" th:text="${reporte.motivo}"></span></td>
+                                <td><span class="reportes__insignia" th:classappend="${reporte.revisado} ? 'reportes__insignia--revisado'" th:text="${reporte.estado}"></span></td>
+                                <td><a class="btn reportes__accion" th:classappend="${reporte.revisado} ? 'reportes__accion--ver' : 'btn--primario'" th:href="|#detalle-reporte-${reporte.id}|" th:text="${reporte.revisado} ? 'Ver' : 'Revisar'"></a></td>
+                            </tr>
+                            <tr th:replace="~{fragments/admin/componentes :: vacio(${reportes}, 7, 'No hay reportes disponibles.')}"></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="reportes__pie">
+                    <span class="solo-lectores" id="conteo-reportes" role="status" aria-live="polite" th:text="|${#lists.size(reportes)} reportes|"></span>
+                    <nav th:replace="~{fragments/admin/componentes :: paginacion('Paginación de reportes')}"></nav>
+                </div>
+            </section>
+
+            <!-- Los enlaces y :target abren el detalle correspondiente sin JavaScript. -->
+            <th:block th:each="reporte : ${reportes}">
+                <div class="modal-overlay" th:id="|detalle-reporte-${reporte.id}|"><section class="reportes__detalle" role="dialog" aria-modal="true" aria-label="Detalle del reporte">
+                        <div class="modal__header">
+                            <div>
+                                <h2 class="modal__titulo" th:text="${reporte.revisado ? 'Ver reporte' : 'Revisar reporte'}">Revisar reporte</h2>
+                                <p class="modal__subtitulo" th:id="|subtitulo-detalle-reporte-${reporte.id}|">Decide si la reseña sigue visible o se oculta de la comunidad.</p>
+                            </div>
+                            <a href="#" class="modal__cerrar" aria-label="Cerrar detalle"><i class="bi bi-x-lg" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="reportes__detalle-cuerpo">
+                            <section class="reportes__bloque reportes__bloque--reporte">
+                                <h3 class="reportes__seccion-titulo" th:id="|titulo-resumen-reporte-${reporte.id}|">Reporte</h3>
+                                <dl class="reportes__datos">
+                                    <div><dt>Reportado por</dt><dd th:text="${reporte.reportante}"></dd></div>
+                                    <div><dt>Fecha</dt><dd th:text="${#temporals.format(reporte.fecha, 'dd MMM yyyy')}"></dd></div>
+                                    <div><dt>Motivo</dt><dd><span class="reportes__motivo" th:text="${reporte.motivo}"></span></dd></div>
+                                    <div class="reportes__comentario"><dt>Comentario del reportante</dt><dd th:text="${reporte.comentario}"></dd></div>
+                                </dl>
+                            </section>
+                            <section class="reportes__bloque">
+                                <h3 class="reportes__seccion-titulo" th:id="|titulo-resena-reportada-${reporte.id}|">Reseña reportada</h3>
+                                <div class="reportes__resena">
+                                    <div class="reportes__foto"><i class="bi bi-image" aria-hidden="true"></i><span>Foto de la reseña</span></div>
+                                    <div class="reportes__resena-contenido">
+                                        <div class="reportes__autor">
+                                            <i class="bi bi-person reportes__avatar" aria-hidden="true"></i>
+                                            <div><strong th:text="${reporte.resena.usuario.nombre}"></strong><p class="reportes__autor-meta" th:text="${reporte.resena.usuario.username}"></p></div>
+                                        </div>
+                                        <div class="reportes__resena-lugar"><strong th:text="${reporte.resena.lugar.nombre}"></strong><span th:text="${reporte.resena.calificacion}"></span></div>
+                                        <p th:text="${reporte.resena.texto}"></p>
+                                    </div>
+                                </div>
+                            </section>
+                            <p class="reportes__nota" th:id="|detalle-nota-${reporte.id}|">Vista de muestra: las acciones todavía no están implementadas.</p>
+                        </div>
+                        <div class="modal__footer">
+                            <button class="btn btn--cancelar btn--pequeno" th:id="|descartar-reporte-${reporte.id}|" type="button">Descartar reporte</button>
+                            <a class="btn btn--peligro btn--pequeno" th:if="${reporte.pendiente}" th:href="|#confirmar-ocultar-resena-${reporte.id}|">Ocultar reseña</a>
+                        </div>
+                </section></div>
+                <div class="modal-overlay" th:id="|confirmar-ocultar-resena-${reporte.id}|"><section class="reportes__confirmacion" role="dialog" aria-modal="true" aria-label="Confirmar ocultar reseña">
+                        <span class="reportes__confirmacion-icono" aria-hidden="true"><i class="bi bi-exclamation-circle"></i></span>
+                        <h2 th:id="|titulo-ocultar-resena-${reporte.id}|">¿Ocultar esta reseña?</h2>
+                        <p th:id="|descripcion-ocultar-resena-${reporte.id}|">La reseña dejará de ser visible para la comunidad y el reporte se marcará como revisado.</p>
+                        <p class="reportes__confirmacion-advertencia" th:id="|advertencia-ocultar-resena-${reporte.id}|">Esta acción no se puede deshacer.</p>
+                        <div class="reportes__confirmacion-acciones">
+                            <a class="btn reportes__confirmacion-cancelar" th:href="|#detalle-reporte-${reporte.id}|">Cancelar</a>
+                            <button class="btn reportes__confirmacion-ocultar" th:id="|confirmar-ocultar-${reporte.id}|" type="button">Ocultar</button>
+                        </div>
+                </section></div>
+            </th:block>
+        </main>
+    </body>
+</html>
