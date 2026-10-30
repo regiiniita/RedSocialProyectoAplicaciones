@@ -1,6 +1,12 @@
 package com.aplicaciones_web.red_social_proyecto_final.config;
 
+import Dominio.EstadoReporte;
+import Dominio.EstadoResenia;
 import com.aplicaciones_web.red_social_proyecto_final.model.CuentaUsuario;
+import com.aplicaciones_web.red_social_proyecto_final.model.ReporteResena;
+import com.aplicaciones_web.red_social_proyecto_final.model.Resena;
+import com.aplicaciones_web.red_social_proyecto_final.repository.ReporteRepository;
+import com.aplicaciones_web.red_social_proyecto_final.repository.ResenaRepository;
 import com.aplicaciones_web.red_social_proyecto_final.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 /** Agrega cuentas mock para probar el módulo sin reemplazar los datos existentes. */
 @Component
 @RequiredArgsConstructor
@@ -18,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DatosIniciales implements ApplicationRunner {
     private final UsuarioRepository usuarios;
     private final PasswordEncoder encoder;
+    private final ReporteRepository reportes;
+    private final ResenaRepository resenas;
 
     @Value("${app.datos-prueba.admin-password}")
     private String adminPassword;
@@ -37,6 +47,18 @@ public class DatosIniciales implements ApplicationRunner {
                 usuarioPassword, "USUARIO_REGISTRADO", true, 41);
         crearSiNoExiste("Ramses", "rams3s", "ramses30@gmail.com",
                 usuarioPassword, "USUARIO_REGISTRADO", false, 29);
+    }
+
+    private Resena crearResena(CuentaUsuario autor, String lugar, String categoria,
+                               int calificacion, int diasAtras, EstadoResenia estado) {
+        return resenas.save(new Resena(null, LocalDate.now().minusDays(diasAtras), autor, lugar, categoria,
+                calificacion, "Texto de prueba de la reseña de " + lugar + ".", null, estado));
+    }
+
+    private void crearReporte(CuentaUsuario reportante, Resena resena, String motivo,
+                              int diasAtras, EstadoReporte estado) {
+        reportes.save(new ReporteResena(null, LocalDate.now().minusDays(diasAtras), reportante, resena,
+                motivo, "Comentario de prueba del reportante.", estado));
     }
 
     private void crearSiNoExiste(String nombre, String username, String email,

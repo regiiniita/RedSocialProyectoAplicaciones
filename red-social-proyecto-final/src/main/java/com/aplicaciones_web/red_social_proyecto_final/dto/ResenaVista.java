@@ -18,4 +18,9 @@ public class ResenaVista {
     private String estado;
     private String texto;
     private String imagen;
+
+    /** Indica si la reseña ya está oculta para la comunidad. */
+    public boolean isOculta() {
+        return "Oculto".equals(estado);
+    }
 }

@@ -2,6 +2,7 @@ package com.aplicaciones_web.red_social_proyecto_final.controller;
 
 import com.aplicaciones_web.red_social_proyecto_final.admin.AdminDatos;
 import com.aplicaciones_web.red_social_proyecto_final.services.ReporteConsultaService;
+import com.aplicaciones_web.red_social_proyecto_final.services.ResenaService;
 import com.aplicaciones_web.red_social_proyecto_final.services.UsuarioService;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class AdminController {
     private final AdminDatos datos;
     private final UsuarioService usuarioService;
     private final ReporteConsultaService reporteService;
+    private final ResenaService resenaService;
 
     /** Prepara los datos de la pantalla de dashboard. */
     @GetMapping("/dashboard")
@@ -46,21 +48,63 @@ public class AdminController {
         return "admin/categorias";
     }
 
-    /** Prepara los datos de la pantalla de resenas. */
+    /** Envía las reseñas y el texto de búsqueda a la plantilla de moderación. */
     @GetMapping("/resenas")
-    public String resenas(Model model) {
-        model.addAttribute("resenas", datos.resenas());
+    public String resenas(@RequestParam(defaultValue = "") String buscar, Model model) {
+        model.addAttribute("resenas", resenaService.consultar(buscar));
+        model.addAttribute("buscar", buscar);
         return "admin/resenas";
     }
 
-    /** Prepara los datos de la pantalla de reportes. */
+    /** Oculta la reseña y redirige al listado para evitar repetir el envío. */
+    @PostMapping("/resenas/ocultar")
+    public String ocultarResena(@RequestParam long idResena, RedirectAttributes redirect) {
+        try {
+            resenaService.ocultar(idResena);
+            redirect.addFlashAttribute("mensaje", "Reseña ocultada correctamente.");
+        } catch (IllegalArgumentException ex) {
+            redirect.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/resenas";
+    }
+
+    /** Prepara los datos de la pantalla de reportes junto con los filtros aplicados. */
     @GetMapping("/reportes")
-    public String reportes(Model model) {
-        var listado = reporteService.consultar();
+    public String reportes(@RequestParam(defaultValue = "") String estado,
+                           @RequestParam(defaultValue = "") String motivo,
+                           @RequestParam(defaultValue = "") String buscar, Model model) {
+        var listado = reporteService.consultar(estado, motivo, buscar);
         model.addAttribute("reportes", listado.getReportes());
         model.addAttribute("pendientes", listado.getPendientes());
         model.addAttribute("motivos", listado.getMotivos());
+        model.addAttribute("estado", estado);
+        model.addAttribute("motivo", motivo);
+        model.addAttribute("buscar", buscar);
         return "admin/reportes";
+    }
+
+    /** Revisa el reporte ocultando la reseña reportada. */
+    @PostMapping("/reportes/ocultar-resena")
+    public String ocultarResenaReportada(@RequestParam long idReporte, RedirectAttributes redirect) {
+        try {
+            reporteService.ocultarResena(idReporte);
+            redirect.addFlashAttribute("mensaje", "Reseña ocultada y reporte revisado.");
+        } catch (IllegalArgumentException ex) {
+            redirect.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/reportes";
+    }
+
+    /** Descarta el reporte y deja la reseña visible. */
+    @PostMapping("/reportes/descartar")
+    public String descartarReporte(@RequestParam long idReporte, RedirectAttributes redirect) {
+        try {
+            reporteService.descartar(idReporte);
+            redirect.addFlashAttribute("mensaje", "Reporte descartado correctamente.");
+        } catch (IllegalArgumentException ex) {
+            redirect.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/reportes";
     }
 
     /**

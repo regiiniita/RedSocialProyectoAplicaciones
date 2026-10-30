@@ -9,8 +9,6 @@ public interface AdminDatos {
     ResumenVista resumen();
     List<CategoriaVista> categorias();
     List<LugarVista> lugares();
-    List<ResenaVista> resenas();
-    List<ReporteVista> reportes();
     List<LugarDestacadoVista> lugaresMasResenados();
     List<UsuarioActivoVista> usuariosMasActivos();
 }

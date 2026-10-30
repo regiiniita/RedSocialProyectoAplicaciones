@@ -25,4 +25,9 @@ public class ReporteVista {
     public boolean isPendiente() {
         return "Pendiente".equals(estado);
     }
+
+    /** Un reporte resuelto (revisado o descartado) ya no ofrece acciones. */
+    public boolean isResuelto() {
+        return !isPendiente();
+    }
 }
