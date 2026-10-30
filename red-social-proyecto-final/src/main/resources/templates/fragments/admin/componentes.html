@@ -45,6 +45,11 @@
             <a href="#" class="modal__btn-texto">Cancelar</a>
             <button type="button" class="btn btn--primario">Guardar</button>
         </div>
+        
+        <div class="modal__footer" th:fragment="guardar">
+            <a href="#" class="modal__btn-texto">Cancelar</a>
+            <button type="submit" class="btn btn--primario">Guardar</button>
+        </div>
 
         <div class="modal-alerta__contenido" th:fragment="contenidoConfirmacion(titulo, texto, advertencia)">
             <i class="bi bi-exclamation-circle-fill modal-alerta__icono" aria-hidden="true"></i>

@@ -1,6 +1,7 @@
 package com.aplicaciones_web.red_social_proyecto_final.controller;
 
 import com.aplicaciones_web.red_social_proyecto_final.admin.AdminDatos;
+import com.aplicaciones_web.red_social_proyecto_final.services.CategoriaService;
 import com.aplicaciones_web.red_social_proyecto_final.services.ReporteConsultaService;
 import com.aplicaciones_web.red_social_proyecto_final.services.ResenaService;
 import com.aplicaciones_web.red_social_proyecto_final.services.UsuarioService;
@@ -19,10 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
+
     private final AdminDatos datos;
     private final UsuarioService usuarioService;
     private final ReporteConsultaService reporteService;
     private final ResenaService resenaService;
+    private final CategoriaService categoriaService;
 
     /** Prepara los datos de la pantalla de dashboard. */
     @GetMapping("/dashboard")
@@ -39,13 +42,6 @@ public class AdminController {
         model.addAttribute("lugares", datos.lugares());
         model.addAttribute("categorias", datos.categorias());
         return "admin/lugares";
-    }
-
-    /** Prepara los datos de la pantalla de categorias. */
-    @GetMapping("/categorias")
-    public String categorias(Model model) {
-        model.addAttribute("categorias", datos.categorias());
-        return "admin/categorias";
     }
 
     /** Envía las reseñas y el texto de búsqueda a la plantilla de moderación. */
@@ -142,5 +138,38 @@ public class AdminController {
             redirect.addFlashAttribute("error", ex.getMessage());
         }
         return "redirect:/admin/usuarios";
+    }
+
+    // categorias
+
+    @GetMapping("/categorias")
+    public String categorias(@RequestParam(defaultValue = "") String buscar, Model model) {
+        model.addAttribute("categorias", categoriaService.consultar(buscar));
+        model.addAttribute("buscar", buscar);
+        return "admin/categorias";
+    }
+
+    @PostMapping("/categorias/guardar")
+    public String guardarCategoria(@RequestParam String nombreCategoria,
+                                   @RequestParam String descripcionCategoria, RedirectAttributes redirect) {
+        try {
+            categoriaService.guardar(nombreCategoria, descripcionCategoria);
+            redirect.addFlashAttribute("mensaje", "Categoría creada correctamente.");
+        } catch (IllegalArgumentException ex) {
+            redirect.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/categorias";
+    }
+
+    @PostMapping("/categorias/actualizar")
+    public String actualizarCategoria(@RequestParam long idCategoria, @RequestParam String nombreCategoria,
+                                      @RequestParam String descripcionCategoria, RedirectAttributes redirect) {
+        try {
+            categoriaService.actualizar(idCategoria, nombreCategoria, descripcionCategoria);
+            redirect.addFlashAttribute("mensaje", "Categoría actualizada correctamente.");
+        } catch (IllegalArgumentException ex) {
+            redirect.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/categorias";
     }
 }

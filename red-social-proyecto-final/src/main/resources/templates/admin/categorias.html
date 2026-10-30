@@ -4,6 +4,7 @@
     <body>
 
         <main class="contenido-admin">
+            <th:block th:replace="~{fragments/admin/componentes :: mensajes}"></th:block>
             <div class="encabezado-pagina">
                 <div th:replace="~{fragments/admin/componentes :: titulo('Categorías', 'Organiza y mantiene la taxonomía del catálogo.', null)}"></div>
                 <a class="btn btn--primario" href="#modal-nueva-categoria">
@@ -14,10 +15,13 @@
 
             <section class="tabla-tarjeta">
                 <div class="tabla-herramientas">
-                    <label class="buscador">
-                        <i class="bi bi-search buscador__icono" aria-hidden="true"></i>
-                        <input class="buscador__campo" type="search" placeholder="Buscar por nombre..." aria-label="Buscar categorías">
-                    </label>
+                    <form th:action="@{/admin/categorias}" method="get">
+                        <label class="buscador">
+                            <i class="bi bi-search buscador__icono" aria-hidden="true"></i>
+                            <input class="buscador__campo" type="search" name="buscar" th:value="${buscar}"
+                                   placeholder="Buscar por nombre..." aria-label="Buscar categorías">
+                        </label>
+                    </form>
                     <button class="btn btn--cancelar btn--pequeno" type="button">
                         <i class="bi bi-sliders btn__icono btn__icono--sm" aria-hidden="true"></i>
                         Filtros
@@ -66,7 +70,7 @@
 
                         <th:block th:replace="~{fragments/admin/formularios :: camposCategorias(null, 'categoria-nuevo')}"></th:block>
 
-                        <div th:replace="~{fragments/admin/componentes :: guardarMuestra}"></div>
+                        <div th:replace="~{fragments/admin/componentes :: guardar}"></div>
                     </form>
                 </div>
             </div>
@@ -81,7 +85,7 @@
 
                         <th:block th:replace="~{fragments/admin/formularios :: camposCategorias(${categoria}, |categoria-${categoria.id}|)}"></th:block>
 
-                        <div th:replace="~{fragments/admin/componentes :: guardarMuestra}"></div>
+                        <div th:replace="~{fragments/admin/componentes :: guardar}"></div>
                     </form>
                 </div>
             </div>
