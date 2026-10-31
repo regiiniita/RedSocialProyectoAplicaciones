@@ -18,4 +18,10 @@ public interface UsuarioRepository extends JpaRepository<CuentaUsuario, Long> {
     /** Busca coincidencias parciales en los datos visibles de la cuenta. */
     List<CuentaUsuario> findByNombreContainingIgnoreCaseOrUsernameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrderByIdAsc(
             String nombre, String username, String email);
+
+    /** Cuenta los usuarios activos en la plataforma. */
+    long countByActivoTrue();
+
+    /** Busca los 5 usuarios activos con mas reseñas en la plataforma. */
+    List<CuentaUsuario> findTop5ByActivoTrueOrderByTotalResenasDesc();
 }

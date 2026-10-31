@@ -1,10 +1,8 @@
 package com.aplicaciones_web.red_social_proyecto_final.controller;
 
 import com.aplicaciones_web.red_social_proyecto_final.admin.AdminDatos;
-import com.aplicaciones_web.red_social_proyecto_final.services.CategoriaService;
-import com.aplicaciones_web.red_social_proyecto_final.services.ReporteConsultaService;
-import com.aplicaciones_web.red_social_proyecto_final.services.ResenaService;
-import com.aplicaciones_web.red_social_proyecto_final.services.UsuarioService;
+import com.aplicaciones_web.red_social_proyecto_final.services.*;
+
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,15 +24,8 @@ public class AdminController {
     private final ReporteConsultaService reporteService;
     private final ResenaService resenaService;
     private final CategoriaService categoriaService;
+    private final DashboardService dashboardService;
 
-    /** Prepara los datos de la pantalla de dashboard. */
-    @GetMapping("/dashboard")
-    public String dashboard(Model model) {
-        model.addAttribute("resumen", datos.resumen());
-        model.addAttribute("lugaresMasResenados", datos.lugaresMasResenados());
-        model.addAttribute("usuariosMasActivos", datos.usuariosMasActivos());
-        return "admin/dashboard";
-    }
 
     /** Prepara los datos de la pantalla de lugares. */
     @GetMapping("/lugares")
@@ -171,5 +162,15 @@ public class AdminController {
             redirect.addFlashAttribute("error", ex.getMessage());
         }
         return "redirect:/admin/categorias";
+    }
+
+    // Dashboard
+    @GetMapping("/dashboard")
+    public String dashboard(Model model) {
+        model.addAttribute("resumen", dashboardService.resumen());
+        // Pendiente: pasar a DashboardService cuando exista la tabla de lugares.
+        model.addAttribute("lugaresMasResenados", datos.lugaresMasResenados());
+        model.addAttribute("usuariosMasActivos", dashboardService.usuariosMasActivos());
+        return "admin/dashboard";
     }
 }
