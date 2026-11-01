@@ -3,6 +3,7 @@ package com.aplicaciones_web.red_social_proyecto_final.config;
 import Dominio.EstadoReporte;
 import Dominio.EstadoResenia;
 import com.aplicaciones_web.red_social_proyecto_final.model.CuentaUsuario;
+import com.aplicaciones_web.red_social_proyecto_final.model.Lugar;
 import com.aplicaciones_web.red_social_proyecto_final.model.ReporteResena;
 import com.aplicaciones_web.red_social_proyecto_final.model.Resena;
 import com.aplicaciones_web.red_social_proyecto_final.repository.ReporteRepository;
@@ -49,10 +50,10 @@ public class DatosIniciales implements ApplicationRunner {
                 usuarioPassword, "USUARIO_REGISTRADO", false, 29);
     }
 
-    private Resena crearResena(CuentaUsuario autor, String lugar, String categoria,
+    private Resena crearResena(CuentaUsuario autor, Lugar lugar,
                                int calificacion, int diasAtras, EstadoResenia estado) {
-        return resenas.save(new Resena(null, LocalDate.now().minusDays(diasAtras), autor, lugar, categoria,
-                calificacion, "Texto de prueba de la reseña de " + lugar + ".", null, estado));
+        return resenas.save(new Resena(null, LocalDate.now().minusDays(diasAtras), autor, lugar,
+                calificacion, "Texto de prueba de la reseña de " + lugar.getNombre() + ".", null, estado));
     }
 
     private void crearReporte(CuentaUsuario reportante, Resena resena, String motivo,

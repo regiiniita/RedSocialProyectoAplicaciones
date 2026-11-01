@@ -1,9 +1,11 @@
 package com.aplicaciones_web.red_social_proyecto_final.repository;
 
 import Dominio.EstadoReporte;
+import com.aplicaciones_web.red_social_proyecto_final.model.Lugar;
 import com.aplicaciones_web.red_social_proyecto_final.model.ReporteResena;
 import com.aplicaciones_web.red_social_proyecto_final.model.Resena;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -24,7 +26,7 @@ public interface ReporteRepository extends JpaRepository<ReporteResena, Long> {
               and (:buscar = ''
                    or lower(r.reportante.username) like lower(concat('%', :buscar, '%'))
                    or lower(r.resena.autor.username) like lower(concat('%', :buscar, '%'))
-                   or lower(r.resena.lugarNombre) like lower(concat('%', :buscar, '%')))
+                   or lower(r.resena.lugar.nombre) like lower(concat('%', :buscar, '%')))
             order by r.fecha desc, r.id desc
             """)
     List<ReporteResena> filtrar(@Param("estado") EstadoReporte estado,
@@ -39,4 +41,9 @@ public interface ReporteRepository extends JpaRepository<ReporteResena, Long> {
 
     /** Reportes de una reseña que siguen sin resolverse. */
     List<ReporteResena> findByResenaAndEstado(Resena resena, EstadoReporte estado);
+
+    /** Borra los reportes de todas las reseñas de un lugar; se usa antes de borrar esas reseñas. */
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("delete from ReporteResena r where r.resena in (select s from Resena s where s.lugar = :lugar)")
+    void eliminarPorLugar(@Param("lugar") Lugar lugar);
 }

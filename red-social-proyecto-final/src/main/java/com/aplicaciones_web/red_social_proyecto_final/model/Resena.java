@@ -28,12 +28,10 @@ public class Resena {
     @JoinColumn(name = "autor_id", nullable = false)
     private CuentaUsuario autor;
 
-    // El módulo de lugares todavía no se guarda en base de datos, por eso se conserva su nombre y categoría.
-    @Column(name = "lugar_nombre", nullable = false, length = 150)
-    private String lugarNombre;
-
-    @Column(name = "lugar_categoria", nullable = false, length = 100)
-    private String lugarCategoria;
+    @ToString.Exclude
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "lugar_id", nullable = false)
+    private Lugar lugar;
 
     @Column(nullable = false)
     private int calificacion;

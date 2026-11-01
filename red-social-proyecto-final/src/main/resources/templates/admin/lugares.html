@@ -1,132 +1,139 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
-    th:replace="~{layout/admin :: layout('Gestión de lugares', 'lugares', ~{::main})}">
-    <body>
+      th:replace="~{layout/admin :: layout('Gestión de lugares', 'lugares', ~{::main})}">
+<body>
 
-        <main class="contenido-admin">
-            <div class="encabezado-pagina">
-                <div th:replace="~{fragments/admin/componentes :: titulo('Gestión de Lugares', 'Administra los lugares disponibles en The Spot.', null)}"></div>
-                <a class="btn btn--primario" href="#modal-nuevo-lugar">
-                    <i class="bi bi-plus-lg btn__icono" aria-hidden="true"></i>
-                    Nuevo lugar
-                </a>
-            </div>
+<main class="contenido-admin">
 
-            <section class="tabla-tarjeta">
-                <div class="tabla-herramientas">
-                    <label class="buscador">
-                        <i class="bi bi-search buscador__icono" aria-hidden="true"></i>
-                        <input class="buscador__campo" type="search" placeholder="Buscar por nombre, ID o dirección..." aria-label="Buscar lugares">
-                    </label>
-                    <button class="btn btn--cancelar btn--pequeno" type="button">
-                        <i class="bi bi-sliders btn__icono btn__icono--sm" aria-hidden="true"></i>
-                        Filtros
-                    </button>
-                </div>
+    <th:block th:replace="~{fragments/admin/componentes :: mensajes}"></th:block>
 
-                <div class="tabla-scroll">
-                    <table class="tabla">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Categoría</th>
-                                <th scope="col">Dirección</th>
-                                <th scope="col">Promedio</th>
-                                <th scope="col">Acción</th>
-                            </tr>
-                        </thead>
-                        <!-- Thymeleaf genera una fila por cada registro recibido desde Java. -->
-                        <tbody>
-                            <tr th:each="lugar : ${lugares}">
-                                <td th:text="|#${lugar.id}|"></td>
-                                <td>
-                                    <span class="tabla__principal" th:text="${lugar.nombre}"></span>
-                                    <span class="tabla__secundario" th:text="|${lugar.totalResenas} reseñas|"></span>
-                                </td>
-                                <td th:text="${lugar.categoria.nombre}"></td>
-                                <td th:text="${lugar.direccion}"></td>
-                                <td>
+    <div class="encabezado-pagina">
+        <div th:replace="~{fragments/admin/componentes :: titulo('Gestión de Lugares', 'Administra los lugares disponibles en The Spot.', null)}"></div>
+        <a class="btn btn--primario" href="#modal-nuevo-lugar">
+            <i class="bi bi-plus-lg btn__icono" aria-hidden="true"></i>
+            Nuevo lugar
+        </a>
+    </div>
+
+    <section class="tabla-tarjeta">
+        <div class="tabla-herramientas">
+
+            <form th:action="@{/admin/lugares}" method="get">
+                <label class="buscador">
+                    <i class="bi bi-search buscador__icono" aria-hidden="true"></i>
+                    <input class="buscador__campo" type="search" name="buscar" th:value="${buscar}" placeholder="Buscar por nombre, ID o dirección..." aria-label="Buscar lugares">
+                </label>
+            </form>
+            <button class="btn btn--cancelar btn--pequeno" type="button">
+                <i class="bi bi-sliders btn__icono btn__icono--sm" aria-hidden="true"></i>
+                Filtros
+            </button>
+        </div>
+
+        <div class="tabla-scroll">
+            <table class="tabla">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Promedio</th>
+                    <th scope="col">Acción</th>
+                </tr>
+                </thead>
+                <!-- Thymeleaf genera una fila por cada registro recibido desde Java. -->
+                <tbody>
+                <tr th:each="lugar : ${lugares}">
+                    <td th:text="|#${lugar.id}|"></td>
+                    <td>
+                        <span class="tabla__principal" th:text="${lugar.nombre}"></span>
+                        <span class="tabla__secundario" th:text="|${lugar.totalResenas} reseñas|"></span>
+                    </td>
+                    <td th:text="${lugar.categoria.nombre}"></td>
+                    <td th:text="${lugar.direccion}"></td>
+                    <td>
                                     <span class="promedio">
                                         <i class="bi bi-star-fill estrella estrella--llena" aria-hidden="true"></i>
                                         <span th:text="${lugar.promedio}"></span>
                                     </span>
-                                </td>
-                                <td>
-                                    <div class="tabla__acciones">
-                                        <a class="tabla__accion" th:href="|#modal-editar-lugar-${lugar.id}|" aria-label="Editar lugar">
-                                            <i class="bi bi-pencil tabla__icono" aria-hidden="true"></i>
-                                        </a>
-                                        <a class="tabla__accion" th:href="|#modal-eliminar-lugar-${lugar.id}|" aria-label="Eliminar lugar">
-                                            <i class="bi bi-trash tabla__icono" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr th:replace="~{fragments/admin/componentes :: vacio(${lugares}, 6, 'No hay registros disponibles.')}"></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <nav th:replace="~{fragments/admin/componentes :: paginacion('Paginación')}"></nav>
-            </section>
-
-            <div id="modal-nuevo-lugar" class="modal-overlay">
-                <div class="modal">
-                    <div th:replace="~{fragments/admin/componentes :: cabeceraModal('NUEVO LUGAR', 'Completa la información para añadir un lugar al catálogo.')}"></div>
-
-                    <form th:action="@{/admin/lugares/guardar}" method="POST" enctype="multipart/form-data" class="modal__body">
-
-                        <th:block th:replace="~{fragments/admin/formularios :: camposLugares(null, 'lugar-nuevo', ${categorias})}"></th:block>
-
-                        <div class="grupo-form">
-                            <label class="etiqueta">Imagen representativa</label>
-                            <div class="zona-drop">
-                                <input type="file" id="imagenLugar" name="imagenLugar" class="solo-lectores" accept="image/png, image/jpeg" required>
-                                <label for="imagenLugar" class="zona-drop__label">
-                                    <i class="bi bi-camera zona-drop__icono" aria-hidden="true"></i>
-                                    <span class="zona-drop__texto-principal">Arrastra una imagen aquí</span>
-                                    <span class="zona-drop__texto-secundario">o haz clic para seleccionar - PNG, JPG hasta 10 MB</span>
-                                </label>
-                            </div>
+                    </td>
+                    <td>
+                        <div class="tabla__acciones">
+                            <a class="tabla__accion" th:href="|#modal-editar-lugar-${lugar.id}|" aria-label="Editar lugar">
+                                <i class="bi bi-pencil tabla__icono" aria-hidden="true"></i>
+                            </a>
+                            <a class="tabla__accion" th:href="|#modal-eliminar-lugar-${lugar.id}|" aria-label="Eliminar lugar">
+                                <i class="bi bi-trash tabla__icono" aria-hidden="true"></i>
+                            </a>
                         </div>
+                    </td>
+                </tr>
 
-                        <div th:replace="~{fragments/admin/componentes :: guardarMuestra}"></div>
-                    </form>
+                <tr th:replace="~{fragments/admin/componentes :: vacio(${lugares}, 6, 'No hay registros disponibles.')}"></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <nav th:replace="~{fragments/admin/componentes :: paginacion('Paginación')}"></nav>
+    </section>
+
+    <div id="modal-nuevo-lugar" class="modal-overlay">
+        <div class="modal">
+            <div th:replace="~{fragments/admin/componentes :: cabeceraModal('NUEVO LUGAR', 'Completa la información para añadir un lugar al catálogo.')}"></div>
+
+            <form th:action="@{/admin/lugares/guardar}" method="POST" enctype="multipart/form-data" class="modal__body">
+
+                <th:block th:replace="~{fragments/admin/formularios :: camposLugares(null, 'lugar-nuevo', ${categorias})}"></th:block>
+
+                <div class="grupo-form">
+                    <label class="etiqueta">Imagen representativa</label>
+                    <div class="zona-drop">
+                        <input type="file" id="imagenLugar" name="imagenLugar" class="solo-lectores" accept="image/png, image/jpeg" required>
+                        <label for="imagenLugar" class="zona-drop__label">
+                            <i class="bi bi-camera zona-drop__icono" aria-hidden="true"></i>
+                            <span class="zona-drop__texto-principal">Arrastra una imagen aquí</span>
+                            <span class="zona-drop__texto-secundario">o haz clic para seleccionar - PNG, JPG hasta 10 MB</span>
+                        </label>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Cada registro tiene su propia ventana, identificada por su ID. -->
-            <div th:each="lugar : ${lugares}" th:id="|modal-editar-lugar-${lugar.id}|" class="modal-overlay">
-                <div class="modal">
-                    <div th:replace="~{fragments/admin/componentes :: cabeceraModal('EDITAR', 'Modifica los datos actuales del lugar.')}"></div>
+                <div th:replace="~{fragments/admin/componentes :: guardar}"></div>
+            </form>
+        </div>
+    </div>
 
-                    <form th:action="@{/admin/lugares/actualizar}" method="POST" class="modal__body">
-                        <input type="hidden" name="idLugar" th:value="${lugar.id}">
+    <!-- Cada registro tiene su propia ventana, identificada por su ID. -->
+    <div th:each="lugar : ${lugares}" th:id="|modal-editar-lugar-${lugar.id}|" class="modal-overlay">
+        <div class="modal">
+            <div th:replace="~{fragments/admin/componentes :: cabeceraModal('EDITAR', 'Modifica los datos actuales del lugar.')}"></div>
 
-                        <th:block th:replace="~{fragments/admin/formularios :: camposLugares(${lugar}, |lugar-${lugar.id}|, ${categorias})}"></th:block>
+            <form th:action="@{/admin/lugares/actualizar}" method="POST" class="modal__body">
+                <input type="hidden" name="idLugar" th:value="${lugar.id}">
 
-                        <div th:replace="~{fragments/admin/componentes :: guardarMuestra}"></div>
-                    </form>
+                <th:block th:replace="~{fragments/admin/formularios :: camposLugares(${lugar}, |lugar-${lugar.id}|, ${categorias})}"></th:block>
+
+                <div th:replace="~{fragments/admin/componentes :: guardar}"></div>
+            </form>
+        </div>
+    </div>
+
+    <div th:each="lugar : ${lugares}" th:id="|modal-eliminar-lugar-${lugar.id}|" class="modal-overlay">
+        <div class="modal modal--alerta">
+            <form th:action="@{/admin/lugares/eliminar}" method="POST">
+                <input type="hidden" name="idLugar" th:value="${lugar.id}">
+
+                <div th:replace="~{fragments/admin/componentes :: contenidoConfirmacion(|¿Eliminar &quot;${lugar.nombre}&quot;?|, 'Se eliminarán también todas las reseñas asociadas a este lugar.', 'Esta acción no se puede revertir.')}"></div>
+
+                <div class="modal-alerta__acciones">
+                    <a href="#" class="btn btn--cancelar">Cancelar</a>
+                    <!-- el botón ahora envía el formulario -->
+                    <button type="submit" class="btn btn--peligro">Eliminar</button>
                 </div>
-            </div>
+            </form>
+        </div>
+    </div>
+</main>
 
-            <div th:each="lugar : ${lugares}" th:id="|modal-eliminar-lugar-${lugar.id}|" class="modal-overlay">
-                <div class="modal modal--alerta">
-                    <form th:action="@{/admin/lugares/eliminar}" method="POST">
-                        <input type="hidden" name="idLugar" th:value="${lugar.id}">
-
-                        <div th:replace="~{fragments/admin/componentes :: contenidoConfirmacion(|¿Eliminar &quot;${lugar.nombre}&quot;?|, 'Se eliminarán también todas las reseñas asociadas a este lugar.', 'Esta acción no se puede revertir.')}"></div>
-
-                        <div class="modal-alerta__acciones">
-                            <a href="#" class="btn btn--cancelar">Cancelar</a>
-                            <button type="button" class="btn btn--peligro">Eliminar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </main>
-
-    </body>
+</body>
 </html>

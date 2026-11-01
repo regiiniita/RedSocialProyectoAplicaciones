@@ -36,7 +36,7 @@ public class ResenaService {
         var resenas = filtro.isEmpty()
                 ? repositorio.findAllByOrderByFechaDescIdDesc()
                 : repositorio.findByAutorUsernameContainingIgnoreCaseOrLugarNombreContainingIgnoreCaseOrderByFechaDescIdDesc(
-                        filtro, filtro);
+                filtro, filtro);
         return resenas.stream().map(ResenaService::aVista).toList();
     }
 
@@ -65,9 +65,11 @@ public class ResenaService {
         var autor = r.getAutor();
         var usuario = new UsuarioVista(autor.getId(), autor.getNombre(), autor.getUsername(), autor.getEmail(),
                 autor.getTotalResenas(), autor.isActivo() ? "Activo" : "Inactivo", autor.esAdministrador());
-        // El lugar aún no tiene tabla propia; se muestra con los datos guardados en la reseña.
-        var categoria = new CategoriaVista(0, r.getLugarCategoria(), "", 0);
-        var lugar = new LugarVista(0, r.getLugarNombre(), categoria, "", 0, 0, "");
+        var l = r.getLugar();
+        var c = l.getCategoria();
+        var categoria = new CategoriaVista(c.getId(), c.getNombre(), c.getDescripcion(), c.getTotalLugares());
+        var lugar = new LugarVista(l.getId(), l.getNombre(), categoria, l.getDireccion(), 0, 0,
+                l.getDescripcion() == null ? "" : l.getDescripcion());
         return new ResenaVista(r.getId(), r.getFecha(), usuario, lugar, r.getCalificacion(),
                 etiqueta(r.getEstado()), r.getTexto(), r.getImagen());
     }

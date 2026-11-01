@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /** Reúne las rutas del panel y delega las operaciones a los servicios. */
@@ -25,15 +26,7 @@ public class AdminController {
     private final ResenaService resenaService;
     private final CategoriaService categoriaService;
     private final DashboardService dashboardService;
-
-
-    /** Prepara los datos de la pantalla de lugares. */
-    @GetMapping("/lugares")
-    public String lugares(Model model) {
-        model.addAttribute("lugares", datos.lugares());
-        model.addAttribute("categorias", datos.categorias());
-        return "admin/lugares";
-    }
+    private final LugarService lugarService;
 
     /** Envía las reseñas y el texto de búsqueda a la plantilla de moderación. */
     @GetMapping("/resenas")
@@ -172,5 +165,58 @@ public class AdminController {
         model.addAttribute("lugaresMasResenados", datos.lugaresMasResenados());
         model.addAttribute("usuariosMasActivos", dashboardService.usuariosMasActivos());
         return "admin/dashboard";
+    }
+
+    // Lugares
+
+    @GetMapping("/lugares")
+    public String lugares(@RequestParam(defaultValue = "") String buscar, Model model) {
+        model.addAttribute("lugares", lugarService.consultar(buscar));
+        model.addAttribute("categorias", categoriaService.consultar(""));
+        model.addAttribute("buscar", buscar);
+        return "admin/lugares";
+    }
+
+    @PostMapping("/lugares/guardar")
+    public String guardarLugar(@RequestParam String nombreLugar,
+                               @RequestParam(required = false) Long categoriaLugar,
+                               @RequestParam String direccionCompleta,
+                               @RequestParam(defaultValue = "") String descripcionLugar,
+                               @RequestParam(required = false) MultipartFile imagenLugar,
+                               RedirectAttributes redirect) {
+        try {
+            lugarService.guardar(nombreLugar, categoriaLugar, direccionCompleta, descripcionLugar, imagenLugar);
+            redirect.addFlashAttribute("mensaje", "Lugar creado correctamente.");
+        } catch (IllegalArgumentException ex) {
+            redirect.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/lugares";
+    }
+
+    @PostMapping("/lugares/actualizar")
+    public String actualizarLugar(@RequestParam long idLugar,
+                                  @RequestParam String nombreLugar,
+                                  @RequestParam(required = false) Long categoriaLugar,
+                                  @RequestParam String direccionCompleta,
+                                  @RequestParam(defaultValue = "") String descripcionLugar,
+                                  RedirectAttributes redirect) {
+        try {
+            lugarService.actualizar(idLugar, nombreLugar, categoriaLugar, direccionCompleta, descripcionLugar);
+            redirect.addFlashAttribute("mensaje", "Lugar actualizado correctamente.");
+        } catch (IllegalArgumentException ex) {
+            redirect.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/lugares";
+    }
+
+    @PostMapping("/lugares/eliminar")
+    public String eliminarLugar(@RequestParam long idLugar, RedirectAttributes redirect) {
+        try {
+            lugarService.eliminar(idLugar);
+            redirect.addFlashAttribute("mensaje", "Lugar eliminado correctamente.");
+        } catch (IllegalArgumentException ex) {
+            redirect.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/lugares";
     }
 }
