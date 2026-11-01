@@ -26,7 +26,7 @@ public class SecurityConfig {
         // CSRF permanece habilitado; los formularios POST deben enviar su token.
         http.authorizeHttpRequests(auth -> auth
                     .requestMatchers("/admin/login", "/styles/**", "/uploads/**", "/images/**", "/img/**").permitAll()
-                    .requestMatchers("/admin", "/admin/**").hasRole("ADMINISTRADOR")
+                    .requestMatchers("/","/admin", "/admin/**").hasRole("ADMINISTRADOR")
                     .anyRequest().permitAll())
                 .formLogin(login -> login.loginPage("/admin/login")
                     .loginProcessingUrl("/admin/login")
