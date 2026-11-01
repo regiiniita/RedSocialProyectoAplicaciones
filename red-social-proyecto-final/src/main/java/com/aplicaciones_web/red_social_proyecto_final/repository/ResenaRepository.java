@@ -3,12 +3,12 @@ package com.aplicaciones_web.red_social_proyecto_final.repository;
 import Dominio.EstadoResenia;
 import com.aplicaciones_web.red_social_proyecto_final.model.Lugar;
 import com.aplicaciones_web.red_social_proyecto_final.model.Resena;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -51,6 +51,22 @@ public interface ResenaRepository extends JpaRepository<Resena, Long> {
         Long getLugarId();
         Long getTotal();
         Double getPromedio();
+    }
+
+    /** Lugares con más reseñas, sin contar las ocultas; el Pageable limita cuántos regresa. */
+    @Query("""
+            select r.lugar.nombre as nombre, count(r) as total
+            from Resena r
+            where r.estado <> :excluido
+            group by r.lugar.id, r.lugar.nombre
+            order by count(r) desc
+            """)
+    List<LugarConteo> lugaresMasResenados(@Param("excluido") EstadoResenia excluido, Pageable pageable);
+
+    /** Resultado de lugaresMasResenados. */
+    interface LugarConteo {
+        String getNombre();
+        Long getTotal();
     }
 
 }
