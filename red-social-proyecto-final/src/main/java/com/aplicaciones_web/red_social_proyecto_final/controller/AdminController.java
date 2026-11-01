@@ -161,8 +161,7 @@ public class AdminController {
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         model.addAttribute("resumen", dashboardService.resumen());
-        // Pendiente: pasar a DashboardService cuando exista la tabla de lugares.
-        model.addAttribute("lugaresMasResenados", datos.lugaresMasResenados());
+        model.addAttribute("lugaresMasResenados", dashboardService.lugaresMasResenados());
         model.addAttribute("usuariosMasActivos", dashboardService.usuariosMasActivos());
         return "admin/dashboard";
     }
