@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -62,6 +63,48 @@ public class LugarService {
         Map<Long, ResenaRepository.ResumenLugar> resumen = resenas.resumenPorLugar(EstadoResenia.OCULTA).stream()
                 .collect(Collectors.toMap(ResenaRepository.ResumenLugar::getLugarId, Function.identity()));
         return lugares.stream().map(l -> aVista(l, resumen.get(l.getId()))).toList();
+    }
+
+    /** Aplica los filtros y el orden de la pantalla de catálogo. */
+    @Transactional(readOnly = true)
+    public List<LugarVista> consultarCatalogo(
+            String query, String categoria, String orden) {
+
+        List<LugarVista> resultados = new ArrayList<>();
+
+        for (LugarVista lugar : consultar(query)) {
+            if (categoria == null || categoria.isBlank()
+                    || lugar.getCategoria().getNombre().equalsIgnoreCase(categoria)) {
+                resultados.add(lugar);
+            }
+        }
+
+        boolean ordenarPorPromedio = "mejor_valorado".equals(orden);
+
+        // Compara lugares vecinos y coloca primero el mayor valor.
+        if (ordenarPorPromedio || "mas_resenados".equals(orden)) {
+            for (int i = 0; i < resultados.size() - 1; i++) {
+                for (int j = 0; j < resultados.size() - 1 - i; j++) {
+                    LugarVista primero = resultados.get(j);
+                    LugarVista segundo = resultados.get(j + 1);
+
+                    boolean intercambiar;
+
+                    if (ordenarPorPromedio) {
+                        intercambiar = primero.getPromedio() < segundo.getPromedio();
+                    } else {
+                        intercambiar = primero.getTotalResenas() < segundo.getTotalResenas();
+                    }
+
+                    if (intercambiar) {
+                        resultados.set(j, segundo);
+                        resultados.set(j + 1, primero);
+                    }
+                }
+            }
+        }
+
+        return resultados;
     }
 
     /**
@@ -208,7 +251,7 @@ public class LugarService {
         }
     }
 
-    /** Convierte la entidad en los datos que necesitan las plantillas. */
+    /** Prepara los datos del lugar para las vistas y la API, incluida la ruta de su foto. */
     private static LugarVista aVista(Lugar l, ResenaRepository.ResumenLugar resumen) {
         var c = l.getCategoria();
         var categoria = new CategoriaVista(c.getId(), c.getNombre(), c.getDescripcion(), c.getTotalLugares());
@@ -216,6 +259,6 @@ public class LugarService {
         double promedio = resumen == null || resumen.getPromedio() == null
                 ? 0 : Math.round(resumen.getPromedio() * 10.0) / 10.0;
         return new LugarVista(l.getId(), l.getNombre(), categoria, l.getDireccion(), total, promedio,
-                l.getDescripcion() == null ? "" : l.getDescripcion());
+                l.getDescripcion() == null ? "" : l.getDescripcion(), l.getImagen());
     }
 }

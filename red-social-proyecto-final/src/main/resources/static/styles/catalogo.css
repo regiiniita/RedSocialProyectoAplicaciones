@@ -109,6 +109,8 @@ body.layout-catalogo {
 .busqueda-form {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--espacio-3);
 }
 
 .busqueda-input-wrapper {
@@ -128,10 +130,11 @@ body.layout-catalogo {
 
 .busqueda-campo {
   width: 100%;
+  max-width: 650px;
   background-color: #F3F1F2;
   border: none;
   border-radius: var(--radio-pill);
-  padding: var(--espacio-3) var(--espacio-5) var(--espacio-3) 3rem;
+  padding: var(--espacio-3) var(--espacio-5);
   font-family: var(--fuente-texto);
   font-size: var(--texto-base);
   color: var(--color-texto);

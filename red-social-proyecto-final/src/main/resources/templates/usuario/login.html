@@ -12,7 +12,7 @@
 <body class="auth-page">
 
 <!-- Logo Superior Izquierdo -->
-<a th:href="@{/login}" class="auth-logo">
+<a th:href="${loginAdmin == true} ? @{/admin/login} : @{/login}" class="auth-logo">
     <img th:src="@{/uploads/logo.png}" alt="TheSpot" class="auth-logo__img">
 </a>
 
@@ -23,10 +23,12 @@
     <section class="auth-card auth-card--login">
         <h1 class="auth-title">Iniciar Sesión</h1>
 
-        <!-- Spring Security procesa el acceso y Thymeleaf incluye el token CSRF. -->
-        <form th:action="@{/admin/login}" method="post" class="auth-form">
+        <!-- La misma pantalla envía el formulario a la ruta del cliente o del administrador. -->
+        <form th:action="${loginCliente == true} ? @{/api/sesiones} : @{/admin/login}"
+              method="post" class="auth-form">
+            <p th:if="${errorLogin}" th:text="${errorLogin}" class="texto-error" role="alert"></p>
 
-            <div th:if="${param.error}" class="texto-error" style="text-align: center;">
+            <div th:if="${loginAdmin == true and param.error != null}" class="texto-error" style="text-align: center;">
                 Usuario o contraseña incorrectos, o cuenta sin acceso al panel.
             </div>
 

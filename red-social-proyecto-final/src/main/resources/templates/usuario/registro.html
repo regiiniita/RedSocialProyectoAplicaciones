@@ -36,8 +36,11 @@
       <h1 class="auth-title">Registro</h1>
     </div>
 
-    <form th:action="@{/registro}" method="post" class="auth-form">
-
+    <!-- Envía los campos a UsuarioController para crear la cuenta. -->
+    <form th:action="@{/api/usuarios}" method="post" class="auth-form">
+      <div class="grupo-form">
+        <p th:if="${errorRegistro}" th:text="${errorRegistro}" role="alert"></p>
+      </div>
       <div class="grupo-form">
         <input type="text" id="username" name="username" class="campo campo--rosa auth-input" placeholder="Usuario" required autofocus>
       </div>

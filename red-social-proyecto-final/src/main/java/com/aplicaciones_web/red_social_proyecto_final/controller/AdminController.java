@@ -91,7 +91,10 @@ public class AdminController {
      * Reutiliza el login de usuario para el acceso administrativo.
      */
     @GetMapping("/login")
-    public String login() { return "usuario/login"; }
+    public String login(Model model) {
+        model.addAttribute("loginAdmin", true);
+        return "usuario/login";
+    }
 
     /**
      * Establece la pantalla inicial del panel.

@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface UsuarioRepository extends JpaRepository<CuentaUsuario, Long> {
     /** Busca las credenciales sin distinguir mayúsculas en el nombre de usuario. */
     Optional<CuentaUsuario> findByUsernameIgnoreCase(String username);
-
+    /** Comprueba si el correo ya se usa en otra cuenta. */
+    boolean existsByEmailIgnoreCase(String email);
     /** Mantiene un orden estable en el listado. */
     List<CuentaUsuario> findAllByOrderByIdAsc();
 

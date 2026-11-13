@@ -1,9 +1,15 @@
 package com.aplicaciones_web.red_social_proyecto_final.services;
 
+import Dominio.Excepciones.RecursoDuplicadoException;
+import Dominio.Rol;
+import com.aplicaciones_web.red_social_proyecto_final.dto.api.RegistroRequest;
+import com.aplicaciones_web.red_social_proyecto_final.dto.api.RegistroResponse;
+import com.aplicaciones_web.red_social_proyecto_final.model.CuentaUsuario;
 import lombok.RequiredArgsConstructor;
 import com.aplicaciones_web.red_social_proyecto_final.repository.UsuarioRepository;
 import java.util.List;
 import com.aplicaciones_web.red_social_proyecto_final.dto.UsuarioVista;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UsuarioService {
     private final UsuarioRepository repositorio;
-
+    private final PasswordEncoder passwordEncoder;
     /**
      * Busca coincidencias en el nombre, usuario o correo.
      *
@@ -56,5 +62,38 @@ public class UsuarioService {
         usuario.setActivo(false);
         repositorio.save(usuario);
     }
+
+    /** Crea una cuenta normal con usuario y correo únicos y contraseña con BCrypt. */
+    @Transactional
+    public RegistroResponse registrar(RegistroRequest solicitud) {
+        String username = solicitud.getUsername().strip();
+        String email = solicitud.getEmail().strip();
+
+        if (repositorio.findByUsernameIgnoreCase(username).isPresent()) {
+            throw new RecursoDuplicadoException("El usuario ya está registrado.");
+        }
+
+        if (repositorio.existsByEmailIgnoreCase(email)) {
+            throw new RecursoDuplicadoException("El correo ya está registrado.");
+        }
+
+        CuentaUsuario cuenta = new CuentaUsuario();
+        cuenta.setNombre(username);
+        cuenta.setUsername(username);
+        cuenta.setEmail(email);
+        cuenta.setPasswordHash(passwordEncoder.encode(solicitud.getPassword()));
+        cuenta.setRol(Rol.USUARIO_REGISTRADO.name());
+        cuenta.setActivo(true);
+        cuenta.setTotalResenas(0);
+
+        CuentaUsuario guardada = repositorio.save(cuenta);
+
+        return new RegistroResponse(
+                guardada.getId(),
+                guardada.getUsername(),
+                guardada.getEmail()
+        );
+    }
+
 
 }
