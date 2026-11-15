@@ -49,6 +49,7 @@ JWT_SECRET se usa para firmar y también para validar el token de las rutas prot
 - Entrar a http://localhost:8080/registro y crear una cuenta con un usuario y un correo nuevos.
 - Entrar a http://localhost:8080/login con esa cuenta. Si las credenciales son correctas, se abre Inicio.
 - Entrar a http://localhost:8080/catalogo para probar la búsqueda, la categoría y el orden. Si la base está vacía, entrar al panel, crear una categoría y guardar un lugar con foto. Al volver al catálogo debe aparecer su tarjeta con la imagen.
+- Entrar a http://localhost:8080/perfil/configuracion después de iniciar sesión. El formulario muestra los datos actuales de la cuenta. Al cambiar nombres, apellidos, fecha de nacimiento o género y pulsar Guardar Cambios, la página vuelve a abrirse con el mensaje de cambios guardados y los datos nuevos. Si no hay sesión iniciada, redirige a /login.
 
 Las cuentas de prueba se crean al arrancar si no existen y está habilitada la carga de datos de prueba.
 
@@ -62,6 +63,9 @@ Usar http://localhost:8080 como dirección del servidor.
 
 - POST /api/usuarios recibe username, email y password en JSON. Devuelve 201 con id, username y email.
 - POST /api/sesiones recibe username y password en JSON. Devuelve 200 con el token si las credenciales son correctas.
+- GET /api/usuarios/me devuelve en JSON el perfil del usuario del token: id, username, nombres, apellidos, email, fechaNacimiento, genero, totalResenas, totalSeguidores y totalSeguidos. Necesita token. Devuelve 200. Lo usan Mi Perfil y la pantalla de Configuración para llenar el formulario.
+- PATCH /api/usuarios/me recibe en JSON nombres, apellidos, fechaNacimiento (AAAA-MM-DD) y genero (Femenino, Masculino u Otro). Todos son opcionales y solo se cambian los que se envían. Necesita token. Devuelve 200 con el perfil actualizado. Lo usa el botón Guardar Cambios de Configuración.
+- GET /api/usuarios/{username} devuelve el perfil público de {username}: id, username, nombres, apellidos y los contadores de reseñas, seguidores y seguidos. No incluye email, fecha de nacimiento ni género. No necesita token. Devuelve 200.
 - GET /api/lugares devuelve la lista en JSON. Se puede probar con query para buscar, categoria para filtrar y orden para ordenar. Los valores de orden son recientes, mejor_valorado y mas_resenados. Escribir la categoría con el nombre que tiene en MySQL, incluidas las tildes.
 - GET /api/usuarios/{username}/seguidos devuelve en JSON la lista de usuarios que sigue {username}. Cada uno trae id, username y nombre. No necesita token. Devuelve 200.
 - PUT /api/usuarios/me/seguidos/{username} hace que el usuario del token empiece a seguir a {username}. Necesita token. Devuelve 204 sin cuerpo. Si ya lo seguía no da error ni duplica el seguimiento.
@@ -87,6 +91,22 @@ La colección de Postman está en la carpeta postman/ del repositorio. Trae dos 
 2. En Postman, pulsar Import y arrastrar los dos archivos. En la ventana de importación dejar marcados los dos, la colección y el entorno, y pulsar Import.
 3. Elegir el entorno The Spot arriba a la derecha. Sin entorno, {{baseUrl}} y {{token}} no tienen valor y las peticiones fallan.
 4. Con la aplicación corriendo, enviar Registro y acceso → Iniciar Sesión con regiiniita y Usuario123!. La respuesta trae el token y la petición lo guarda sola en el entorno. Las demás peticiones lo usan automáticamente.
+
+Para probar el perfil con los datos de prueba, en este orden:
+
+1. Iniciar Sesión con regiiniita.
+2. Perfil y configuración → Mi perfil. Debe responder 200 con los datos de la cuenta y sus contadores.
+3. Perfil y configuración → Guardar cambios. Envía nombres, apellidos, fecha de nacimiento y género, y debe responder 200 con los datos ya cambiados.
+4. Perfil y configuración → Mi perfil otra vez. Deben aparecer los datos nuevos.
+5. Perfil y configuración → Perfil público. Consulta a Yisus0714 sin token y debe responder 200 sin email, fecha de nacimiento ni género.
+
+Reglas del perfil:
+
+- Los campos apellidos, fecha_nacimiento y genero se agregan solos a la tabla usuarios al arrancar la aplicación. En las cuentas que ya existían quedan vacíos hasta que se editan.
+- Al registrarse, el nombre de la cuenta toma el valor del username. Se puede cambiar después desde Configuración sin afectar el username.
+- La fecha de nacimiento debe ser anterior a hoy y el género solo acepta Femenino, Masculino u Otro.
+- Solo se puede consultar el perfil de cuentas activas.
+- Si los datos no son válidos o el usuario no existe, la petición falla y por ahora responde 500, porque unificar los errores de la API en JSON sigue pendiente.
 
 Para probar el seguimiento con los datos de prueba, en este orden:
 
