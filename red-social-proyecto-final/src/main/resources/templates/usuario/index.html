@@ -15,21 +15,18 @@
             </svg>
           </div>
 
-          <h3 class="tarjeta-perfil-resumen__nombre"
-              th:text="${usuarioLogueado != null ? usuarioLogueado.nombre : 'Regina'}">Regina</h3>
-          <span class="tarjeta-perfil-resumen__handle"
-                th:text="${usuarioLogueado != null ? '@' + usuarioLogueado.username : '@regiiniita'}">@regiiniita</span>
-
+          <h3 class="tarjeta-perfil-resumen__nombre" th:text="${perfil.nombres}">Regina</h3>
+          <span class="tarjeta-perfil-resumen__handle" th:text="|@${perfil.username}|">@regiiniita</span>
           <div class="tarjeta-perfil-resumen__stats">
             <div class="stat-item">
               <strong class="stat-item__valor"
-                      th:text="${conteoSeguidores != null ? conteoSeguidores : '40'}">40</strong>
+                      th:text="${perfil.totalSeguidores}">40</strong>
               <span class="stat-item__etiqueta">Seguidores</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
               <strong class="stat-item__valor"
-                      th:text="${conteoSeguidos != null ? conteoSeguidos : '25'}">25</strong>
+                      th:text="${perfil.totalSeguidos}">25</strong>
               <span class="stat-item__etiqueta">Seguidos</span>
             </div>
           </div>
@@ -46,7 +43,7 @@
         <div class="contenido-feed__header">
           <div class="feed-titulos">
             <h1 class="contenido-feed__titulo">Tu comunidad</h1>
-            <p class="saludo-movil" th:text="${usuarioLogueado != null ? 'Buenos días, ' + usuarioLogueado.nombre : 'Buenos días, Regina'}">Buenos días, Regina</p>
+            <p class="saludo-movil" th:text="|Buenos días, ${perfil.nombres}|">Buenos días, Regina</p>
           </div>
 
           <button type="button" class="btn btn--primario btn-crear-resena" id="btnAbrirModal">

@@ -16,10 +16,10 @@
 
             <div class="perfil-datos">
                 <div class="perfil-nombre-row">
-                    <h1 class="perfil-nombre-completo">Regina Jiménez Meneses</h1>
+                    <h1 class="perfil-nombre-completo" th:text="|${perfil.nombres} ${perfil.apellidos ?: ''}|">Nombre</h1>
                     <a th:href="@{/perfil/configuracion}" class="btn-configuracion" title="Ajustes">⚙</a>
                 </div>
-                <span class="perfil-username">@regiiniita</span>
+                <span class="perfil-username" th:text="|@${perfil.username}|">@usuario</span>
 
                 <div class="perfil-estadisticas">
                     <div class="stat-box">

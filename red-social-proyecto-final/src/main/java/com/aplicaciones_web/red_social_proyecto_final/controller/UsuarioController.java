@@ -2,6 +2,7 @@ package com.aplicaciones_web.red_social_proyecto_final.controller;
 
 import Dominio.Excepciones.CredencialesInvalidasException;
 import Dominio.Excepciones.RecursoDuplicadoException;
+import Dominio.Excepciones.RecursoNoEncontradoException;
 import com.aplicaciones_web.red_social_proyecto_final.dto.api.FiltroCatalogo;
 import com.aplicaciones_web.red_social_proyecto_final.dto.api.RegistroRequest;
 import com.aplicaciones_web.red_social_proyecto_final.dto.api.SesionRequest;
@@ -52,8 +53,12 @@ public class UsuarioController {
         return "usuario/registro";
     }
 
+    /** Inicio: tarjeta de resumen del perfil y feed de la comunidad. */
     @GetMapping("/inicio")
-    public String inicio() {
+    public String inicio(HttpSession sesion, Model model) {
+        String username = usernameDeSesion(sesion);
+        if (username == null) return "redirect:/login";
+        model.addAttribute("perfil", usuarioService.obtenerMiPerfil(username));
         return "usuario/index";
     }
 
@@ -82,14 +87,25 @@ public class UsuarioController {
         return "usuario/catalogo";
     }
 
+    /** Mi Perfil: encabezado con los datos del usuario con sesión iniciada. */
     @GetMapping("/perfil")
-    public String miperfil() {
+    public String miperfil(HttpSession sesion, Model model) {
+        String username = usernameDeSesion(sesion);
+        if (username == null) return "redirect:/login";
+        model.addAttribute("perfil", usuarioService.obtenerMiPerfil(username));
         return "usuario/perfil";
     }
 
+    /** Perfil público: encabezado con los datos de otro usuario. */
     @GetMapping("/perfil/{username}")
-    public String perfilPublico(@PathVariable("username") String username, Model model) {
-        // Al conectar la base de datos se buscará el perfil por 'username'.
+    public String perfilPublico(@PathVariable("username") String username, HttpSession sesion, Model model) {
+        String actual = usernameDeSesion(sesion);
+        if (actual != null && actual.equalsIgnoreCase(username)) return "redirect:/perfil";
+        try {
+            model.addAttribute("perfil", usuarioService.obtenerPerfilPublico(username));
+        } catch (RecursoNoEncontradoException ex) {
+            return "redirect:/inicio";
+        }
         return "usuario/perfil-publico";
     }
 
