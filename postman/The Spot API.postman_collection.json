@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "b0262261-ea40-44d0-81fc-8839edffd241",
-    "name": "My Collection",
+    "name": "The Spot API",
     "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "57855888",
@@ -137,6 +137,123 @@
               "response": []
             }
           ]
+        },
+        {
+          "name": "Seguimiento",
+          "item": [
+            {
+              "name": "Listar seguidos",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/usuarios/regiiniita/seguidos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "regiiniita",
+                    "seguidos"
+                  ]
+                },
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "Devuelve los usuarios que sigue {username}. Es público: no necesita token. 200 con la lista."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Devuelve una lista\", () => pm.expect(pm.response.json()).to.be.an(\"array\"));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Seguir usuario",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/usuarios/me/seguidos/Yisus0714",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "me",
+                    "seguidos",
+                    "Yisus0714"
+                  ]
+                },
+                "description": "El usuario del token empieza a seguir a {username}. Necesita haber iniciado sesión. 204 sin cuerpo; repetirla no da error."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 204\", () => pm.response.to.have.status(204));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Dejar de seguir usuario",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/usuarios/me/seguidos/Yisus0714",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "me",
+                    "seguidos",
+                    "Yisus0714"
+                  ]
+                },
+                "description": "El usuario del token deja de seguir a {username}. Necesita haber iniciado sesión. 204 sin cuerpo."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 204\", () => pm.response.to.have.status(204));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            ]
+          }
         }
       ]
     }
