@@ -67,7 +67,8 @@ public class DatosIniciales implements ApplicationRunner {
         // No cambia contraseñas ni reactiva cuentas al reiniciar la aplicación.
         if (usuarios.findByUsernameIgnoreCase(username).isEmpty()) {
             usuarios.save(new CuentaUsuario(null, nombre, username, email,
-                    encoder.encode(password), rol, activo, totalResenas));
+                    encoder.encode(password), rol, activo, totalResenas,
+                    null, null, null));
         }
     }
 }

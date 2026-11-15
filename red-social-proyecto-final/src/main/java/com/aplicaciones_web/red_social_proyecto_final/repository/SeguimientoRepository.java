@@ -24,4 +24,14 @@ public interface SeguimientoRepository extends JpaRepository<SeguimientoUsuario,
     @Modifying
     @Query("delete from SeguimientoUsuario s where s.seguidor.id = :seguidorId and s.seguido.id = :seguidoId")
     int eliminarPorSeguidorYSeguido(Long seguidorId, Long seguidoId);
+
+    /** Cuenta los seguidores activos de una cuenta */
+    @Query("select count(s) from SeguimientoUsuario s "
+            + "where s.seguido.id = :usuarioId and s.seguidor.activo = true")
+    long contarSeguidores(Long usuarioId);
+
+    /** Cuenta las cuentas activas que sigue una cuenta */
+    @Query("select count(s) from SeguimientoUsuario s "
+            + "where s.seguidor.id = :usuarioId and s.seguido.activo = true")
+    long contarSeguidos(Long usuarioId);
 }

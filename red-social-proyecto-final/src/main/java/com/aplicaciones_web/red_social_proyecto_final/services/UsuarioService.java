@@ -12,6 +12,11 @@ import com.aplicaciones_web.red_social_proyecto_final.dto.UsuarioVista;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import Dominio.Excepciones.RecursoNoEncontradoException;
+import Dominio.Excepciones.ReglaNegocioException;
+import com.aplicaciones_web.red_social_proyecto_final.dto.api.ActualizarPerfilRequest;
+import com.aplicaciones_web.red_social_proyecto_final.dto.api.PerfilResponse;
+import com.aplicaciones_web.red_social_proyecto_final.repository.SeguimientoRepository;
 
 /**
  * Contiene las consultas y las reglas para desactivar cuentas de usuario.
@@ -21,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsuarioService {
     private final UsuarioRepository repositorio;
     private final PasswordEncoder passwordEncoder;
+    private final SeguimientoRepository seguimientos;
     /**
      * Busca coincidencias en el nombre, usuario o correo.
      *
@@ -69,6 +75,10 @@ public class UsuarioService {
         String username = solicitud.getUsername().strip();
         String email = solicitud.getEmail().strip();
 
+        if (username.equalsIgnoreCase("me")) {
+            throw new ReglaNegocioException("Ese nombre de usuario no está disponible.");
+        }
+
         if (repositorio.findByUsernameIgnoreCase(username).isPresent()) {
             throw new RecursoDuplicadoException("El usuario ya está registrado.");
         }
@@ -93,7 +103,51 @@ public class UsuarioService {
                 guardada.getUsername(),
                 guardada.getEmail()
         );
+
+
     }
 
+    /** Datos de Mi Perfil del usuario autenticado. Incluye los datos privados. */
+    @Transactional(readOnly = true)
+    public PerfilResponse obtenerMiPerfil(String username) {
+        return aPerfil(buscarActivo(username), true);
+    }
+
+    /** Datos del perfil público de otro usuario. No incluye correo, fecha ni género. */
+    @Transactional(readOnly = true)
+    public PerfilResponse obtenerPerfilPublico(String username) {
+        return aPerfil(buscarActivo(username), false);
+    }
+
+    /** Guarda solo los campos que llegaron en la solicitud (PATCH). */
+    @Transactional
+    public PerfilResponse actualizarPerfil(String username, ActualizarPerfilRequest solicitud) {
+        CuentaUsuario cuenta = buscarActivo(username);
+        if (solicitud.getNombres() != null) cuenta.setNombre(solicitud.getNombres().strip());
+        if (solicitud.getApellidos() != null) cuenta.setApellidos(solicitud.getApellidos().strip());
+        if (solicitud.getFechaNacimiento() != null) cuenta.setFechaNacimiento(solicitud.getFechaNacimiento());
+        if (solicitud.getGenero() != null) cuenta.setGenero(solicitud.getGenero());
+        return aPerfil(repositorio.save(cuenta), true);
+    }
+
+    private CuentaUsuario buscarActivo(String username) {
+        return repositorio.findByUsernameIgnoreCase(username.strip())
+                .filter(CuentaUsuario::isActivo)
+                .orElseThrow(() -> new RecursoNoEncontradoException("El usuario no existe"));
+    }
+
+    private PerfilResponse aPerfil(CuentaUsuario u, boolean propio) {
+        return new PerfilResponse(
+                u.getId(),
+                u.getUsername(),
+                u.getNombre(),
+                u.getApellidos(),
+                propio ? u.getEmail() : null,
+                propio ? u.getFechaNacimiento() : null,
+                propio ? u.getGenero() : null,
+                u.getTotalResenas(),
+                seguimientos.contarSeguidores(u.getId()),
+                seguimientos.contarSeguidos(u.getId()));
+    }
 
 }

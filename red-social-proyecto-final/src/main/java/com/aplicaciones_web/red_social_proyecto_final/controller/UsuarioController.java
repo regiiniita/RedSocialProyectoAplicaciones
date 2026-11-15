@@ -17,6 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import com.aplicaciones_web.red_social_proyecto_final.dto.api.ActualizarPerfilRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtException;
 
 /** Atiende las pantallas y los formularios del sitio para clientes. */
 @Controller
@@ -32,6 +36,9 @@ public class UsuarioController {
 
     @Autowired
     private SesionService sesionService;
+
+    @Autowired
+    private JwtDecoder jwtDecoder;
 
     /** Indica a la plantilla compartida que debe mostrar el acceso del cliente. */
     @GetMapping("/login")
@@ -86,9 +93,45 @@ public class UsuarioController {
         return "usuario/perfil-publico";
     }
 
+    /** Saca el username del JWT guardado en la sesión al iniciar sesión. */
+    private String usernameDeSesion(HttpSession sesion) {
+        Object token = sesion.getAttribute("jwtCliente");
+        if (token == null) return null;
+        try {
+            return jwtDecoder.decode(token.toString()).getSubject();
+        } catch (JwtException ex) {
+            return null; // token vencido o inválido
+        }
+    }
+
+    /** Muestra Configura tu cuenta con los datos actuales del usuario. */
     @GetMapping("/perfil/configuracion")
-    public String mostrarConfiguracion(Model model) {
+    public String mostrarConfiguracion(HttpSession sesion, Model model) {
+        String username = usernameDeSesion(sesion);
+        if (username == null) return "redirect:/login";
+        model.addAttribute("perfil", usuarioService.obtenerMiPerfil(username));
         return "usuario/configuracion";
+    }
+
+    /** Recibe el botón Guardar Cambios y usa la misma lógica que PATCH /api/usuarios/me. */
+    @PostMapping(value = "/perfil/configuracion", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String guardarConfiguracion(
+            @Valid @ModelAttribute ActualizarPerfilRequest solicitud,
+            BindingResult resultado,
+            HttpSession sesion,
+            Model model) {
+
+        String username = usernameDeSesion(sesion);
+        if (username == null) return "redirect:/login";
+
+        if (resultado.hasErrors()) {
+            model.addAttribute("perfil", usuarioService.obtenerMiPerfil(username));
+            model.addAttribute("errorConfiguracion", resultado.getFieldErrors().get(0).getDefaultMessage());
+            return "usuario/configuracion";
+        }
+
+        usuarioService.actualizarPerfil(username, solicitud);
+        return "redirect:/perfil/configuracion?guardado";
     }
 
     /** Procesa el registro desde el navegador y vuelve al formulario si hay errores. */

@@ -10,23 +10,25 @@
             <a th:href="@{/perfil}" class="btn-volver-perfil" aria-label="Volver a Mi Perfil">←</a>
 
             <h1 class="configuracion-titulo">Configura tu cuenta</h1>
+            <p th:if="${param.guardado}" class="mensaje-exito">Cambios guardados ✔</p>
+            <p th:if="${errorConfiguracion}" th:text="${errorConfiguracion}" class="mensaje-error"></p>
 
             <form th:action="@{/perfil/configuracion}" method="post" class="configuracion-form">
 
                 <!-- Nombres -->
                 <div class="grupo-form">
-                    <input type="text" name="nombres" class="campo-config" placeholder="Nombres" required>
+                    <input type="text" name="nombres" th:value="${perfil.nombres}" class="campo-config" placeholder="Nombres" required>
                 </div>
 
                 <!-- Apellidos -->
                 <div class="grupo-form">
-                    <input type="text" name="apellidos" class="campo-config" placeholder="Apellidos" required>
+                    <input type="text" name="apellidos" th:value="${perfil.apellidos}" class="campo-config" placeholder="Apellidos" required>
                 </div>
 
                 <!-- Fecha Nacimiento -->
                 <div class="grupo-form grupo-form--icono">
                     <span class="input-icono">📅</span>
-                    <input type="text" name="fechaNacimiento" onfocus="(this.type='date')" onblur="(this.type='text')" class="campo-config campo-config--icono" placeholder="Fecha Nacimiento" required>
+                    <input type="text" name="fechaNacimiento" th:value="${perfil.fechaNacimiento}" onfocus="(this.type='date')" onblur="(this.type='text')" class="campo-config campo-config--icono" placeholder="Fecha Nacimiento" required>
                 </div>
 
                 <!-- Género -->
@@ -34,17 +36,17 @@
                     <label class="genero-titulo">Género:</label>
                     <div class="genero-opciones">
                         <label class="genero-radio">
-                            <input type="radio" name="genero" value="Femenino" required>
+                            <input type="radio" name="genero" value="Femenino" th:checked="${perfil.genero == 'Femenino'}" required>
                             <span class="radio-custom"></span>
                             <span>Femenino</span>
                         </label>
                         <label class="genero-radio">
-                            <input type="radio" name="genero" value="Masculino">
+                            <input type="radio" name="genero" value="Masculino" th:checked="${perfil.genero == 'Masculino'}">
                             <span class="radio-custom"></span>
                             <span>Masculino</span>
                         </label>
                         <label class="genero-radio">
-                            <input type="radio" name="genero" value="Otro">
+                            <input type="radio" name="genero" value="Otro" th:checked="${perfil.genero == 'Otro'}">
                             <span class="radio-custom"></span>
                             <span>Otro</span>
                         </label>

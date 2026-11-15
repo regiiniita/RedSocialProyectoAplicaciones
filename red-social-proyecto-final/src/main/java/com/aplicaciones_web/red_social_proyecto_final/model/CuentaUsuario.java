@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
+import java.time.LocalDate;
 
 /** Cuenta de usuario almacenada en la tabla usuarios. */
 @Entity
@@ -43,4 +44,13 @@ public class CuentaUsuario {
     public boolean esAdministrador() {
         return Dominio.Rol.ADMINISTRADOR.name().equals(rol);
     }
+
+    @Column(length = 100)
+    private String apellidos;
+
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;
+
+    @Column(length = 20)
+    private String genero;
 }
