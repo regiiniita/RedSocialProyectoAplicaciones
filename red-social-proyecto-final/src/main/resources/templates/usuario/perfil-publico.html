@@ -1,5 +1,5 @@
 <th:block th:replace="~{usuario/contenido :: layout(~{::title}, ~{::main}, 'perfil')}">
-    <title>The Spot - Perfil de Mariana</title>
+    <title th:text="|The Spot - Perfil de ${perfil.nombres}|">The Spot - Perfil</title>
 
     <!-- Contenido del Perfil Público -->
     <main class="contenedor-perfil">
@@ -15,14 +15,14 @@
 
             <div class="perfil-datos">
                 <div class="perfil-nombre-row">
-                    <h1 class="perfil-nombre-completo">Mariana Orduño Velazquez</h1>
+                    <h1 class="perfil-nombre-completo" th:text="|${perfil.nombres} ${perfil.apellidos ?: ''}|">Mariana Orduño Velazquez</h1>
 
                     <!-- Botón de Acción Estado de Seguimiento -->
                     <button type="button" class="btn-accion-seguimiento btn-dejar-seguir" id="btnSeguimientoEstado" data-estado="siguiendo" data-handle="@mariiana1">
                         Dejar de seguir
                     </button>
                 </div>
-                <span class="perfil-username">@mariiana1</span>
+                <span class="perfil-username" th:text="|@${perfil.username}|">@mariiana1</span>
 
                 <div class="perfil-estadisticas">
                     <div class="stat-box">

@@ -1,0 +1,90 @@
+package com.aplicaciones_web.red_social_proyecto_final.repository;
+
+import Dominio.EstadoResenia;
+import com.aplicaciones_web.red_social_proyecto_final.model.Lugar;
+import com.aplicaciones_web.red_social_proyecto_final.model.Resena;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import java.time.LocalDate;
+import java.util.List;
+
+/** Consulta y guarda las reseñas que modera el administrador. */
+@Repository
+public interface ResenaRepository extends JpaRepository<Resena, Long> {
+    /** Muestra primero las reseñas más recientes. */
+    List<Resena> findAllByOrderByFechaDescIdDesc();
+
+    /** Busca coincidencias parciales en el usuario o en el lugar reseñado. */
+    List<Resena> findByAutorUsernameContainingIgnoreCaseOrLugarNombreContainingIgnoreCaseOrderByFechaDescIdDesc(
+            String username, String lugar);
+
+    /** Busca la cantidad de reseñas en el mes. */
+    long countByFechaBetween(LocalDate inicio, LocalDate fin);
+
+    /** Saca la calificación promedio enre todas las reseñas.  */
+    @Query("select avg(r.calificacion) from Resena r where r.estado <> Dominio.EstadoResenia.OCULTA")
+    Double promedioCalificacion();
+
+    /** Reseñas de un lugar. */
+    List<Resena> findByLugar(Lugar lugar);
+
+    /** Cantidad y promedio de reseñas por lugar, sin contar las ocultas. */
+    @Query("""
+            select r.lugar.id as lugarId, count(r) as total, avg(r.calificacion) as promedio
+            from Resena r
+            where r.estado <> :excluido
+            group by r.lugar.id
+            """)
+    List<ResumenLugar> resumenPorLugar(@Param("excluido") EstadoResenia excluido);
+
+    /** Borra las reseñas de un lugar; antes hay que borrar sus reportes. */
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("delete from Resena r where r.lugar = :lugar")
+    void eliminarPorLugar(@Param("lugar") Lugar lugar);
+
+    /** Resultado de resumenPorLugar. */
+    interface ResumenLugar {
+        Long getLugarId();
+        Long getTotal();
+        Double getPromedio();
+    }
+
+    /** Lugares con más reseñas, sin contar las ocultas; el Pageable limita cuántos regresa. */
+    @Query("""
+            select r.lugar.nombre as nombre, count(r) as total
+            from Resena r
+            where r.estado <> :excluido
+            group by r.lugar.id, r.lugar.nombre
+            order by count(r) desc
+            """)
+    List<LugarConteo> lugaresMasResenados(@Param("excluido") EstadoResenia excluido, Pageable pageable);
+
+    /** Resultado de lugaresMasResenados. */
+    interface LugarConteo {
+        String getNombre();
+        Long getTotal();
+    }
+
+    /**
+     * Reseñas visibles para la comunidad, de la más reciente a la más antigua. Ignora las ocultas y las de
+     * cuentas inactivas. Un filtro nulo no se aplica: autorId limita al autor y seguidorId limita a los
+     * usuarios que sigue esa cuenta.
+     */
+    @Query("""
+            select r from Resena r
+            where r.estado <> :oculta
+              and r.autor.activo = true
+              and (:autorId is null or r.autor.id = :autorId)
+              and (:seguidorId is null or r.autor.id in
+                   (select s.seguido.id from SeguimientoUsuario s where s.seguidor.id = :seguidorId))
+            order by r.fecha desc, r.id desc
+            """)
+    List<Resena> buscarPublicas(@Param("oculta") EstadoResenia oculta,
+                                @Param("autorId") Long autorId,
+                                @Param("seguidorId") Long seguidorId);
+
+}

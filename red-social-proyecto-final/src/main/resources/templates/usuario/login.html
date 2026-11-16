@@ -12,7 +12,7 @@
 <body class="auth-page">
 
 <!-- Logo Superior Izquierdo -->
-<a th:href="@{/login}" class="auth-logo">
+<a th:href="${loginAdmin == true} ? @{/admin/login} : @{/login}" class="auth-logo">
     <img th:src="@{/uploads/logo.png}" alt="TheSpot" class="auth-logo__img">
 </a>
 
@@ -23,18 +23,25 @@
     <section class="auth-card auth-card--login">
         <h1 class="auth-title">Iniciar Sesión</h1>
 
-        <form th:action="@{/login}" method="post" class="auth-form">
+        <!-- La misma pantalla envía el formulario a la ruta del cliente o del administrador. -->
+        <form th:action="${loginCliente == true} ? @{/api/sesiones} : @{/admin/login}"
+              method="post" class="auth-form">
+            <p th:if="${errorLogin}" th:text="${errorLogin}" class="texto-error" role="alert"></p>
 
-            <div th:if="${param.error}" class="texto-error" style="text-align: center;">
-                Usuario o contraseña incorrectos.
+            <div th:if="${loginAdmin == true and param.error != null}" class="texto-error" style="text-align: center;">
+                Usuario o contraseña incorrectos, o cuenta sin acceso al panel.
             </div>
 
-            <div class="grupo-form">
-                <input type="text" id="username" name="username" class="campo campo--rosa auth-input" placeholder="Usuario" required autofocus>
-            </div>
+            <p th:if="${param.logout}" role="status">Has cerrado sesión correctamente.</p>
 
             <div class="grupo-form">
-                <input type="password" id="password" name="password" class="campo campo--rosa auth-input" placeholder="Contraseña" required>
+                <input type="text" id="username" name="username" autocomplete="username" aria-label="Usuario" class="campo campo--rosa auth-input" placeholder="Usuario" required autofocus>
+            </div>
+
+
+
+            <div class="grupo-form">
+                <input type="password" id="password" name="password" autocomplete="current-password" aria-label="Contraseña" class="campo campo--rosa auth-input" placeholder="Contraseña" required>
             </div>
 
             <button type="submit" class="btn auth-btn-submit">

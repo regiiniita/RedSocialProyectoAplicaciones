@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <!-- Los formularios de alta y edición comparten campos y usan identificadores distintos. -->
+        <th:block th:fragment="camposCategorias(registro, prefijo)">
+            <div class="grupo-form">
+                <label class="etiqueta" th:for="|nombreCategoria-${prefijo}|">Nombre de la categoria</label>
+                <input type="text" th:id="|nombreCategoria-${prefijo}|" name="nombreCategoria" class="campo campo--borde" placeholder="Ej. Gimnasios, Librerias" required th:value="${registro == null ? '' : registro.nombre}">
+            </div>
+
+            <div class="grupo-form modal__campo-relativo">
+                <label class="etiqueta" th:for="|descripcionCategoria-${prefijo}|">Descripcion de la categoria</label>
+                <textarea th:id="|descripcionCategoria-${prefijo}|" name="descripcionCategoria" class="campo campo--borde" placeholder="Explica brevemente que establecimientos entran en esta categoria..." maxlength="250" required th:text="${registro == null ? '' : registro.descripcion}"></textarea>
+                <span class="modal__contador-caracteres" th:text="|${registro == null ? 0 : #strings.length(registro.descripcion)}/250|"></span>
+            </div>
+        </th:block>
+
+        <th:block th:fragment="camposLugares(registro, prefijo, categorias)">
+            <div class="grupo-form">
+                <label class="etiqueta" th:for="|nombreLugar-${prefijo}|">Nombre del lugar</label>
+                <input type="text" th:id="|nombreLugar-${prefijo}|" name="nombreLugar" class="campo campo--borde" placeholder="Ej. Atelier Norte" required th:value="${registro == null ? '' : registro.nombre}">
+            </div>
+
+            <div class="modal__grid-2">
+                <div class="grupo-form">
+                    <label class="etiqueta" th:for="|categoriaLugar-${prefijo}|">Categoría</label>
+                    <select th:id="|categoriaLugar-${prefijo}|" name="categoriaLugar" class="campo campo--borde" required>
+                        <option value="">Selecciona una categoría</option>
+                        <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:selected="${registro != null and categoria.id == registro.categoria.id}" th:text="${categoria.nombre}"></option>
+                    </select>
+                </div>
+                <div class="grupo-form">
+                    <label class="etiqueta" th:for="|direccionCompleta-${prefijo}|">Dirección Completa</label>
+                    <input type="text" th:id="|direccionCompleta-${prefijo}|" name="direccionCompleta" class="campo campo--borde" placeholder="Calle, número. colonia, C.P" required th:value="${registro == null ? '' : registro.direccion}">
+                </div>
+            </div>
+
+            <div class="grupo-form modal__campo-relativo">
+                <label class="etiqueta" th:for="|descripcionLugar-${prefijo}|">Descripción</label>
+                <textarea th:id="|descripcionLugar-${prefijo}|" name="descripcionLugar" class="campo campo--borde" placeholder="Describe brevemente el lugar..." maxlength="500" th:text="${registro == null ? '' : registro.descripcion}"></textarea>
+                <span class="modal__contador-caracteres" th:id="|contadorDescripcion-${prefijo}|" th:text="|${registro == null ? 0 : #strings.length(registro.descripcion)}/500|"></span>
+            </div>
+        </th:block>
+    </body>
+</html>

@@ -17,14 +17,15 @@
 
 <input type="checkbox" id="menu-admin" class="menu-toggle" aria-label="Abrir menú de navegación">
 
+<!-- Cabecera compartida por las pantallas del panel. -->
 <header class="header-admin">
     <div class="header-admin__logo">
-        <img th:src="@{/uploads/logo.png}" class="header-admin__logo--img" alt="TheSpot">
+        <img th:src="@{/uploads/logo.png}" class="header-admin__logo-img" alt="TheSpot">
     </div>
     <div class="header-admin__usuario">
         <div class="header-admin__info">
-            <div class="header-admin__info-nombre" th:text="${adminNombre} ?: 'Invitado'">loremIpsum</div>
-            <div class="header-admin__info-rol">Panel Administrativo</div>
+            <div class="header-admin__info-nombre" th:text="${adminNombre}"></div>
+            <div class="header-admin__info-rol" th:text="${adminRol}"></div>
         </div>
         <img class="avatar avatar--sm" th:src="@{/img/avatar.svg}" alt="">
     </div>
@@ -34,6 +35,7 @@
 </header>
 
 <div class="cuerpo-admin">
+    <!-- El parámetro activo indica la sección seleccionada del menú. -->
     <aside class="sidebar">
         <nav class="sidebar__nav">
             <a th:href="@{/admin/dashboard}"
@@ -80,18 +82,26 @@
                 </svg>
                 <span>Gestión de usuarios</span>
             </a>
+            <a th:href="@{/admin/reportes}"
+               class="sidebar__link"
+               th:classappend="${activo == 'reportes'} ? 'sidebar__link--activo'">
+                <i class="bi bi-exclamation-circle-fill sidebar__icono" aria-hidden="true"></i>
+                <span>Reportes</span>
+            </a>
         </nav>
 
         <div class="sidebar__footer">
-            <a th:href="@{/logout}" class="sidebar__link">
+            <!-- Cerrar sesión requiere POST y el token CSRF. -->
+            <form th:action="@{/admin/logout}" method="post"><button type="submit" class="sidebar__link">
                 <svg class="sidebar__icono" viewBox="0 0 24 24">
                     <path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
                 </svg>
                 <span>Cerrar Sesión</span>
-            </a>
+            </button></form>
         </div>
     </aside>
 
+    <!-- Aquí se inserta el contenido de cada pantalla. -->
     <main th:replace="${contenido}"></main>
 </div>
 
