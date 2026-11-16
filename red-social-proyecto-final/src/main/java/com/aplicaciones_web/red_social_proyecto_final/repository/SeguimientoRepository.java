@@ -34,4 +34,9 @@ public interface SeguimientoRepository extends JpaRepository<SeguimientoUsuario,
     @Query("select count(s) from SeguimientoUsuario s "
             + "where s.seguidor.id = :usuarioId and s.seguido.activo = true")
     long contarSeguidos(Long usuarioId);
+
+    /** Usuarios que siguen a una cuenta */
+    @Query("select s.seguidor from SeguimientoUsuario s "
+            + "where s.seguido.id = :seguidoId order by s.fechaSeguimiento desc, s.id desc")
+    List<CuentaUsuario> findSeguidoresBySeguidoId(Long seguidoId);
 }

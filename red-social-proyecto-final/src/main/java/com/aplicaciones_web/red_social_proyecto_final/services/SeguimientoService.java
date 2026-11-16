@@ -61,9 +61,22 @@ public class SeguimientoService {
         seguimientos.eliminarPorSeguidorYSeguido(seguidor.getId(), seguido.getId());
     }
 
+    /**
+     * Lista los usuarios activos que siguen la cuenta indicada
+     */
+    @Transactional(readOnly = true)
+    public List<UsuarioSeguidoResponse> listarSeguidores(String username) {
+        CuentaUsuario cuenta = buscarActivo(username);
+        return seguimientos.findSeguidoresBySeguidoId(cuenta.getId()).stream()
+                .filter(CuentaUsuario::isActivo)
+                .map(u -> new UsuarioSeguidoResponse(u.getId(), u.getUsername(), u.getNombre()))
+                .toList();
+    }
+
     private CuentaUsuario buscarActivo(String username) {
         return usuarios.findByUsernameIgnoreCase(username.strip())
                 .filter(CuentaUsuario::isActivo)
                 .orElseThrow(() -> new RecursoNoEncontradoException("El usuario no existe"));
     }
+
 }

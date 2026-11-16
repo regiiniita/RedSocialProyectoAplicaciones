@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.http.HttpMethod;
 
 /**
  * Define el acceso al panel y el manejo de la sesión del administrador.
@@ -50,6 +51,8 @@ public class SecurityConfig {
                 request -> request.getRequestURI().startsWith("/api/")));
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/usuarios/me/**").authenticated()
+                        .requestMatchers("/api/usuarios/me/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/resenas").authenticated()
                         .requestMatchers("/admin/login", "/styles/**", "/uploads/**", "/images/**", "/img/**").permitAll()
                         .requestMatchers("/","/admin", "/admin/**").hasRole("ADMINISTRADOR")
                         .anyRequest().permitAll())

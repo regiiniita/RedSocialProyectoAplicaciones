@@ -69,4 +69,22 @@ public interface ResenaRepository extends JpaRepository<Resena, Long> {
         Long getTotal();
     }
 
+    /**
+     * Reseñas visibles para la comunidad, de la más reciente a la más antigua. Ignora las ocultas y las de
+     * cuentas inactivas. Un filtro nulo no se aplica: autorId limita al autor y seguidorId limita a los
+     * usuarios que sigue esa cuenta.
+     */
+    @Query("""
+            select r from Resena r
+            where r.estado <> :oculta
+              and r.autor.activo = true
+              and (:autorId is null or r.autor.id = :autorId)
+              and (:seguidorId is null or r.autor.id in
+                   (select s.seguido.id from SeguimientoUsuario s where s.seguidor.id = :seguidorId))
+            order by r.fecha desc, r.id desc
+            """)
+    List<Resena> buscarPublicas(@Param("oculta") EstadoResenia oculta,
+                                @Param("autorId") Long autorId,
+                                @Param("seguidorId") Long seguidorId);
+
 }
