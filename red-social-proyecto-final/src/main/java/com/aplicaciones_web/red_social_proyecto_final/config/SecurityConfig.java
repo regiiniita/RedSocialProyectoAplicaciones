@@ -14,7 +14,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import java.time.Instant;
 import org.springframework.http.HttpMethod;
 
 /**
@@ -44,14 +45,20 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // CSRF permanece habilitado para los formularios del panel; la API usa JWT sin sesión y queda exenta.
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"));
-        http.oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()));
-        // Las rutas /api devuelven 401 en lugar de redirigir al formulario de login del administrador.
-        http.exceptionHandling(ex -> ex.defaultAuthenticationEntryPointFor(
-                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+        // Sin token, con token inválido o vencido, la API responde 401 en JSON en lugar de redirigir al login.
+        AuthenticationEntryPoint noAutenticado = (request, response, ex) -> {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"timestamp\":\"" + Instant.now() + "\",\"status\":401,"
+                    + "\"error\":\"Unauthorized\",\"mensaje\":\"Se requiere un token JWT válido\","
+                    + "\"ruta\":\"" + request.getRequestURI() + "\"}");
+        };
+        http.oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults())
+                .authenticationEntryPoint(noAutenticado));
+        http.exceptionHandling(ex -> ex.defaultAuthenticationEntryPointFor(noAutenticado,
                 request -> request.getRequestURI().startsWith("/api/")));
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuarios/me/**").authenticated()
-                        .requestMatchers("/api/usuarios/me/**").authenticated()
+                        .requestMatchers("/api/usuarios/me", "/api/usuarios/me/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/resenas").authenticated()
                         .requestMatchers("/admin/login", "/styles/**", "/uploads/**", "/images/**", "/img/**").permitAll()
                         .requestMatchers("/","/admin", "/admin/**").hasRole("ADMINISTRADOR")

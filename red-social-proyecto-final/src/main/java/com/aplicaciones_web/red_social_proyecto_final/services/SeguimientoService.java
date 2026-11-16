@@ -19,7 +19,7 @@ public class SeguimientoService {
     private final SeguimientoRepository seguimientos;
 
     /**
-     * Lista los usuarios que siguen la cuenta indicada
+     * Lista los usuarios activos que sigue la cuenta indicada
      */
     @Transactional(readOnly = true)
     public List<UsuarioSeguidoResponse> listarSeguidos(String username) {

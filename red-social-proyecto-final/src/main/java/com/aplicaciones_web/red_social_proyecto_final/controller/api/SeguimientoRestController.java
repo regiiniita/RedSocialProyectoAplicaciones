@@ -31,7 +31,8 @@ public class SeguimientoRestController {
     }
 
     /**
-     * Devuelve los usuarios que sigue
+     * La pestaña Seguidos de Mi Perfil y de Perfil público consulta GET /api/usuarios/{username}/seguidos.
+     * Es pública: no necesita token. Responde 200 con la lista de usuarios que sigue {username}.
      */
     @GetMapping("/{username}/seguidos")
     public List<UsuarioSeguidoResponse> listarSeguidos(@PathVariable String username) {
