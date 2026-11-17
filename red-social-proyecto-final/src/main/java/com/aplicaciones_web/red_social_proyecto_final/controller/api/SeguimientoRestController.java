@@ -21,7 +21,18 @@ public class SeguimientoRestController {
     private SeguimientoService seguimientoService;
 
     /**
-     * Devuelve los usuarios que sigue
+     * La pestaña Seguidores de Mi Perfil y de Perfil público consulta GET /api/usuarios/{username}/seguidores.
+     * Se usa GET porque solo se consultan datos. Es pública: no necesita token. Responde 200 con la lista
+     * de usuarios que siguen a {username}; cada uno trae id, username y nombre.
+     */
+    @GetMapping("/{username}/seguidores")
+    public List<UsuarioSeguidoResponse> listarSeguidores(@PathVariable String username) {
+        return seguimientoService.listarSeguidores(username);
+    }
+
+    /**
+     * La pestaña Seguidos de Mi Perfil y de Perfil público consulta GET /api/usuarios/{username}/seguidos.
+     * Es pública: no necesita token. Responde 200 con la lista de usuarios que sigue {username}.
      */
     @GetMapping("/{username}/seguidos")
     public List<UsuarioSeguidoResponse> listarSeguidos(@PathVariable String username) {

@@ -67,6 +67,9 @@ Usar http://localhost:8080 como dirección del servidor.
 - PATCH /api/usuarios/me recibe en JSON nombres, apellidos, fechaNacimiento (AAAA-MM-DD) y genero (Femenino, Masculino u Otro). Todos son opcionales y solo se cambian los que se envían. Necesita token. Devuelve 200 con el perfil actualizado. Lo usa el botón Guardar Cambios de Configuración.
 - GET /api/usuarios/{username} devuelve el perfil público de {username}: id, username, nombres, apellidos y los contadores de reseñas, seguidores y seguidos. No incluye email, fecha de nacimiento ni género. No necesita token. Devuelve 200.
 - GET /api/lugares devuelve la lista en JSON. Se puede probar con query para buscar, categoria para filtrar y orden para ordenar. Los valores de orden son recientes, mejor_valorado y mas_resenados. Escribir la categoría con el nombre que tiene en MySQL, incluidas las tildes.
+- GET /api/resenas devuelve en JSON las reseñas visibles (sin las ocultas por moderación ni las de cuentas inactivas), de la más reciente a la más antigua. No necesita token. Devuelve 200. Acepta dos filtros opcionales: seguidoPor={username} trae solo las reseñas de los usuarios que sigue {username} (feed Tu comunidad) y autor={username} trae solo las reseñas escritas por {username} (pestaña Reseñas de Mi Perfil y de Perfil público). Cada reseña trae id, fecha, calificacion, texto, imagen, autor (username y nombre) y lugar (id, nombre, categoria, direccion e imagen).
+- POST /api/resenas recibe en JSON lugarId, calificacion (1 a 5) y texto (máximo 1000 caracteres). El autor es el usuario del token. Necesita token. Devuelve 201 con la reseña creada y suma 1 al contador de reseñas del autor. Lo usa el botón Publicar de Compartir reseña.
+- GET /api/usuarios/{username}/seguidores devuelve en JSON la lista de usuarios activos que siguen a {username}. Cada uno trae id, username y nombre. No necesita token. Devuelve 200. Lo usa la pestaña Seguidores de los perfiles.
 - GET /api/usuarios/{username}/seguidos devuelve en JSON la lista de usuarios que sigue {username}. Cada uno trae id, username y nombre. No necesita token. Devuelve 200.
 - PUT /api/usuarios/me/seguidos/{username} hace que el usuario del token empiece a seguir a {username}. Necesita token. Devuelve 204 sin cuerpo. Si ya lo seguía no da error ni duplica el seguimiento.
 - DELETE /api/usuarios/me/seguidos/{username} hace que el usuario del token deje de seguir a {username}. Necesita token. Devuelve 204 sin cuerpo. Si no lo seguía no da error.
@@ -75,7 +78,29 @@ Para los POST, hacer primero un GET a /registro desde Postman. Buscar el campo o
 
 Ese procedimiento con _csrf solo aplica a los formularios del sitio. Las rutas /api/** están exentas de CSRF porque la API trabaja con JWT y no con sesión, así que para las peticiones de la API no hace falta el GET a /registro ni el encabezado X-CSRF-TOKEN.
 
-Las rutas /api/usuarios/me/** necesitan el token que devuelve POST /api/sesiones, enviado en el encabezado Authorization con el formato Bearer TOKEN. Sin token, o con un token inválido o vencido, responden 401. El token dura 24 horas.
+Las rutas /api/usuarios/me/** y POST /api/resenas necesitan el token que devuelve POST /api/sesiones, enviado en el encabezado Authorization con el formato Bearer TOKEN. Sin token, o con un token inválido o vencido, responden 401 con un JSON de error. El token dura 24 horas.
+
+## Errores de la API
+
+Todos los errores de /api/** se manejan en ApiExceptionHandler (@RestControllerAdvice) y llegan como JSON, nunca como stacktrace:
+
+```json
+{
+  "timestamp": "2026-11-16T02:02:19.766Z",
+  "status": 400,
+  "error": "Bad Request",
+  "mensaje": "Los datos enviados no son válidos",
+  "ruta": "/api/resenas",
+  "campos": { "calificacion": "La calificación máxima es 5" }
+}
+```
+
+- 400: falló Bean Validation (campos trae el mensaje de cada campo) o el cuerpo no es un JSON válido.
+- 401: falta el token, es inválido o venció, o el usuario o la contraseña son incorrectos.
+- 404: el usuario o el lugar no existe, o la cuenta está inactiva.
+- 409: el username o el correo ya están registrados.
+- 422: se rompió una regla de negocio, por ejemplo seguirse a sí mismo.
+- 500: error inesperado; el detalle solo queda en el log del servidor.
 
 Reglas del seguimiento:
 
@@ -83,9 +108,9 @@ Reglas del seguimiento:
 - Solo se puede seguir a cuentas que existen y están activas.
 - Un usuario solo puede seguir una vez a la misma cuenta. Repetir el PUT o el DELETE no produce error.
 - Los seguimientos se guardan en la tabla seguimientos, que se crea sola al arrancar la aplicación.
-- Si el usuario no existe o se intenta seguir a uno mismo, la petición falla y por ahora responde 500, porque unificar los errores de la API en JSON sigue pendiente.
+- Si el usuario no existe responde 404 y si se intenta seguir a uno mismo responde 422, ambos con el JSON de error.
 
-La colección de Postman está en la carpeta postman/ del repositorio. Trae dos archivos: The Spot API.postman_collection.json, organizada por módulos (Registro y acceso, Perfil y configuración y Seguimiento), y The Spot.postman_environment.json, que es el entorno The Spot con las variables baseUrl (http://localhost:8080) y token. Para usarla:
+La colección de Postman está en la carpeta postman/ del repositorio. Trae dos archivos: The Spot API.postman_collection.json, organizada por módulos (Registro y acceso, Perfil y configuración, Seguimiento y Reseñas), y The Spot.postman_environment.json, que es el entorno The Spot con las variables baseUrl (http://localhost:8080), token y lugarId (lugar que usa Compartir reseña; por defecto 1). Para usarla:
 
 1. Hacer pull del repositorio para tener la carpeta postman/.
 2. En Postman, pulsar Import y arrastrar los dos archivos. En la ventana de importación dejar marcados los dos, la colección y el entorno, y pulsar Import.
@@ -106,7 +131,7 @@ Reglas del perfil:
 - Al registrarse, el nombre de la cuenta toma el valor del username. Se puede cambiar después desde Configuración sin afectar el username.
 - La fecha de nacimiento debe ser anterior a hoy y el género solo acepta Femenino, Masculino u Otro.
 - Solo se puede consultar el perfil de cuentas activas.
-- Si los datos no son válidos o el usuario no existe, la petición falla y por ahora responde 500, porque unificar los errores de la API en JSON sigue pendiente.
+- Si los datos no son válidos responde 400 y si el usuario no existe responde 404, ambos con el JSON de error.
 
 Para probar el seguimiento con los datos de prueba, en este orden:
 
@@ -116,19 +141,28 @@ Para probar el seguimiento con los datos de prueba, en este orden:
 4. Seguimiento → Dejar de seguir usuario. Debe responder 204.
 5. Seguimiento → Listar seguidos otra vez. La lista debe salir vacía.
 
+Para probar las reseñas con los datos de prueba (cargar antes ScriptPruebas.sql), en este orden:
+
+1. Iniciar Sesión con regiiniita.
+2. Seguimiento → Seguir usuario, para que regiiniita siga a Yisus0714.
+3. Reseñas → Feed Tu comunidad. Debe responder 200 solo con reseñas de Yisus0714.
+4. Reseñas → Reseñas de un perfil. Debe responder 200 solo con reseñas de Yisus0714.
+5. Reseñas → Compartir reseña. Debe responder 201 con la reseña creada. Si responde 404, cambiar lugarId en el entorno por el id de un lugar que exista (GET /api/lugares).
+6. Seguimiento → Listar seguidores. Debe responder 200 con regiiniita en la lista de seguidores de Yisus0714.
+
 Cada petición de la colección trae pruebas que se ven en la pestaña Test Results. Si Seguir usuario o Dejar de seguir usuario responden 401, el token está vacío o venció: volver a enviar Iniciar Sesión. Si Postman muestra error de conexión, comprobar que la aplicación está corriendo y que el entorno The Spot está elegido.
 
 Para agregar un módulo o guardar cambios en la colección: crear una carpeta por módulo con sus peticiones y, en las que requieren sesión, usar la autenticación Bearer Token con el valor {{token}}. Al terminar, usar Export → Collection v2.1, reemplazar el archivo dentro de postman/ y hacer commit y push. Cada persona que importa tiene su propia copia, así que si dos editan al mismo tiempo el último archivo que se sube pisa al otro. Conviene pasarla por turnos: hacer pull, borrar la colección anterior de su Postman, importar la nueva, agregar lo suyo, exportar, subir y avisar a la siguiente persona.
 
 ## Sobre la entrega
 
-Cada petición corresponde a una acción del sitio. Los datos de entrada se validan con Bean Validation y las respuestas se devuelven con DTOs. El inicio de sesión ya genera el JWT. Queda pendiente validar ese token en las rutas protegidas y unificar los errores de la API en JSON.
+Cada petición corresponde a una acción del sitio. Los datos de entrada se validan con Bean Validation y las respuestas se devuelven con DTOs. El inicio de sesión ya genera el JWT.
 
-Avance posterior: el token ya se valida en las rutas /api/usuarios/me/**, y sin token responden 401. La unificación de los errores de la API en JSON sigue pendiente.
+El token ya se valida en las rutas /api/usuarios/me/** y en POST /api/resenas, y sin token responden 401. Los errores de la API ya se unifican en JSON con @RestControllerAdvice.
 
 El avance pide integrar el código en main y entregar una colección de Postman en JSON, organizada por módulo, con variables para la dirección del servidor y el token.
 
-La colección entregada está en postman/ y tiene los módulos Registro y acceso, Perfil y configuración y Seguimiento, y las variables baseUrl y token están en el entorno The Spot.
+La colección entregada está en postman/ y tiene los módulos Registro y acceso, Perfil y configuración, Seguimiento y Reseñas, y las variables baseUrl, token y lugarId están en el entorno The Spot.
 
 ## Tecnologías utilizadas
 
