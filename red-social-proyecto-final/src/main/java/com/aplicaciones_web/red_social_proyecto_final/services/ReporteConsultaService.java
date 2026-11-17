@@ -2,7 +2,6 @@ package com.aplicaciones_web.red_social_proyecto_final.services;
 
 import Dominio.EstadoReporte;
 import Dominio.EstadoResenia;
-import com.aplicaciones_web.red_social_proyecto_final.admin.AdminDatos;
 import com.aplicaciones_web.red_social_proyecto_final.dto.ReporteVista;
 import com.aplicaciones_web.red_social_proyecto_final.dto.ReportesListadoVista;
 import com.aplicaciones_web.red_social_proyecto_final.model.ReporteResena;
@@ -12,23 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/** Prepara el listado de reportes a partir de los datos de muestra. */
+/** Consulta y modera los reportes de reseñas guardados en la base de datos. */
 @Service
 @RequiredArgsConstructor
 public class ReporteConsultaService {
-    private final AdminDatos datos;
 
     private final ReporteRepository repositorio;
     private final ResenaRepository resenas;
-
-    /*
-    public ReportesListadoVista consultar() {
-        var reportes = datos.reportes();
-        long pendientes = reportes.stream().filter(ReporteVista::isPendiente).count();
-        var motivos = reportes.stream().map(ReporteVista::getMotivo).distinct().toList();
-        return new ReportesListadoVista(reportes, pendientes, motivos);
-    }
-    */
 
     /**
      * Arma el listado de reportes aplicando los filtros recibidos.
