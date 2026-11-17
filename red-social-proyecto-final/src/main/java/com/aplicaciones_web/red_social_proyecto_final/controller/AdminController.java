@@ -1,6 +1,5 @@
 package com.aplicaciones_web.red_social_proyecto_final.controller;
 
-import com.aplicaciones_web.red_social_proyecto_final.admin.AdminDatos;
 import com.aplicaciones_web.red_social_proyecto_final.services.*;
 
 import java.security.Principal;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final AdminDatos datos;
     private final UsuarioService usuarioService;
     private final ReporteConsultaService reporteService;
     private final ResenaService resenaService;
