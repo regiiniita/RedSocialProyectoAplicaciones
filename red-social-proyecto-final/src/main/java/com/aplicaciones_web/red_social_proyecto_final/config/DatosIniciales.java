@@ -32,11 +32,11 @@ public class DatosIniciales implements ApplicationRunner {
         crearSiNoExiste("Administrador de prueba", "admin", "admin@example.com",
                 adminPassword, "ADMINISTRADOR", true, 0);
         crearSiNoExiste("Regina Jiménez", "regiiniita", "reginameneses@gmail.com",
-                usuarioPassword, "USUARIO_REGISTRADO", true, 48);
+                usuarioPassword, "USUARIO_REGISTRADO", true, 0);
         crearSiNoExiste("Jesus Martinez", "Yisus0714", "JesusM@gmail.com",
-                usuarioPassword, "USUARIO_REGISTRADO", true, 41);
+                usuarioPassword, "USUARIO_REGISTRADO", true, 0);
         crearSiNoExiste("Ramses", "rams3s", "ramses30@gmail.com",
-                usuarioPassword, "USUARIO_REGISTRADO", false, 29);
+                usuarioPassword, "USUARIO_REGISTRADO", false, 0);
     }
 
 
