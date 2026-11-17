@@ -28,3 +28,17 @@ INSERT INTO resenas (fecha, autor_id, lugar_id, calificacion, texto, imagen, est
 (CURDATE() - INTERVAL 12 DAY, (SELECT id FROM usuarios WHERE username = 'regiiniita'), (SELECT id FROM lugares WHERE nombre = 'Parque Las Palmas'), 5, 'Muy limpio y con mucha sombra.', NULL, 'PUBLICADA'),
 (CURDATE() - INTERVAL 30 DAY, (SELECT id FROM usuarios WHERE username = 'Yisus0714'),  (SELECT id FROM lugares WHERE nombre = 'Museo de Historia Regional'), 4, 'Interesante y económico.', NULL, 'PUBLICADA'),
 (CURDATE() - INTERVAL 2 DAY,  (SELECT id FROM usuarios WHERE username = 'regiiniita'), (SELECT id FROM lugares WHERE nombre = 'Cervecería Sahuaro'), 5, 'La IPA de la casa está excelente.', NULL, 'PUBLICADA');
+
+INSERT INTO reportes (fecha, reportante_id, resena_id, motivo, comentario, estado) VALUES
+(CURDATE(),                   (SELECT id FROM usuarios WHERE username = 'regiiniita'), (SELECT id FROM resenas WHERE texto = 'El café bien, los postres caros.'), 'Información falsa', 'Los precios que menciona no son los del menú.', 'PENDIENTE'),
+(CURDATE() - INTERVAL 1 DAY,  (SELECT id FROM usuarios WHERE username = 'rams3s'),     (SELECT id FROM resenas WHERE texto = 'El café bien, los postres caros.'), 'Spam', 'Parece publicidad de otra cafetería.', 'PENDIENTE'),
+(CURDATE() - INTERVAL 2 DAY,  (SELECT id FROM usuarios WHERE username = 'Yisus0714'),  (SELECT id FROM resenas WHERE texto = 'Buenas porciones, un poco caro.'), 'Contenido ofensivo', 'Lenguaje inapropiado hacia el personal.', 'PENDIENTE'),
+(CURDATE() - INTERVAL 6 DAY,  (SELECT id FROM usuarios WHERE username = 'regiiniita'), (SELECT id FROM resenas WHERE texto = 'Interesante y económico.'), 'Spam', 'Reporte por error.', 'DESCARTADO'),
+(CURDATE() - INTERVAL 8 DAY,  (SELECT id FROM usuarios WHERE username = 'Yisus0714'),  (SELECT id FROM resenas WHERE texto = 'La IPA de la casa está excelente.'), 'Información falsa', 'El lugar no vende esa cerveza.', 'REVISADO');
+
+SET SQL_SAFE_UPDATES = 0;
+UPDATE resenas SET estado = 'REPORTADA'
+WHERE id IN (SELECT resena_id FROM reportes WHERE estado = 'PENDIENTE');
+UPDATE resenas SET estado = 'OCULTA'
+WHERE id IN (SELECT resena_id FROM reportes WHERE estado = 'REVISADO');
+SET SQL_SAFE_UPDATES = 1;
