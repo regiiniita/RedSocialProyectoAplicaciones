@@ -35,3 +35,8 @@ INSERT INTO reportes (fecha, reportante_id, resena_id, motivo, comentario, estad
 (CURDATE() - INTERVAL 2 DAY,  (SELECT id FROM usuarios WHERE username = 'Yisus0714'),  (SELECT id FROM resenas WHERE texto = 'Buenas porciones, un poco caro.'), 'Contenido ofensivo', 'Lenguaje inapropiado hacia el personal.', 'PENDIENTE'),
 (CURDATE() - INTERVAL 6 DAY,  (SELECT id FROM usuarios WHERE username = 'regiiniita'), (SELECT id FROM resenas WHERE texto = 'Interesante y económico.'), 'Spam', 'Reporte por error.', 'DESCARTADO'),
 (CURDATE() - INTERVAL 8 DAY,  (SELECT id FROM usuarios WHERE username = 'Yisus0714'),  (SELECT id FROM resenas WHERE texto = 'La IPA de la casa está excelente.'), 'Información falsa', 'El lugar no vende esa cerveza.', 'REVISADO');
+
+SET SQL_SAFE_UPDATES = 0;
+UPDATE usuarios u
+SET total_resenas = (SELECT COUNT(*) FROM resenas r WHERE r.autor_id = u.id);
+SET SQL_SAFE_UPDATES = 1;
