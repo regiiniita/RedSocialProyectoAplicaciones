@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import tools.jackson.databind.exc.UnrecognizedPropertyException;
 
 /**
  * Manejo centralizado de errores de la API. El cliente siempre recibe un JSON con
@@ -79,6 +80,12 @@ public class ApiExceptionHandler {
     /** El cuerpo no es un JSON válido o un campo trae un tipo incorrecto: 400. */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> jsonInvalido(HttpMessageNotReadableException ex, HttpServletRequest req) {
+        // Se mandó una llave que el DTO no tiene, por ejemplo "nombre" en lugar de "nombres".
+        if (ex.getMostSpecificCause() instanceof UnrecognizedPropertyException campo) {
+            String nombre = campo.getPropertyName();
+            return respuesta(HttpStatus.BAD_REQUEST, "El campo '" + nombre + "' no existe", req,
+                    Map.of(nombre, "Campo no reconocido"));
+        }
         return respuesta(HttpStatus.BAD_REQUEST, "El cuerpo de la petición no es un JSON válido", req, null);
     }
 
