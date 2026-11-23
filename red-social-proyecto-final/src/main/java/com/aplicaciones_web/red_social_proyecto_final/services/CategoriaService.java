@@ -3,6 +3,7 @@ package com.aplicaciones_web.red_social_proyecto_final.services;
 import com.aplicaciones_web.red_social_proyecto_final.dto.CategoriaVista;
 import com.aplicaciones_web.red_social_proyecto_final.model.Categoria;
 import com.aplicaciones_web.red_social_proyecto_final.repository.CategoriaRepository;
+import com.aplicaciones_web.red_social_proyecto_final.repository.LugarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 public class CategoriaService {
 
     private final CategoriaRepository repositorio;
+    private final LugarRepository lugares;
 
     /**
      * Busca coincidencias en el nombre o en la descripción de las categorías.
@@ -69,6 +71,25 @@ public class CategoriaService {
         categoria.setNombre(n);
         categoria.setDescripcion(d);
         repositorio.save(categoria);
+    }
+
+    /**
+     * Elimina una categoría que no tiene lugares asignados.
+     * @param id identificador de la categoría seleccionada
+     * @throws IllegalArgumentException si la categoría no existe o todavía tiene lugares
+     */
+    @Transactional
+    public void eliminar(long id) {
+        var categoria = repositorio.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("La categoría no existe."));
+        // Se cuenta en la tabla lugares para no depender de que totalLugares esté actualizado.
+        long asignados = lugares.countByCategoria(categoria);
+        if (asignados > 0) {
+            throw new IllegalArgumentException("No se puede eliminar \"" + categoria.getNombre() + "\" porque tiene "
+                    + asignados + (asignados == 1 ? " lugar asignado" : " lugares asignados")
+                    + ". Cambia esos lugares de categoría o elimínalos primero.");
+        }
+        repositorio.delete(categoria);
     }
 
     /**

@@ -1277,3 +1277,42 @@
   outline: 2px solid var(--color-primario);
   outline-offset: 3px;
 }
+
+/* Ventanas de confirmación (eliminar lugar, eliminar categoría). */
+.modal--alerta {
+  max-width: 440px;
+  text-align: center;
+}
+
+.modal-alerta__contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+.modal-alerta__icono {
+  font-size: 2.5rem;
+  color: var(--color-peligro-texto);
+}
+
+.modal-alerta__titulo {
+  margin: 0;
+}
+
+.modal-alerta__texto {
+  margin: 0;
+}
+
+.modal-alerta__advertencia {
+  margin: 0;
+  font-size: var(--texto-sm);
+  color: #666;
+}
+
+.modal-alerta__acciones {
+  display: flex;
+  justify-content: center;
+  gap: var(--espacio-3);
+  margin-top: var(--espacio-5);
+}

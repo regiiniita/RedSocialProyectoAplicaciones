@@ -158,6 +158,17 @@ public class AdminController {
         return "redirect:/admin/categorias";
     }
 
+    @PostMapping("/categorias/eliminar")
+    public String eliminarCategoria(@RequestParam long idCategoria, RedirectAttributes redirect) {
+        try {
+            categoriaService.eliminar(idCategoria);
+            redirect.addFlashAttribute("mensaje", "Categoría eliminada correctamente.");
+        } catch (IllegalArgumentException ex) {
+            redirect.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/categorias";
+    }
+
     // Dashboard
     @GetMapping("/dashboard")
     public String dashboard(Model model) {

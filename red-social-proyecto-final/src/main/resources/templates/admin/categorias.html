@@ -46,6 +46,9 @@
                                         <a class="tabla__accion" th:href="|#modal-editar-categoria-${categoria.id}|" aria-label="Editar categoría">
                                             <i class="bi bi-pencil-fill tabla__icono" aria-hidden="true"></i>
                                         </a>
+                                        <a class="tabla__accion" th:href="|#modal-eliminar-categoria-${categoria.id}|" aria-label="Eliminar categoría">
+                                            <i class="bi bi-trash tabla__icono" aria-hidden="true"></i>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -82,6 +85,22 @@
                         <th:block th:replace="~{fragments/admin/formularios :: camposCategorias(${categoria}, |categoria-${categoria.id}|)}"></th:block>
 
                         <div th:replace="~{fragments/admin/componentes :: guardar}"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Confirmación antes de eliminar; el servidor rechaza la eliminación si la categoría tiene lugares. -->
+            <div th:each="categoria : ${categorias}" th:id="|modal-eliminar-categoria-${categoria.id}|" class="modal-overlay">
+                <div class="modal modal--alerta">
+                    <form th:action="@{/admin/categorias/eliminar}" method="POST">
+                        <input type="hidden" name="idCategoria" th:value="${categoria.id}">
+
+                        <div th:replace="~{fragments/admin/componentes :: contenidoConfirmacion(|¿Eliminar &quot;${categoria.nombre}&quot;?|, ${categoria.totalLugares > 0} ? 'Esta categoría tiene lugares asignados y no se podrá eliminar hasta que los cambies de categoría.' : 'La categoría no tiene lugares asignados.', 'Esta acción no se puede revertir.')}"></div>
+
+                        <div class="modal-alerta__acciones">
+                            <a href="#" class="btn btn--cancelar">Cancelar</a>
+                            <button type="submit" class="btn btn--peligro">Eliminar</button>
+                        </div>
                     </form>
                 </div>
             </div>
