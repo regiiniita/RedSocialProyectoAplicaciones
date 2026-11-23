@@ -83,21 +83,42 @@
 							},
 							"response": []
 						}
-					],
-					"auth": {
-						"type": "bearer",
-						"bearer": [
-							{
-								"key": "token",
-								"value": "{{token}}",
-								"type": "string"
-							}
-						]
-					}
+					]
 				},
 				{
 					"name": "Registro y acceso",
 					"item": [
+						{
+							"name": "Registrar usuario",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"usuarionuevo\",\n  \"email\": \"usuarionuevo@correo.com\",\n  \"password\": \"Clave123!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"usuarios"
+									]
+								},
+								"description": "Pantalla de Registro. Crea una cuenta. Público. 201 con id, username y email."
+							},
+							"response": []
+						},
 						{
 							"name": "Iniciar Sesión",
 							"event": [
@@ -132,6 +153,9 @@
 										"api",
 										"sesiones"
 									]
+								},
+								"auth": {
+									"type": "noauth"
 								}
 							},
 							"response": []
@@ -279,30 +303,10 @@
 								}
 							]
 						}
-					],
-					"auth": {
-						"type": "bearer",
-						"bearer": [
-							{
-								"key": "token",
-								"value": "{{token}}",
-								"type": "string"
-							}
-						]
-					}
+					]
 				},
 				{
 					"name": "Reseñas",
-					"auth": {
-						"type": "bearer",
-						"bearer": [
-							{
-								"key": "token",
-								"value": "{{token}}",
-								"type": "string"
-							}
-						]
-					},
 					"item": [
 						{
 							"name": "Feed Tu comunidad",
@@ -467,8 +471,45 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "Catálogo",
+					"item": [
+						{
+							"name": "Listar lugares",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/lugares",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"lugares"
+									]
+								},
+								"description": "Pantalla Catálogo. Lista los lugares; acepta query, categoria y orden. Público. 200 con la lista."
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
-	]
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	}
 }
